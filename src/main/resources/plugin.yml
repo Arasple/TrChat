@@ -1,0 +1,10 @@
+name: LiteChat
+main: me.arasple.mc.litechat.LiteChat
+
+api-version: 1.13
+version: ${project.version}
+
+authors:
+  - Arasple
+
+description: 强大而轻便的 Spigot/ Bungee 聊天管理解决方案

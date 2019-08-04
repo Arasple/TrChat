@@ -1,0 +1,7 @@
+name: LiteChat
+main: me.arasple.mc.litechat.LiteChatBungee
+
+version: ${project.version}
+
+authors:
+  - Arasple

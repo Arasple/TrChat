@@ -1,0 +1,7 @@
+PLUGIN:
+  LOADED-CHAT-FORMATS: '&8[&3Lite&bChat&8] &3成功载入聊天格式... &8[{0} Ms]'
+  REGISTERED-BUNGEE: '&8[&3Lite&bChat&8] &6已支持 &eBungee &6通讯.'
+  ENABLED: '&8[&3Lite&bChat&8] &3启动成功. 当前运行版本: &a{0}'
+
+ERROR:
+  NOT-PLAYER: '&8[&3Lite&bChat&8] &c你必须是一个玩家才能执行此操作.'

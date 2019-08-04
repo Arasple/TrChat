@@ -1,0 +1,107 @@
+# 插件常规设置
+General:
+  # 自动是否检测更新并通知管理员, 推荐开启
+  check-update: true
+  # 禁用此插件功能的世界
+  disabled-worlds: [PUT_YOUR_WORLD_NAME_HERE, ANOTHER_WORLD]
+  # 是否启用跨服私聊功能
+  global-private-chat: true
+
+# 聊天控制管理
+ChatControl:
+  # 每两次聊天需要等待的间隔时间
+  cooldown: 2.0
+  # 敏感词过滤器
+  filter:
+    # 是否启用该功能
+    enable:
+      chat: true # 聊天
+      sign: true # 木牌
+      nametag: true # 命名牌
+      anvil: true # 铁砧命名
+    # 禁止发送带敏感词的消息
+    block-sending:
+      # 是否启用
+      enable: true
+      # 当语句中包含至少多少个敏感词时才会禁止发送
+      min: 5
+    # 忽略的标点符号
+    ignored-punctuations: ['!','.',',','#','$','%','&','*','(',')','|','?','/','@','"','\',';','[',']','{','}','+','~','-','_','=','^','<','>',' ','　','！','。','，','￥','（','）','？','、','“','‘','；','【','】','——','……','《','》','\\']
+    # 敏感词列表
+    sensitive-words:
+      - 'NMSL'
+    # 替换符号
+    replacement: '*'
+  # 物品展示功能
+  item-show:
+    # 冷却
+    cooldown: 30
+    # 格式
+    format: '&8[&3{0} &bx{1}&8]'
+    # 替换的符号
+    keys:
+      - '%i'
+      - '%item%'
+      - '[i]'
+      - '[item]'
+
+# 聊天格式配置
+#
+# 默认提供的格式仅供参考, 且需要一些PAPI变量. 你可以设计自己的样式
+# 每个格式由 N 个自定义JSON模块组成, 除了消息内容的模块限制为指定格式
+# 其余都可以自行添加模块. 通通支持 PlaceholderAPI 变量
+#
+# 如果您未使用PAPI, 以下是插件自带变量
+#
+# - {PLAYER} 玩家名称
+# - 没了，你怎么可能没用PAPI呢 !??
+#
+# 消息模块为方便二次处理 (悬浮物品显示) 等, 统一为 message, 不需写text
+# 其它的属性作为默认
+#
+ChatFormats:
+  # 默认聊天
+  NORMAL:
+    world:
+      text: '&8[&3%player_world%&8]'
+      hover: |-
+        &r
+        &8▪ &7位置: &3%player_world%&7, &2%player_x%/%player_y%/%player_z%
+        &r
+        &6▶ &e点击请求传送到目标玩家位置
+        &r
+      command: '/tpa {PLAYER}'
+    part-before-player:
+      text: ' '
+    player:
+      text: '&7{PLAYER}'
+      hover: |-
+        &r
+        &8▪ &7延迟: &3%player_ping% Ms
+        &8▪ &7生命值: &c%player_health_rounded% ❤
+        &r
+        &6▶ &e点击发起私聊
+        &r
+      suggest: '/msg {PLAYER} '
+    part-before-msg:
+      text: '&7: '
+    message:
+      default-color: '7'
+      hover: '&7发送时间: %server_time_h:mm:ss a%'
+  # 私聊 [发送方]
+  PRIVATE-SENDER:
+    sender:
+      text: '&8[&a{SENDER} &7➦ &3{RECEIVER}&8] '
+    message:
+      default-color: 'f'
+      hover: '&7发送时间: %server_time_h:mm:ss a%'
+  # 私聊 [接收方]
+  PRIVATE-RECEIVER:
+    sender:
+      text: '&8[&3{SENDER} &7➥ &a{RECEIVER}&8] '
+    message:
+      default-color: 'f'
+      hover: '&7发送时间: %server_time_h:mm:ss a%'
+  # 管理频道
+  STAFF:
+
