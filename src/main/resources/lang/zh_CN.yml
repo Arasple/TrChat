@@ -1,7 +1,32 @@
 PLUGIN:
-  LOADED-CHAT-FORMATS: '&8[&3Lite&bChat&8] &3成功载入聊天格式... &8[{0} Ms]'
-  REGISTERED-BUNGEE: '&8[&3Lite&bChat&8] &6已支持 &eBungee &6通讯.'
-  ENABLED: '&8[&3Lite&bChat&8] &3启动成功. 当前运行版本: &a{0}'
+  LOADED-CHAT-FORMATS: '&8[&3L&bChat&8] &3成功载入聊天格式... &8[{0} Ms]'
+  REGISTERED-BUNGEE: '&8[&3L&bChat&8] &6已支持 &eBungee &6通讯.'
+  ENABLED: '&8[&3L&bChat&8] &3启动成功. 当前运行版本: &a{0}'
+  DEBUG:
+    'ON':
+      - ==: TITLE
+        title: '&7&l调试模式'
+        subtitle: '&3&l当前已 &a&l开启&3&l.'
+      - ==: SOUND
+        sound: 'BLOCK_NOTE_BLOCK_PLING-1-0'
+    'OFF':
+      - ==: TITLE
+        title: '&7&l调试模式'
+        subtitle: '&3&l当前已 &c&l关闭&3&l.'
+      - ==: SOUND
+        sound: 'BLOCK_ANVIL_LAND-1-0'
 
-ERROR:
-  NOT-PLAYER: '&8[&3Lite&bChat&8] &c你必须是一个玩家才能执行此操作.'
+GENERAL:
+  NO-SWEAR: '&8[&3L&bChat&8] &6你的聊天内容中包含过多敏感词, 已被中止发送.'
+  NO-PERMISSION: '&8[&3L&bChat&8] &7你没有足够的权限执行此操作.'
+
+PRIVATE-MESSAGE:
+  NOT-PLAYER: '&8[&3L&bChat&8] &c你必须是一个玩家才能执行此操作.'
+  NO-PLAYER: '&8[&3L&bChat&8] &c请提供一名私聊对象.'
+  NO-MESSAGE: '&8[&3L&bChat&8] &7请提供私聊的内容.'
+  NOT-EXIST: '&8[&3L&bChat&8] &7目标玩家未在线或不存在.'
+  RECEIVE:
+    - ==: ACTION
+      text: '&8[ &a! &8] &3你收到来自 &a{0} &3的一条私聊消息'
+    - ==: SOUND
+      sound: 'BLOCK_NOTE_BLOCK_PLING-1-2'

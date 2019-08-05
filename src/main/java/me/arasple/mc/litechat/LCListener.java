@@ -1,6 +1,7 @@
 package me.arasple.mc.litechat;
 
 import io.izzel.taboolib.module.inject.TListener;
+import io.izzel.taboolib.module.locale.TLocale;
 import me.arasple.mc.litechat.filter.WordFilter;
 import me.arasple.mc.litechat.formats.ChatFormats;
 import org.bukkit.entity.Player;
@@ -25,11 +26,19 @@ public class LCListener implements Listener {
         String message = e.getMessage();
         e.setCancelled(true);
 
-        message = WordFilter.doFilter(message);
+        if (LCFiles.getSettings().getBoolean("ChatControl.filter.block-sending.enable", true)) {
+            if (WordFilter.getContainsAmount(message) >= LCFiles.getSettings().getInt("ChatControl.filter.block-sending.min", 5)) {
+                TLocale.sendTo(p, "GENERAL.NO-SWEAR");
+                return;
+            }
+        }
 
+        message = WordFilter.doFilter(message);
         ChatFormats.getNormal(p, message).broadcast();
 
-        System.out.println("[LChat] [Chat-Event]: Process Took " + (System.currentTimeMillis() - start) + " Ms");
+        if (LiteChat.isDebug()) {
+            LiteChat.getTLogger().fine("[Chat-Event]: Process Took " + (System.currentTimeMillis() - start) + " Ms");
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

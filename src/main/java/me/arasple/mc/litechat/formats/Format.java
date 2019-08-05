@@ -49,6 +49,14 @@ public class Format {
         return result;
     }
 
+    public List<ChatPart> getParts() {
+        return parts;
+    }
+
+    public MessagePart getMsgPart() {
+        return msgPart;
+    }
+
     /**
      * 聊天组件
      */
@@ -119,31 +127,41 @@ public class Format {
         }
 
         public String process(CommandSender sender, String str) {
+            return process(sender, str, null);
+        }
+
+        public String process(CommandSender sender, String str, String value) {
             return TLocale.Translate.setPlaceholders(sender, str != null ? str
                     .replace('&', ChatColor.COLOR_CHAR)
                     .replace("{PLAYER}", sender.getName())
+                    .replace("{SENDER}", sender.getName())
+                    .replace("{RECEIVER}", value == null ? "" : value)
                     : null);
         }
 
         public TellrawJson applyJson(Player player, TellrawJson tellraw) {
+            return applyJson(player, tellraw, null);
+        }
+
+        public TellrawJson applyJson(Player player, TellrawJson tellraw, String value) {
             if (hover != null) {
-                tellraw.hoverText(process(player, hover));
+                tellraw.hoverText(process(player, hover, value));
             }
             if (command != null) {
-                tellraw.clickCommand(process(player, command));
+                tellraw.clickCommand(process(player, command, value));
             }
             if (suggest != null) {
-                tellraw.clickSuggest(process(player, suggest));
+                tellraw.clickSuggest(process(player, suggest, value));
             }
             if (url != null) {
-                tellraw.clickOpenURL(process(player, url));
+                tellraw.clickOpenURL(process(player, url, value));
             }
 
             return tellraw;
         }
 
         public TellrawJson toTellrawJson(Player player, String value) {
-            return applyJson(player, TellrawJson.create().append(process(player, getText() == null ? "§8[§cERROR-NULL§8]" : getText())));
+            return applyJson(player, TellrawJson.create().append(process(player, getText() == null ? "§8[§cERROR-NULL§8]" : getText(), value)), value);
         }
 
     }
@@ -168,11 +186,14 @@ public class Format {
             String key = null;
             String[] args;
             for (String k : keys) {
-                if (value.toLowerCase().contains(k)) {
+                if (value.contains(k)) {
                     key = k;
-                } else {
-                    value = value.replace(k, "");
+                    keys.remove(k);
+                    break;
                 }
+            }
+            for (String k : keys) {
+                value = value.replace(k, "");
             }
             if (key != null) {
                 while (value.lastIndexOf(key) != value.indexOf(key)) {

@@ -6,6 +6,8 @@ General:
   disabled-worlds: [PUT_YOUR_WORLD_NAME_HERE, ANOTHER_WORLD]
   # 是否启用跨服私聊功能
   global-private-chat: true
+  # 是否启用调试功能
+  debug: false
 
 # 聊天控制管理
 ChatControl:
@@ -98,7 +100,7 @@ ChatFormats:
   # 私聊 [接收方]
   PRIVATE-RECEIVER:
     sender:
-      text: '&8[&3{SENDER} &7➥ &a{RECEIVER}&8] '
+      text: '&8[&6{SENDER} &7➥ &2{RECEIVER}&8] '
     message:
       default-color: 'f'
       hover: '&7发送时间: %server_time_h:mm:ss a%'

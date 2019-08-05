@@ -67,16 +67,16 @@ public class WordFilter {
     public static String doFilter(final String src) {
         char[] chs = src.toCharArray();
         int length = chs.length;
-        int currc;
-        int cpcurrc;
+        int curr;
+        int curry;
         int k;
         WordNode node;
         for (int i = 0; i < length; i++) {
-            currc = charConvert(chs[i]);
-            if (!SET.contains(currc)) {
+            curr = charConvert(chs[i]);
+            if (!SET.contains(curr)) {
                 continue;
             }
-            node = NODES.get(currc);
+            node = NODES.get(curr);
             if (node == null) {
                 continue;
             }
@@ -87,10 +87,10 @@ public class WordFilter {
                 markNum = 0;
             }
             k = i;
-            cpcurrc = currc;
+            curry = curr;
             for (; ++k < length; ) {
                 int temp = charConvert(chs[k]);
-                if (temp == cpcurrc) {
+                if (temp == curry) {
                     continue;
                 }
                 if (PUNCTUATIONS_SET.contains(temp)) {
@@ -104,7 +104,7 @@ public class WordFilter {
                     couldMark = true;
                     markNum = k - i;
                 }
-                cpcurrc = temp;
+                curry = temp;
             }
             if (couldMark) {
                 for (k = 0; k <= markNum; k++) {
@@ -119,19 +119,20 @@ public class WordFilter {
 
     }
 
-    public static boolean isContains(final String src) {
+    public static int getContainsAmount(final String src) {
         char[] chs = src.toCharArray();
         int length = chs.length;
-        int currc;
-        int cpcurrc;
+        int curr;
+        int curry;
         int k;
         WordNode node;
+        int count = 0;
         for (int i = 0; i < length; i++) {
-            currc = charConvert(chs[i]);
-            if (!SET.contains(currc)) {
+            curr = charConvert(chs[i]);
+            if (!SET.contains(curr)) {
                 continue;
             }
-            node = NODES.get(currc);
+            node = NODES.get(curr);
             if (node == null) {
                 continue;
             }
@@ -140,12 +141,11 @@ public class WordFilter {
                 couldMark = true;
             }
 
-
             k = i;
-            cpcurrc = currc;
+            curry = curr;
             for (; ++k < length; ) {
                 int temp = charConvert(chs[k]);
-                if (temp == cpcurrc) {
+                if (temp == curry) {
                     continue;
                 }
                 if (PUNCTUATIONS_SET.contains(temp)) {
@@ -158,13 +158,13 @@ public class WordFilter {
                 if (node.isLast()) {
                     couldMark = true;
                 }
-                cpcurrc = temp;
+                curry = temp;
             }
             if (couldMark) {
-                return true;
+                count++;
             }
         }
-        return false;
+        return count;
     }
 
     private static int charConvert(char src) {

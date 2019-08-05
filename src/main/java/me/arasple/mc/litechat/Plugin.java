@@ -119,7 +119,7 @@ public abstract class Plugin extends JavaPlugin {
     /**
      * 代替 JavaPlugin 本身的 onDisable 方法
      */
-    public void onStopping() {
+    public void onStopping() throws IOException {
     }
 
     /**

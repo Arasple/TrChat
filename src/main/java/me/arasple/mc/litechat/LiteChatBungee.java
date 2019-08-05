@@ -1,9 +1,12 @@
 package me.arasple.mc.litechat;
 
 import me.arasple.mc.litechat.bstats.MetricsBungee;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.event.EventHandler;
 
 import java.io.ByteArrayInputStream;
@@ -29,37 +32,22 @@ public class LiteChatBungee extends Plugin implements Listener {
 
             String subChannel = in.readUTF();
             String type = in.readUTF();
-            String uuids = in.readUTF();
-            String data = in.readUTF();
 
-//            if ("Trixey".equals(subChannel)) {
-//                UUID uuid = UUID.fromString(uuids);
-//                ProxiedPlayer player = ProxyServer.getInstance().getPlayer(uuid);
-//
-//                if (player != null) {
-//                    if ("Shout".equals(type)) {
-//                        ProxyServer.getInstance().getPlayers().forEach(p -> {
-//                            if (TrixeyUserAPI.isVerified(p.getName())) {
-//                                p.sendMessage(ComponentSerializer.parse(data));
-//                            }
-//                        });
-//                        return;
-//                    }
-//                    if ("Staff".equals(type)) {
-//                        ProxyServer.getInstance().getPlayers().forEach(p -> {
-//                            if (p.hasPermission("trixey.admin")) {
-//                                p.sendMessage(ComponentSerializer.parse(data));
-//                            }
-//                        });
-//                    }
-//                    if ("Private".equals(type)) {
-//                        target = in.readUTF();
-//                        if (ProxyServer.getInstance().getPlayer(target) != null && ProxyServer.getInstance().getPlayer(target).isConnected()) {
-//                            ProxyServer.getInstance().getPlayer(target).sendMessage(ComponentSerializer.parse(data));
-//                        }
-//                    }
-//                }
-//            }
+            if ("LiteChat".equals(subChannel)) {
+                if ("SendRaw".equals(type)) {
+                    String to = in.readUTF();
+                    ProxiedPlayer player = ProxyServer.getInstance().getPlayers().stream().filter(p -> p.getName().equalsIgnoreCase(to)).findFirst().orElse(null);
+
+                    if (player != null && player.isConnected()) {
+                        String raw = in.readUTF();
+                        player.sendMessage(ComponentSerializer.parse(raw));
+                    }
+                }
+                if ("BroadcastRaw".equals(type)) {
+                    String raw = in.readUTF();
+                    ProxyServer.getInstance().broadcast(ComponentSerializer.parse(raw));
+                }
+            }
         } catch (IOException ignored) {
         }
     }

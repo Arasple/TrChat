@@ -6,15 +6,17 @@ import io.izzel.taboolib.module.locale.logger.TLogger;
 import me.arasple.mc.litechat.bstats.Metrics;
 import me.arasple.mc.litechat.utils.BungeeUtils;
 
+import java.io.IOException;
+
 import static org.bukkit.Bukkit.getMessenger;
 
 /**
  * @author Arasple
- *
+ * <p>
  * LIB5 太爽了
- *
+ * <p>
  * 一款简单缺又不乏功能的聊天管理系统
- *
+ * <p>
  * · 跨版本支持 1.8-1.14
  * · 高度自定义的JSON聊天格式
  * · 包含4个常用频道  (常规/私聊/全局/管理频道)
@@ -27,8 +29,19 @@ import static org.bukkit.Bukkit.getMessenger;
 public final class LiteChat extends Plugin {
 
     private static LiteChat instance;
-    @TInject("§3Lite§bChat")
+    @TInject("§3L§bChat")
     private static TLogger logger;
+
+    public static boolean isDebug() {
+        return LCFiles.getSettings().getBoolean("General.debug");
+    }
+
+    public static boolean switchDebug() {
+        boolean state = LCFiles.getSettings().getBoolean("General.debug");
+        state = !state;
+        LCFiles.getSettings().set("General.debug", state);
+        return state;
+    }
 
     @Override
     public void onStarting() {
@@ -47,8 +60,8 @@ public final class LiteChat extends Plugin {
     }
 
     @Override
-    public void onStopping() {
-
+    public void onStopping() throws IOException {
+        LCFiles.getSettings().save(LCFiles.getSettings().getFile());
     }
 
     public static TLogger getTLogger() {
