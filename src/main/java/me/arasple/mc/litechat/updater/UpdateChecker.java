@@ -65,21 +65,34 @@ public class UpdateChecker implements Listener {
             return;
         }
 
-        String read = readFromURL(URL);
-        if (read != null) {
-            try {
-                JsonObject json = (JsonObject) new JsonParser().parse(read);
-                latestVersion = json.get("tag_name").getAsDouble();
-                if (latestVersion > version) {
+        String read;
+
+        try (InputStream inputStream = new URL(URL).openStream(); BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
+            read = Plugin.readFully(bufferedInputStream, StandardCharsets.UTF_8);
+        } catch (Throwable ignored) {
+            return;
+        }
+        try {
+            JsonObject json = (JsonObject) new JsonParser().parse(read);
+            double latestVersion = json.get("tag_name").getAsDouble();
+            if (latestVersion > version) {
+                if (hasNewerVersion) {
+                    if (latestVersion > UpdateChecker.latestVersion) {
+                        UpdateChecker.latestVersion = latestVersion;
+                        updatesMessages = json.get("body").getAsString().replace("\r", "").split("\n");
+                        noticed[1] = false;
+                        notifyUpdates(Bukkit.getConsoleSender());
+                    }
+                } else {
                     hasNewerVersion = true;
                     updatesMessages = json.get("body").getAsString().replace("\r", "").split("\n");
                     noticed[0] = true;
                     notifyUpdates(Bukkit.getConsoleSender());
                 }
-            } catch (Exception t) {
-                if (LiteChat.isDebug()) {
-                    LiteChat.getTLogger().warn("[Updater-Checker]: " + t.getMessage());
-                }
+            }
+        } catch (Exception t) {
+            if (LiteChat.isDebug()) {
+                LiteChat.getTLogger().warn("[Updater-Checker]: " + t.getMessage());
             }
         }
     }
@@ -92,15 +105,6 @@ public class UpdateChecker implements Listener {
         messages.addAll(TLocale.asStringList("PLUGIN.UPDATE-NOTIFY.FOOTER"));
 
         messages.forEach(sender::sendMessage);
-    }
-
-    private static String readFromURL(String in) {
-        try (InputStream inputStream = new URL(in).openStream(); BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
-            return Plugin.readFully(bufferedInputStream, StandardCharsets.UTF_8);
-        } catch (Throwable ignored) {
-
-        }
-        return null;
     }
 
 }
