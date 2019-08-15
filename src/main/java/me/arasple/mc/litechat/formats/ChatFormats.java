@@ -20,6 +20,14 @@ public class ChatFormats {
         return normal.replaceFor(player, message);
     }
 
+    public static TellrawJson getGlobal(Player player, String message) {
+        return global.replaceFor(player, message);
+    }
+
+    public static TellrawJson getStaff(Player player, String message) {
+        return staff.replaceFor(player, message);
+    }
+
     public static TellrawJson getPrivateSender(Player sender, String receiver, String message) {
         return private_sender.replaceFor(sender, receiver, message);
     }
@@ -35,6 +43,8 @@ public class ChatFormats {
     public static void load() {
         long start = System.currentTimeMillis();
         normal = new Format(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.NORMAL")));
+        global = new Format(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.GLOBAL")));
+        staff = new Format(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.STAFF")));
         private_sender = new PrivateFormat(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.PRIVATE-SENDER")));
         private_receiver = new PrivateFormat(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.PRIVATE-RECEIVER")));
         TLocale.sendToConsole("PLUGIN.LOADED-CHAT-FORMATS", String.valueOf(System.currentTimeMillis() - start));

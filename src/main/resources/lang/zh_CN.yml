@@ -2,6 +2,7 @@ PLUGIN:
   LOADED-CHAT-FORMATS: '&8[&3L&bChat&8] &3成功载入聊天格式... &8[{0} Ms]'
   REGISTERED-BUNGEE: '&8[&3L&bChat&8] &6已支持 &eBungee &6通讯.'
   ENABLED: '&8[&3L&bChat&8] &3启动成功. 当前运行版本: &a{0}'
+  COMMAND-TITLE: '§3┎§8§m┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄§3┚'
   DEBUG:
     'ON':
       - ==: TITLE
@@ -19,14 +20,65 @@ PLUGIN:
 GENERAL:
   NO-SWEAR: '&8[&3L&bChat&8] &6你的聊天内容中包含过多敏感词, 已被中止发送.'
   NO-PERMISSION: '&8[&3L&bChat&8] &7你没有足够的权限执行此操作.'
+  NOT-PLAYER: '&8[&3L&bChat&8] &c你必须是一个玩家才能执行此操作.'
+
+COOLDOWNS:
+  CHAT:
+    - ==: ACTION
+      text: '&7&l您需要等待聊天冷却 &6{0}s &7&l后才能聊天, 请勿频繁刷屏.'
+    - ==: SOUND
+      sound: 'ENTITY_ITEM_BREAK-1-2'
+  ITEM-SHOW:
+    - ==: ACTION
+      text: '&3&l您需要等待冷却 &a{0}s &3&l后才能再次展示物品.'
+    - ==: SOUND
+      sound: 'ENTITY_ITEM_BREAK-1-0'
 
 PRIVATE-MESSAGE:
   NOT-PLAYER: '&8[&3L&bChat&8] &c你必须是一个玩家才能执行此操作.'
-  NO-PLAYER: '&8[&3L&bChat&8] &c请提供一名私聊对象.'
-  NO-MESSAGE: '&8[&3L&bChat&8] &7请提供私聊的内容.'
+  NO-PLAYER:
+    - ==: ACTION
+      text: '&3&l请提供一名私聊的对象'
+    - ==: SOUND
+      sound: 'ENTITY_ITEM_BREAK-1-0'
+  NO-MESSAGE:
+    - ==: ACTION
+      text: '&7&l请提供思路内容'
+    - ==: SOUND
+      sound: 'ENTITY_ITEM_BREAK-1-0'
   NOT-EXIST: '&8[&3L&bChat&8] &7目标玩家未在线或不存在.'
   RECEIVE:
     - ==: ACTION
       text: '&8[ &a! &8] &3你收到来自 &a{0} &3的一条私聊消息'
     - ==: SOUND
       sound: 'BLOCK_NOTE_BLOCK_PLING-1-2'
+
+GLOBAL-MESSAGE:
+  NOT-PLAYER: '&8[&3L&bChat&8] &c你必须是一个玩家才能执行此操作.'
+  NO-MESSAGE:
+    - ==: ACTION
+      text: '&7&l你必须提供喊话内容'
+    - ==: SOUND
+      sound: 'ENTITY_ITEM_BREAK-1-0'
+
+STAFF-CHANNEL:
+  NOT-PLAYER: '&8[&3L&bChat&8] &c你必须是一个玩家才能执行此操作.'
+  NO-MESSAGE:
+    - ==: ACTION
+      text: '&7&l你必须提供聊天内容'
+    - ==: SOUND
+      sound: 'ENTITY_ITEM_BREAK-1-0'
+  JOIN:
+    - ==: ACTION
+      text: '&a&l已加入到管理频道聊天'
+    - ==: TEXT
+      text: '&8[&3L&bChat&8] &3你已经加入到管理频道, 再次输入相同命令即可退出.'
+    - ==: SOUND
+      sound: 'BLOCK_NOTE_BLOCK_PLING-1-0'
+  QUIT:
+    - ==: ACTION
+      text: '&3&l离开管理频道聊天'
+    - ==: TEXT
+      text: '&8[&3L&bChat&8] &7你已离开管理频道, 但仍会收到管频的消息.'
+    - ==: SOUND
+      sound: 'BLOCK_ANVIL_LAND-1-0'

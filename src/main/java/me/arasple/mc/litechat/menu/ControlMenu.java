@@ -22,10 +22,11 @@ public class ControlMenu {
     public static void init() {
         CommandBuilder.create("litechat", LiteChat.getInst())
                 .permission("litechat.admin")
+                .aliases("lchat")
                 .permissionMessage(TLocale.asString("GENERAL.NO-PERMISSION"))
                 .execute(((sender, args) -> {
                     if (!(sender instanceof Player)) {
-                        TLocale.sendTo(sender, "PRIVATE-MESSAGE.NOT-PLAYER");
+                        TLocale.sendTo(sender, "GENERAL.NOT-PLAYER");
                     } else {
                         openFor((Player) sender);
                     }

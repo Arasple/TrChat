@@ -29,7 +29,10 @@ public class Players {
                 players.add(p.getName());
             }
         });
-        players.removeIf(p -> Bukkit.getPlayer(p) == null || !Objects.requireNonNull(Bukkit.getPlayer(p)).isOnline());
+
+        if (Bukkit.getOnlinePlayers().size() > 0) {
+            players.removeIf(p -> Bukkit.getPlayer(p) == null || !Objects.requireNonNull(Bukkit.getPlayer(p)).isOnline());
+        }
     }
 
     public static boolean isPlayerOnline(String target) {

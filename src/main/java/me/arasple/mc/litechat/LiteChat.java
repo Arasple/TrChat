@@ -15,8 +15,6 @@ import static org.bukkit.Bukkit.getMessenger;
  * <p>
  * LIB5 太爽了
  * <p>
- * 一款简单缺又不乏功能的聊天管理系统
- * <p>
  * · 跨版本支持 1.8-1.14
  * · 高度自定义的JSON聊天格式
  * · 包含4个常用频道  (常规/私聊/全局/管理频道)

@@ -4,8 +4,10 @@ General:
   check-update: true
   # 禁用此插件功能的世界
   disabled-worlds: [PUT_YOUR_WORLD_NAME_HERE, ANOTHER_WORLD]
-  # 是否启用跨服私聊功能
-  global-private-chat: true
+  # 每个世界独立频道
+  per-world-chat: false
+  # 不活跃数据清理 (单位：天), 设置为-1禁用
+  purge: 30
   # 是否启用调试功能
   debug: false
 
@@ -43,22 +45,16 @@ ChatControl:
     # 替换的符号
     keys:
       - '%i'
-      - '%item%'
-      - '[i]'
-      - '[item]'
+      - '!i'
+      - '%物品%'
 
 # 聊天格式配置
 #
 # 默认提供的格式仅供参考, 且需要一些PAPI变量. 你可以设计自己的样式
 # 每个格式由 N 个自定义JSON模块组成, 除了消息内容的模块限制为指定格式
-# 其余都可以自行添加模块. 通通支持 PlaceholderAPI 变量
+# 其余都可以自行添加模块. 通通支持 PlaceholderAPI 变量 ({PLAYER} 为自带变量)
 #
-# 如果您未使用PAPI, 以下是插件自带变量
-#
-# - {PLAYER} 玩家名称
-# - 没了，你怎么可能没用PAPI呢 !??
-#
-# 消息模块为方便二次处理 (悬浮物品显示) 等, 统一为 message, 不需写text
+# 消息模块为方便二次处理, 统一为 message, 不需写text
 # 其它的属性作为默认
 #
 ChatFormats:
@@ -104,6 +100,37 @@ ChatFormats:
     message:
       default-color: 'f'
       hover: '&7发送时间: %server_time_h:mm:ss a%'
+  # 全局喊话
+  GLOBAL:
+    server:
+      text: '&8[&3%server_name%&8] '
+      hover: |-
+        &7来自服务器 &3%server_name%
+        &r
+        &7版本: &6%server_version%
+        &7在线: &a%server_online%&7/&2%server_max_players%
+        &7TPS: &b%server_tps%
+    player:
+      text: '&e{PLAYER}&8: '
+    message:
+      default-color: 'f'
+      hover: '&7发送时间: %server_time_h:mm:ss a%'
   # 管理频道
+  # 拥有管理权限的人能收到 (Spigot端的权限发，Bungee端的权限收)
   STAFF:
-
+    staff:
+      text: '&8[&c管频&8] '
+      hover: |-
+        &7来自服务器 &3%server_name%
+        &r
+        &7版本: &6%server_version%
+        &7在线: &a%server_online%&7/&2%server_max_players%
+        &7TPS: &b%server_tps%
+        &7
+        &a▶ &2点击传送到此服务器
+      command: '/server %server_name%'
+    player:
+      text: '&e{PLAYER}&8: '
+    message:
+      default-color: 'a'
+      hover: '&7发送时间: %server_time_h:mm:ss a%'

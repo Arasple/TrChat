@@ -7,6 +7,7 @@ import io.izzel.taboolib.util.Strings;
 import io.izzel.taboolib.util.item.Items;
 import me.arasple.mc.litechat.LCFiles;
 import me.arasple.mc.litechat.LiteChat;
+import me.arasple.mc.litechat.utils.MessageColors;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -181,6 +182,7 @@ public class Format {
 
         @Override
         public TellrawJson toTellrawJson(Player p, String value) {
+            value = MessageColors.processWithPermission(p, value);
             List<String> keys = LCFiles.getSettings().getStringList("ChatControl.item-show.keys");
             String format = LCFiles.getSettings().getStringColored("ChatControl.item-show.format", "§8[§3{0} §bx{1}§8]");
             String key = null;

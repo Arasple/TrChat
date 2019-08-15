@@ -49,7 +49,7 @@ public class BungeeUtils implements PluginMessageListener {
                 e.printStackTrace();
             }
         }
-        player.sendPluginMessage(LiteChat.getPlugin(), "BungeeCord", byteArray.toByteArray());
+        player.sendPluginMessage(LiteChat.getInst(), "BungeeCord", byteArray.toByteArray());
     }
 
 }
