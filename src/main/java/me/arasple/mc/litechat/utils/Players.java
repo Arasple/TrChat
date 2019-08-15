@@ -21,16 +21,15 @@ public class Players {
 
     @TSchedule(delay = 20, period = 20 * 5)
     public static void updateOnline() {
-        if (BungeeUtils.isEnable() && Bukkit.getOnlinePlayers().size() > 0) {
-            BungeeUtils.sendBungeeData(Bukkit.getOnlinePlayers().iterator().next(), "PlayerList", "ALL");
-        }
-        Bukkit.getOnlinePlayers().forEach(p -> {
-            if (!players.contains(p.getName())) {
-                players.add(p.getName());
-            }
-        });
-
         if (Bukkit.getOnlinePlayers().size() > 0) {
+            if (BungeeUtils.isEnable()) {
+                BungeeUtils.sendBungeeData(Bukkit.getOnlinePlayers().iterator().next(), "PlayerList", "ALL");
+            }
+            Bukkit.getOnlinePlayers().forEach(p -> {
+                if (!players.contains(p.getName())) {
+                    players.add(p.getName());
+                }
+            });
             players.removeIf(p -> Bukkit.getPlayer(p) == null || !Objects.requireNonNull(Bukkit.getPlayer(p)).isOnline());
         }
     }

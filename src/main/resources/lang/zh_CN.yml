@@ -2,7 +2,21 @@ PLUGIN:
   LOADED-CHAT-FORMATS: '&8[&3L&bChat&8] &3成功载入聊天格式... &8[{0} Ms]'
   REGISTERED-BUNGEE: '&8[&3L&bChat&8] &6已支持 &eBungee &6通讯.'
   ENABLED: '&8[&3L&bChat&8] &3启动成功. 当前运行版本: &a{0}'
-  COMMAND-TITLE: '§3┎§8§m┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄§3┚'
+  COMMAND-TITLE: '&3「&8&m—————————————————————————&3」'
+  UPDATE-NOTIFY:
+    HEADER:
+      - ''
+      - ''
+      - ''
+      - '&3「&8&m--------------------------------------------------&3」'
+      - '&7» &3LiteChat &6更新通知 &8v{0} &7-> &av{1}'
+      - ''
+      - '&7» &b更新内容'
+    FOOTER:
+      - ''
+      - '&7» &2下载地址: &a&nhttps://github.com/Arasple/LiteChat/releases/latest'
+      - '&3「&8&m--------------------------------------------------&3」'
+
   DEBUG:
     'ON':
       - ==: TITLE

@@ -39,7 +39,7 @@ public class LCFiles {
     @TSchedule(delay = 5)
     private static void purgeData() {
         int purgeDays = settings.getInt("General", 30);
-        if (purgeDays != -1) {
+        if (purgeDays != -1 && data.isSet("UserData")) {
             AtomicInteger number = new AtomicInteger();
             data.getConfigurationSection("UserData").getKeys(false).forEach(u -> {
                 long lastOnline = data.getLong("UserData." + u + ".last-online", System.currentTimeMillis());

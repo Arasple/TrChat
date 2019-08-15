@@ -169,7 +169,7 @@ public abstract class Plugin extends JavaPlugin {
             try {
                 JsonObject jsonObject = (JsonObject) new JsonParser().parse(read);
                 if (jsonObject.has("tag_name")) {
-                    return new String[] {jsonObject.get("tag_name").getAsString(), url[0], url[1]};
+                    return new String[]{jsonObject.get("tag_name").getAsString(), url[0], url[1]};
                 }
             } catch (Throwable t) {
                 t.printStackTrace();
@@ -239,7 +239,7 @@ public abstract class Plugin extends JavaPlugin {
         return null;
     }
 
-    private static String readFully(InputStream inputStream, Charset charset) throws IOException {
+    public static String readFully(InputStream inputStream, Charset charset) throws IOException {
         return new String(readFully(inputStream), charset);
     }
 
