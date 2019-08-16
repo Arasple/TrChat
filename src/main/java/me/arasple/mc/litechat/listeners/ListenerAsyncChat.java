@@ -3,15 +3,13 @@ package me.arasple.mc.litechat.listeners;
 import io.izzel.taboolib.module.inject.TListener;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
-import io.izzel.taboolib.util.chat.ComponentSerializer;
 import me.arasple.mc.litechat.LCFiles;
 import me.arasple.mc.litechat.LiteChat;
-import me.arasple.mc.litechat.commands.StaffChatCommand;
+import me.arasple.mc.litechat.channels.StaffChat;
 import me.arasple.mc.litechat.data.Cooldowns;
 import me.arasple.mc.litechat.data.DataHandler;
 import me.arasple.mc.litechat.filter.WordFilter;
 import me.arasple.mc.litechat.formats.ChatFormats;
-import me.arasple.mc.litechat.utils.BungeeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,26 +35,20 @@ public class ListenerAsyncChat implements Listener {
         String message = e.getMessage();
         e.setCancelled(true);
 
-        if (LCFiles.getSettings().getStringList("General.disabled-worlds").contains(p.getWorld().getName())) {
+        if (!processCooldown(p, message) || !processFilter(p, message) || LCFiles.getSettings().getStringList("General.disabled-worlds").contains(p.getWorld().getName())) {
             e.setCancelled(false);
             return;
         }
-        if (!processCooldown(p, message) || !processFilter(p, message)) {
-            return;
-        }
-        if (StaffChatCommand.isInStaffChannel(p)) {
-            String raw = ComponentSerializer.toString(ChatFormats.getStaff(p, message).getComponentsAll());
-            BungeeUtils.sendBungeeData(p, "LiteChat", "SendRawPerm", raw, "litechat.staff");
+        if (StaffChat.isInStaffChannel(p)) {
+            StaffChat.send(p, message);
             return;
         }
 
-        message = p.hasPermission("litechat.bypass.filter") || !LCFiles.getSettings().getBoolean("ChatControl.filter.enable.chat") ? message : WordFilter.doFilter(message);
-        TellrawJson format = ChatFormats.getNormal(p, message);
+        TellrawJson format = ChatFormats.getNormal(p, WordFilter.doFilter(message, LCFiles.getSettings().getBoolean("ChatControl.filter.enable.chat", true) && !p.hasPermission("litechat.bypass.filter")));
         List<Player> players = Bukkit.getOnlinePlayers().stream().filter(x -> !(LCFiles.getSettings().getBoolean("General.per-world-chat") && x.getWorld() == p.getWorld())).collect(Collectors.toList());
 
         players.forEach(format::send);
         format.send(Bukkit.getConsoleSender());
-
         if (LiteChat.isDebug()) {
             LiteChat.getTLogger().fine("[Chat-Event]: Process Took " + (System.currentTimeMillis() - start) + " Ms");
         }

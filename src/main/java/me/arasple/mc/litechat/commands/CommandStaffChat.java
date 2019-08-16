@@ -1,24 +1,22 @@
 package me.arasple.mc.litechat.commands;
 
-import com.google.common.collect.Lists;
 import io.izzel.taboolib.module.command.base.BaseCommand;
 import io.izzel.taboolib.module.command.base.BaseMainCommand;
 import io.izzel.taboolib.module.locale.TLocale;
+import io.izzel.taboolib.util.ArrayUtil;
+import me.arasple.mc.litechat.channels.StaffChat;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Arasple
  * @date 2019/8/4 21:19
  */
 @BaseCommand(name = "staff", aliases = {"staffchannel"}, permission = "litechat.staff")
-public class StaffChatCommand extends BaseMainCommand {
-
-    private static List<UUID> staffs = Lists.newArrayList();
+public class CommandStaffChat extends BaseMainCommand {
 
     @Override
     public String getCommandTitle() {
@@ -32,27 +30,20 @@ public class StaffChatCommand extends BaseMainCommand {
             return true;
         }
 
-        boolean result = switchStaff((Player) sender);
-        TLocale.sendTo(sender, result ? "STAFF-CHANNEL.JOIN" : "STAFF-CHANNEL.QUIT");
+        Player p = (Player) sender;
+
+        if (args.length == 0) {
+            boolean result = StaffChat.switchStaff(p);
+            TLocale.sendTo(p, result ? "STAFF-CHANNEL.JOIN" : "STAFF-CHANNEL.QUIT");
+        } else {
+            StaffChat.send(p, ArrayUtil.arrayJoin(args, 0));
+        }
         return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
         return null;
-    }
-
-    private boolean switchStaff(Player player) {
-        if (!staffs.contains(player.getUniqueId())) {
-            staffs.add(player.getUniqueId());
-        } else {
-            staffs.remove(player.getUniqueId());
-        }
-        return staffs.contains(player.getUniqueId());
-    }
-
-    public static boolean isInStaffChannel(Player player) {
-        return staffs.contains(player.getUniqueId());
     }
 
 }

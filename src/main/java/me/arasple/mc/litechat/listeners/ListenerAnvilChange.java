@@ -28,15 +28,11 @@ public class ListenerAnvilChange implements Listener {
         if (e.getInventory().getType() != InventoryType.ANVIL || result == null || result.getType() == Material.AIR) {
             return;
         }
-        if (p.hasPermission("litechat.bypass.filter") || !LCFiles.getSettings().getBoolean("ChatControl.filter.enable.anvil")) {
-            return;
-        }
-
         ItemMeta meta = result.getItemMeta();
         if (meta == null || !meta.hasDisplayName()) {
             return;
         }
-        meta.setDisplayName(WordFilter.doFilter(meta.getDisplayName()));
+        meta.setDisplayName(WordFilter.doFilter(meta.getDisplayName(), LCFiles.getSettings().getBoolean("ChatControl.filter.enable.anvil", true) && !p.hasPermission("litechat.bypass.filter")));
         result.setItemMeta(meta);
         e.setResult(result);
     }

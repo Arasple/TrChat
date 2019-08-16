@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * @date 2019/8/4 21:19
  */
 @BaseCommand(name = "msg", aliases = {"message", "tell", "talk"}, permission = "litechat.private")
-public class PrivateMessageCommand extends BaseMainCommand {
+public class CommandPrivateMessage extends BaseMainCommand {
 
     @Override
     public String getCommandTitle() {
@@ -56,8 +56,7 @@ public class PrivateMessageCommand extends BaseMainCommand {
                 return true;
             }
         }
-        privateMessage = sender.hasPermission("litechat.bypass.filter") || !LCFiles.getSettings().getBoolean("ChatControl.filter.enable.chat") ? privateMessage : WordFilter.doFilter(privateMessage);
-        sendPrivateMessage((Player) sender, Players.getPlayerFullName(args[0]), privateMessage);
+        sendPrivateMessage((Player) sender, Players.getPlayerFullName(args[0]), WordFilter.doFilter(privateMessage, LCFiles.getSettings().getBoolean("ChatControl.filter.enable.chat", true) && !sender.hasPermission("litechat.bypass.filter")));
         return true;
     }
 

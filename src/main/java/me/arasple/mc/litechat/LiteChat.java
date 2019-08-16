@@ -38,8 +38,12 @@ public final class LiteChat extends Plugin {
         if (!getMessenger().isOutgoingChannelRegistered(this, "BungeeCord")) {
             getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
             getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new BungeeUtils());
-            BungeeUtils.setEnable(true);
-            TLocale.sendToConsole("PLUGIN.REGISTERED-BUNGEE");
+            BungeeUtils.setEnable(getServer().spigot().getConfig().getBoolean("settings.bungeecord", false));
+            if (BungeeUtils.isEnable()) {
+                TLocale.sendToConsole("PLUGIN.REGISTERED-BUNGEE");
+            } else {
+                TLocale.sendToConsole("PLUGIN.NONE-BUNGEE");
+            }
         }
 
         new Metrics(this);

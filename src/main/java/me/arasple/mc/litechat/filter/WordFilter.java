@@ -64,7 +64,10 @@ public class WordFilter {
         }
     }
 
-    public static String doFilter(final String src) {
+    public static String doFilter(String src, boolean filter) {
+        if (!filter) {
+            return src;
+        }
         char[] chs = src.toCharArray();
         int length = chs.length;
         int curr;

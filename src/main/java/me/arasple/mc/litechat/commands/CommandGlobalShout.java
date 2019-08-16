@@ -21,7 +21,7 @@ import java.util.List;
  * @date 2019/8/4 21:19
  */
 @BaseCommand(name = "shout", aliases = {"all", "global"}, permission = "litechat.global")
-public class GlobalShoutCommand extends BaseMainCommand {
+public class CommandGlobalShout extends BaseMainCommand {
 
     @Override
     public String getCommandTitle() {
@@ -45,7 +45,7 @@ public class GlobalShoutCommand extends BaseMainCommand {
                 return true;
             }
         }
-        shoutMessage((Player) sender, WordFilter.doFilter(shoutMessage));
+        shoutMessage((Player) sender, WordFilter.doFilter(shoutMessage, LCFiles.getSettings().getBoolean("ChatControl.filter.enable.chat", true) && !sender.hasPermission("litechat.bypass.filter")));
         return true;
     }
 

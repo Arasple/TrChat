@@ -20,13 +20,9 @@ public class ListenerSignChange implements Listener {
     public void onSignChange(SignChangeEvent e) {
         Player p = e.getPlayer();
 
-        if (p.hasPermission("litechat.bypass.filter") || !LCFiles.getSettings().getBoolean("ChatControl.filter.enable.sign")) {
-            return;
-        }
-
         for (int i = 0; i < e.getLines().length; i++) {
             String line = e.getLine(i);
-            e.setLine(i, WordFilter.doFilter(line == null ? "" : line));
+            e.setLine(i, WordFilter.doFilter(line == null ? "" : line, LCFiles.getSettings().getBoolean("ChatControl.filter.enable.sign", true) && !p.hasPermission("litechat.bypass.filter")));
         }
     }
 

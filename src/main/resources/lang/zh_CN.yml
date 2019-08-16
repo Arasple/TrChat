@@ -1,6 +1,7 @@
 PLUGIN:
   LOADED-CHAT-FORMATS: '&8[&3L&bChat&8] &3成功载入聊天格式... &8[{0} Ms]'
   REGISTERED-BUNGEE: '&8[&3L&bChat&8] &6已支持 &eBungee &6通讯.'
+  NONE-BUNGEE: '&8[&3L&bChat&8] &7当前无 Bungee 支持.'
   ENABLED: '&8[&3L&bChat&8] &3启动成功. 当前运行版本: &a{0}'
   COMMAND-TITLE: '&3「&8&m—————————————————————————&3」'
   UPDATE-NOTIFY:
