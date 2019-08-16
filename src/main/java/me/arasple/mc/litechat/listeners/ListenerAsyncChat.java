@@ -1,9 +1,11 @@
-package me.arasple.mc.litechat;
+package me.arasple.mc.litechat.listeners;
 
 import io.izzel.taboolib.module.inject.TListener;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.chat.ComponentSerializer;
+import me.arasple.mc.litechat.LCFiles;
+import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.commands.StaffChatCommand;
 import me.arasple.mc.litechat.data.Cooldowns;
 import me.arasple.mc.litechat.data.DataHandler;
@@ -16,36 +18,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * @author Arasple
- * @date 2019/7/31 17:09
+ * @date 2019/8/16 11:04
  */
 @TListener
-public class LCListener implements Listener {
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onJoin(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
-        DataHandler.initFor(p);
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onQuit(PlayerQuitEvent e) {
-        Player p = e.getPlayer();
-        LCFiles.getData().set("UserData." + p.getUniqueId() + ".last-online", System.currentTimeMillis());
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onCmd(PlayerCommandPreprocessEvent e) {
-        Player p = e.getPlayer();
-    }
+public class ListenerAsyncChat implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent e) {

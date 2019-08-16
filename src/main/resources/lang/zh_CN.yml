@@ -36,6 +36,7 @@ GENERAL:
   NO-SWEAR: '&8[&3L&bChat&8] &6你的聊天内容中包含过多敏感词, 已被中止发送.'
   NO-PERMISSION: '&8[&3L&bChat&8] &7你没有足够的权限执行此操作.'
   NOT-PLAYER: '&8[&3L&bChat&8] &c你必须是一个玩家才能执行此操作.'
+  PURGE: '&8[&3L&bChat&8] &7清理了 &a{0} &7个不活跃数据...'
 
 COOLDOWNS:
   CHAT:
