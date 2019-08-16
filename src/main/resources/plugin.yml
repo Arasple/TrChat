@@ -4,6 +4,9 @@ main: me.arasple.mc.litechat.LiteChat
 api-version: 1.13
 version: ${project.version}
 
+softdepend:
+  - PlaceholderAPI
+
 authors:
   - Arasple
 

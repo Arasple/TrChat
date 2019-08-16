@@ -7,6 +7,7 @@ import io.izzel.taboolib.module.inject.TSchedule;
 import io.izzel.taboolib.module.locale.TLocale;
 import me.arasple.mc.litechat.data.DataHandler;
 import me.arasple.mc.litechat.filter.WordFilter;
+import me.arasple.mc.litechat.formats.ChatFormats;
 
 import java.io.IOException;
 
@@ -25,6 +26,7 @@ public class LCFiles {
     static void load() {
         settings.listener(() -> {
             WordFilter.loadSettings();
+            ChatFormats.load(false);
             LiteChat.getTLogger().fine("&7重新载入配置...");
         });
     }

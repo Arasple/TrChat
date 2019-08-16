@@ -1,7 +1,6 @@
 package me.arasple.mc.litechat.formats;
 
 import io.izzel.taboolib.module.inject.TFunction;
-import io.izzel.taboolib.module.inject.TSchedule;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import me.arasple.mc.litechat.LCFiles;
@@ -39,15 +38,16 @@ public class ChatFormats {
     private static Format normal, global, staff;
     private static PrivateFormat private_sender, private_receiver;
 
-    @TSchedule(delay = 3)
-    public static void load() {
+    public static void load(boolean notify) {
         long start = System.currentTimeMillis();
         normal = new Format(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.NORMAL")));
         global = new Format(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.GLOBAL")));
         staff = new Format(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.STAFF")));
         private_sender = new PrivateFormat(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.PRIVATE-SENDER")));
         private_receiver = new PrivateFormat(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.PRIVATE-RECEIVER")));
-        TLocale.sendToConsole("PLUGIN.LOADED-CHAT-FORMATS", String.valueOf(System.currentTimeMillis() - start));
+        if (notify) {
+            TLocale.sendToConsole("PLUGIN.LOADED-CHAT-FORMATS", String.valueOf(System.currentTimeMillis() - start));
+        }
     }
 
 }

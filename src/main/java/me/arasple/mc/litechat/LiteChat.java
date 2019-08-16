@@ -4,6 +4,7 @@ import io.izzel.taboolib.module.inject.TInject;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.locale.logger.TLogger;
 import me.arasple.mc.litechat.bstats.Metrics;
+import me.arasple.mc.litechat.formats.ChatFormats;
 import me.arasple.mc.litechat.utils.BungeeUtils;
 
 import java.io.IOException;
@@ -56,6 +57,12 @@ public final class LiteChat extends Plugin {
 
         TLocale.sendToConsole("PLUGIN.ENABLED", getDescription().getVersion());
     }
+
+    @Override
+    public void onActivated() {
+        ChatFormats.load(true);
+    }
+
 
     @Override
     public void onStopping() throws IOException {
