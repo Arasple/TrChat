@@ -89,6 +89,9 @@ public class UpdateChecker implements Listener {
                     noticed[0] = true;
                     notifyUpdates(Bukkit.getConsoleSender());
                 }
+            } else if (!noticed[0]) {
+                noticed[0] = true;
+                TLocale.sendToConsole("PLUGIN.UPDATE-NOTIFY.LATEST");
             }
         } catch (Exception t) {
             if (LiteChat.isDebug()) {

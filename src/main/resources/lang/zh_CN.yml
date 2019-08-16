@@ -4,6 +4,7 @@ PLUGIN:
   ENABLED: '&8[&3L&bChat&8] &3启动成功. 当前运行版本: &a{0}'
   COMMAND-TITLE: '&3「&8&m—————————————————————————&3」'
   UPDATE-NOTIFY:
+    LATEST: '&8[&3L&bChat&8] &a你正在运行最新版的 &3LiteChat&a.'
     HEADER:
       - ''
       - ''
