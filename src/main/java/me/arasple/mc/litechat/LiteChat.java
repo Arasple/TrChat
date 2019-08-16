@@ -13,17 +13,6 @@ import static org.bukkit.Bukkit.getMessenger;
 
 /**
  * @author Arasple
- * <p>
- * LIB5 太爽了
- * <p>
- * · 跨版本支持 1.8-1.14
- * · 高度自定义的JSON聊天格式
- * · 包含4个常用频道  (常规/私聊/全局/管理频道)
- * · 支持 Spigot/BungeeCord
- * · 支持 PlaceholderAPI
- * · 高效方便的敏感词屏蔽 (聊天/木牌/命名牌/铁砧 过滤)
- * · 聊天物品展示 (自定义格式/冷却)
- * · 聊天/命令冷却
  */
 public final class LiteChat extends Plugin {
 

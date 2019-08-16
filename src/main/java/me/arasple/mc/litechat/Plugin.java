@@ -167,6 +167,12 @@ public abstract class Plugin extends JavaPlugin {
                 continue;
             }
             try {
+//                if (read.contains("\"tag_name\": \"")) {
+//                    read = read.substring(read.indexOf("\"tag_name\": \""));
+//                    String tagName = read.split("\",")[0];
+//                    System.out.println("Get New Version: " + tagName);
+//                    return new String[]{tagName, url[0], url[1]};
+//                }
                 JsonObject jsonObject = (JsonObject) new JsonParser().parse(read);
                 if (jsonObject.has("tag_name")) {
                     return new String[]{jsonObject.get("tag_name").getAsString(), url[0], url[1]};
