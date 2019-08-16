@@ -48,7 +48,7 @@ public class UpdateChecker implements Listener {
         }
     }
 
-    @TSchedule(delay = 20 * 5, period = 30 * 60 * 20, async = true)
+    @TSchedule(delay = 20, period = 30 * 60 * 20, async = true)
     public static void onCheck() {
         if (!LCFiles.getSettings().getBoolean("General.check-update")) {
             return;
@@ -69,15 +69,12 @@ public class UpdateChecker implements Listener {
 
         try (InputStream inputStream = new URL(URL).openStream(); BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
             read = Plugin.readFully(bufferedInputStream, StandardCharsets.UTF_8);
-        } catch (Throwable ignored) {
-            return;
-        }
-        try {
+
             JsonObject json = (JsonObject) new JsonParser().parse(read);
             double latestVersion = json.get("tag_name").getAsDouble();
             if (latestVersion > version) {
                 if (hasNewerVersion) {
-                    if (latestVersion > UpdateChecker.latestVersion) {
+                    if (UpdateChecker.latestVersion != -1 && latestVersion > UpdateChecker.latestVersion) {
                         UpdateChecker.latestVersion = latestVersion;
                         updatesMessages = json.get("body").getAsString().replace("\r", "").split("\n");
                         noticed[1] = false;
@@ -85,8 +82,9 @@ public class UpdateChecker implements Listener {
                     }
                 } else {
                     hasNewerVersion = true;
-                    updatesMessages = json.get("body").getAsString().replace("\r", "").split("\n");
                     noticed[0] = true;
+                    UpdateChecker.latestVersion = latestVersion;
+                    updatesMessages = json.get("body").getAsString().replace("\r", "").split("\n");
                     notifyUpdates(Bukkit.getConsoleSender());
                 }
             } else if (!noticed[0]) {
@@ -95,19 +93,36 @@ public class UpdateChecker implements Listener {
             }
         } catch (Exception t) {
             if (LiteChat.isDebug()) {
-                LiteChat.getTLogger().warn("[Updater-Checker]: " + t.getMessage());
+                LiteChat.getTLogger().warn("[Updater-Checker]: ");
+                t.printStackTrace();
             }
         }
     }
 
-    private static void notifyUpdates(CommandSender sender) {
+    public static void notifyUpdates(CommandSender sender) {
         List<String> messages = Lists.newArrayList();
 
         messages.addAll(TLocale.asStringList("PLUGIN.UPDATE-NOTIFY.HEADER", String.valueOf(version), String.valueOf(latestVersion)));
-        messages.addAll(Arrays.asList(updatesMessages));
+        messages.addAll(Arrays.asList(getUpdatesMessages()));
         messages.addAll(TLocale.asStringList("PLUGIN.UPDATE-NOTIFY.FOOTER"));
 
         messages.forEach(sender::sendMessage);
+    }
+
+    public static boolean isHasNewerVersion() {
+        return hasNewerVersion;
+    }
+
+    public static double getVersion() {
+        return version;
+    }
+
+    public static double getLatestVersion() {
+        return latestVersion;
+    }
+
+    public static String[] getUpdatesMessages() {
+        return updatesMessages != null ? updatesMessages : new String[]{};
     }
 
 }
