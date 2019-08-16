@@ -1,4 +1,4 @@
-![LiteChat](https://arasple-mc.oss-cn-beijing.aliyuncs.com/plugins/LiteChat/1.png)
+![LiteChat](https://i.loli.net/2019/08/16/6zD3K8IJ42gOMFS.png)
 
 **安装教程**
 
