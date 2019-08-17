@@ -7,7 +7,4 @@ version: ${project.version}
 softdepend:
   - PlaceholderAPI
 
-authors:
-  - Arasple
-
-description: 强大而轻便的 Spigot/ Bungee 聊天管理解决方案
+author: Arasple
