@@ -1,4 +1,4 @@
-package me.arasple.mc.litechat.events;
+package me.arasple.mc.litechat.api.events;
 
 /**
  * @author Arasple

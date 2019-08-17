@@ -64,6 +64,10 @@ public class WordFilter {
         }
     }
 
+    public static String doFilter(String src) {
+        return doFilter(src, true);
+    }
+
     public static String doFilter(String src, boolean filter) {
         if (!filter) {
             return src;

@@ -1,3 +1,19 @@
+######################################################################
+#
+#  .____     .__   __           _________  .__               __
+# |    |    |__|_/  |_   ____  \_   ___ \ |  |__  _____   _/  |_
+# |    |    |  |\   __\_/ __ \ /    \  \/ |  |  \ \__  \  \   __\
+# |    |___ |  | |  |  \  ___/ \     \____|   Y  \ / __ \_ |  |
+# |_______ \|__| |__|   \___  > \______  /|___|  /(____  / |__|
+#         \/                \/         \/      \/      \/
+#
+# LiteChat 的语言文件, 基于 TLocale
+#
+# 如何自定义更强的消息？查阅文档：https://bkm016.github.io/TabooLib/#/tlocale
+# 所有消息均支持 BOOK / SOUND / TITLE / ACTIONBAR / BOSSBAR /JSON 等
+#
+######################################################################
+
 PLUGIN:
   LOADED-CHAT-FORMATS: '&8[&3L&bChat&8] &3成功载入聊天格式... &8[{0} Ms]'
   REGISTERED-BUNGEE: '&8[&3L&bChat&8] &6已支持 &eBungee &6通讯.'
@@ -17,7 +33,7 @@ PLUGIN:
     - '&8[&3L&bChat&8] &3启动成功. 当前运行版本: &aVersion {0}'
   DISABLED:
     - '&8[&3L&bChat&8] &7感谢使用本插件, 您在论坛为本插件评分即是对作者最大的鼓励!'
-  COMMAND-TITLE: '&3「&8&m—————————————————————————&3」'
+  COMMAND-TITLE: '&3「&8&m--------------------------------------------------&3」'
   UPDATE-NOTIFY:
     LATEST: '&8[&3L&bChat&8] &a你正在运行最新版的 &3LiteChat&a.'
     HEADER:
@@ -25,13 +41,13 @@ PLUGIN:
       - ''
       - ''
       - '&3「&8&m--------------------------------------------------&3」'
-      - '&7» &3LiteChat &6更新通知 &8v{0} &7-> &av{1}'
+      - '&7▪ &3LiteChat &6更新通知 &8v{0} &7➦ &av{1}'
       - ''
-      - '&7» &b更新内容'
+      - '&7▪ &b更新内容'
     FOOTER:
       - ''
-      - '&7» &2Github下载: &a&nhttps://github.com/Arasple/LiteChat/releases/latest'
-      - '&7» &2Mcbbs下载: &ahttps://www.mcbbs.net/thread-903335-1-1.html'
+      - '&7▪ &2Github下载: &a&nhttps://github.com/Arasple/LiteChat/releases/latest'
+      - '&7▪ &2Mcbbs下载: &ahttps://www.mcbbs.net/thread-903335-1-1.html'
       - '&3「&8&m--------------------------------------------------&3」'
 
   DEBUG:
@@ -86,7 +102,7 @@ PRIVATE-MESSAGE:
       sound: 'ENTITY_ITEM_BREAK-1-0'
   NO-MESSAGE:
     - ==: ACTION
-      text: '&7&l请提供思路内容'
+      text: '&7&l请提供私聊内容'
     - ==: SOUND
       sound: 'ENTITY_ITEM_BREAK-1-0'
   NOT-EXIST: '&8[&3L&bChat&8] &7目标玩家未在线或不存在.'
