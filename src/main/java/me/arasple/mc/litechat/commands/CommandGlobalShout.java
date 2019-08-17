@@ -30,6 +30,10 @@ public class CommandGlobalShout extends BaseMainCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!BungeeUtils.isEnable()) {
+            TLocale.sendTo(sender, "GLOBAL-MESSAGE.NOT-ENABLE");
+            return true;
+        }
         if (!(sender instanceof Player)) {
             TLocale.sendTo(sender, "GLOBAL-MESSAGE.NOT-PLAYER");
             return true;

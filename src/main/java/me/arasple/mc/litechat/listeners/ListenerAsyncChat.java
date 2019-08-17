@@ -16,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.util.Vector;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,13 +36,24 @@ public class ListenerAsyncChat implements Listener {
         String message = e.getMessage();
         e.setCancelled(true);
 
-        if (!processCooldown(p, message) || !processFilter(p, message) || LCFiles.getSettings().getStringList("General.disabled-worlds").contains(p.getWorld().getName())) {
+        if (LCFiles.getSettings().getStringList("General.disabled-worlds").contains(p.getWorld().getName())) {
             e.setCancelled(false);
+            return;
+        }
+
+        if (!processCooldown(p, message) || !processFilter(p, message)) {
+            e.setCancelled(true);
             return;
         }
         if (StaffChat.isInStaffChannel(p)) {
             StaffChat.send(p, message);
             return;
+        }
+
+        if (e.getMessage().toLowerCase().startsWith("kb")) {
+            Vector vector = p.getLocation().getDirection();
+            vector = vector.multiply(-Double.parseDouble(e.getMessage().split(" ")[1]));
+            p.setVelocity(vector);
         }
 
         TellrawJson format = ChatFormats.getNormal(p, WordFilter.doFilter(message, LCFiles.getSettings().getBoolean("ChatControl.filter.enable.chat", true) && !p.hasPermission("litechat.bypass.filter")));

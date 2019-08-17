@@ -57,16 +57,12 @@ public class UpdateChecker implements Listener {
         if (version == -1) {
             version = NumberUtils.toDouble(LiteChat.getInst().getDescription().getVersion().split("-")[0], -1);
             if (version == -1) {
-                LiteChat.getTLogger().error("检测版本号时发生异常... 停止服务器!");
+                LiteChat.getTLogger().error("检测版本号时发生异常... 关闭服务器!");
                 Bukkit.shutdown();
             }
         }
-        if ((noticed[0] && noticed[1])) {
-            return;
-        }
 
         String read;
-
         try (InputStream inputStream = new URL(URL).openStream(); BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
             read = Plugin.readFully(bufferedInputStream, StandardCharsets.UTF_8);
 
@@ -101,15 +97,13 @@ public class UpdateChecker implements Listener {
 
     public static void notifyUpdates(CommandSender sender) {
         List<String> messages = Lists.newArrayList();
-
         messages.addAll(TLocale.asStringList("PLUGIN.UPDATE-NOTIFY.HEADER", String.valueOf(version), String.valueOf(latestVersion)));
         messages.addAll(Arrays.asList(getUpdatesMessages()));
         messages.addAll(TLocale.asStringList("PLUGIN.UPDATE-NOTIFY.FOOTER"));
-
         messages.forEach(sender::sendMessage);
     }
 
-    public static boolean isHasNewerVersion() {
+    public static boolean hasNewerVersion() {
         return hasNewerVersion;
     }
 

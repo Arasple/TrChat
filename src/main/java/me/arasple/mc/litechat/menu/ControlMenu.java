@@ -67,7 +67,7 @@ public class ControlMenu {
                     Player p = e.getClicker();
                     char slot = e.getSlot();
 
-                    if (slot == 'U' && UpdateChecker.isHasNewerVersion()) {
+                    if (slot == 'U' && UpdateChecker.hasNewerVersion()) {
                         UpdateChecker.notifyUpdates(p);
                         p.closeInventory();
                     }
@@ -89,7 +89,7 @@ public class ControlMenu {
         if (!LCFiles.getSettings().getBoolean("General.check-update")) {
             lores.add("§c自动更新检测已被禁用.");
         } else {
-            if (UpdateChecker.isHasNewerVersion()) {
+            if (UpdateChecker.hasNewerVersion()) {
                 lores.add("§8▪ §7最新版本: §a" + UpdateChecker.getLatestVersion());
                 lores.add("§8▪ §7更新内容: §a");
                 lores.addAll(Arrays.asList(UpdateChecker.getUpdatesMessages()));

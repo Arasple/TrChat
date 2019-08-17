@@ -58,8 +58,12 @@ public final class LiteChat extends Plugin {
 
 
     @Override
-    public void onStopping() throws IOException {
-        LCFiles.getSettings().save(LCFiles.getSettings().getFile());
+    public void onStopping() {
+        try {
+            LCFiles.getSettings().save(LCFiles.getSettings().getFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static TLogger getTLogger() {

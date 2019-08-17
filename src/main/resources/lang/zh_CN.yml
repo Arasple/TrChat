@@ -2,7 +2,7 @@ PLUGIN:
   LOADED-CHAT-FORMATS: '&8[&3L&bChat&8] &3成功载入聊天格式... &8[{0} Ms]'
   REGISTERED-BUNGEE: '&8[&3L&bChat&8] &6已支持 &eBungee &6通讯.'
   NONE-BUNGEE: '&8[&3L&bChat&8] &7当前无 Bungee 支持.'
-  ENABLED: '&8[&3L&bChat&8] &3启动成功. 当前运行版本: &a{0}'
+  ENABLED: '&8[&3L&bChat&8] &3启动成功. 当前运行版本: &aVersion {0}'
   COMMAND-TITLE: '&3「&8&m—————————————————————————&3」'
   UPDATE-NOTIFY:
     LATEST: '&8[&3L&bChat&8] &a你正在运行最新版的 &3LiteChat&a.'
@@ -16,7 +16,8 @@ PLUGIN:
       - '&7» &b更新内容'
     FOOTER:
       - ''
-      - '&7» &2下载地址: &a&nhttps://github.com/Arasple/LiteChat/releases/latest'
+      - '&7» &2Github下载: &a&nhttps://github.com/Arasple/LiteChat/releases/latest'
+      - '&7» &2Mcbbs下载: &ahttps://www.mcbbs.net/thread-903335-1-1.html'
       - '&3「&8&m--------------------------------------------------&3」'
 
   DEBUG:
@@ -72,6 +73,7 @@ PRIVATE-MESSAGE:
 
 GLOBAL-MESSAGE:
   NOT-PLAYER: '&8[&3L&bChat&8] &c你必须是一个玩家才能执行此操作.'
+  NOT-ENABLE: '&8[&3L&bChat&8] &7未启用 &eBungeeCord &7支持, 暂不支持喊话.'
   NO-MESSAGE:
     - ==: ACTION
       text: '&7&l你必须提供喊话内容'

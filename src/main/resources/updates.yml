@@ -1,13 +1,19 @@
-1.1:
-  Date: 2019.8.16
+1.2:
+  Date: 2019.8.17
   Updates:
-    Spigot:
-      - 代码改进
-      - 自动读取 spigot.yml 配置判断是否启用 Bungee 支持
-      - 管理频道支持单独 Spigot 使用
-      - 现在即使未在管理频道, 也可通过/staff [MESSAGE]发送管频消息
-    BungeeCord:
-      - 改进监听器代码
+    - 支持 CatServer
+    - 全局喊话将强制要求Bungee启用, 否则则提示玩家
+    - 修复了聊天冷却发送时事件未取消的问题
+    - 更新通知新增 Mcbbs 地址
+
+1.1:
+  Date: 2019.8.17 13:30
+  Updates:
+    - 优化代码
+    - 自动读取 spigot.yml 配置判断是否启用 Bungee 支持
+    - 管理频道支持单独 Spigot 使用
+    - 现在即使未在管理频道, 也可通过/staff [MESSAGE]发送管频消息
+    - 改进BungeeCord的监听器
 
 1.0:
   Date: 2019.8.16
