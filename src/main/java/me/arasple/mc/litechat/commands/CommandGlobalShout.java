@@ -4,7 +4,7 @@ import io.izzel.taboolib.module.command.base.BaseCommand;
 import io.izzel.taboolib.module.command.base.BaseMainCommand;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.util.ArrayUtil;
-import me.arasple.mc.litechat.LCFiles;
+import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.channels.GlobalChat;
 import me.arasple.mc.litechat.filter.WordFilter;
 import me.arasple.mc.litechat.utils.BungeeUtils;
@@ -41,13 +41,13 @@ public class CommandGlobalShout extends BaseMainCommand {
             return true;
         }
         String message = ArrayUtil.arrayJoin(args, 0);
-        if (LCFiles.getSettings().getBoolean("CHAT-CONTROL.FILTER.BLOCK-SENDING.ENABLE", true)) {
-            if (WordFilter.getContainsAmount(message) >= LCFiles.getSettings().getInt("CHAT-CONTROL.FILTER.BLOCK-SENDING.MIN", 5)) {
+        if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.BLOCK-SENDING.ENABLE", true)) {
+            if (WordFilter.getContainsAmount(message) >= LiteChat.getSettings().getInt("CHAT-CONTROL.FILTER.BLOCK-SENDING.MIN", 5)) {
                 TLocale.sendTo(sender, "GENERAL.NO-SWEAR");
                 return true;
             }
         }
-        GlobalChat.execute((Player) sender, WordFilter.doFilter(message, LCFiles.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true) && !sender.hasPermission("litechat.bypass.filter")));
+        GlobalChat.execute((Player) sender, WordFilter.doFilter(message, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true) && !sender.hasPermission("litechat.bypass.filter")));
         return true;
     }
 

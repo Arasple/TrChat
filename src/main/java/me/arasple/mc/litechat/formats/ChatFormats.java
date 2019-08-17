@@ -3,7 +3,7 @@ package me.arasple.mc.litechat.formats;
 import io.izzel.taboolib.module.inject.TFunction;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
-import me.arasple.mc.litechat.LCFiles;
+import me.arasple.mc.litechat.LiteChat;
 import org.bukkit.entity.Player;
 
 /**
@@ -38,11 +38,11 @@ public class ChatFormats {
 
     public static void load(boolean notify) {
         long start = System.currentTimeMillis();
-        normal = new Format(LCFiles.getSettings().getConfigurationSection("FORMAT-NORMAL"));
-        private_sender = new PrivateFormat(LCFiles.getSettings().getConfigurationSection("FORMAT-PRIVATE-SENDER"));
-        private_receiver = new PrivateFormat(LCFiles.getSettings().getConfigurationSection("FORMAT-PRIVATE-RECEIVER"));
-        global = new Format(LCFiles.getSettings().getConfigurationSection("FORMAT-GLOBAL"));
-        staff = new Format(LCFiles.getSettings().getConfigurationSection("FORMAT-STAFF"));
+        normal = new Format(LiteChat.getSettings().getConfigurationSection("FORMAT-NORMAL"));
+        private_sender = new PrivateFormat(LiteChat.getSettings().getConfigurationSection("FORMAT-PRIVATE-SENDER"));
+        private_receiver = new PrivateFormat(LiteChat.getSettings().getConfigurationSection("FORMAT-PRIVATE-RECEIVER"));
+        global = new Format(LiteChat.getSettings().getConfigurationSection("FORMAT-GLOBAL"));
+        staff = new Format(LiteChat.getSettings().getConfigurationSection("FORMAT-STAFF"));
 
         if (notify) {
             TLocale.sendToConsole("PLUGIN.LOADED-CHAT-FORMATS", String.valueOf(System.currentTimeMillis() - start));

@@ -33,7 +33,7 @@ import java.util.zip.ZipFile;
  * @Author 坏黑
  * @Since 2019-07-05 9:03
  */
-public abstract class Plugin extends JavaPlugin {
+public abstract class LiteChatPlugin extends JavaPlugin {
 
     /**
      * 版本信息获取地址
@@ -51,7 +51,7 @@ public abstract class Plugin extends JavaPlugin {
             },
     };
 
-    protected static Plugin plugin;
+    protected static LiteChatPlugin plugin;
     protected static File libFile = new File("libs/TabooLib.jar");
 
     /**
@@ -59,7 +59,7 @@ public abstract class Plugin extends JavaPlugin {
      * 将在 onLoad 方法下关闭插件
      */
     protected static boolean initFailed;
-    protected static boolean forge = Loader.forName("net.minecraftforge.classloading.FMLForgePlugin", false, Plugin.class.getClassLoader()) != null;
+    protected static boolean forge = Loader.forName("net.minecraftforge.classloading.FMLForgePlugin", false, LiteChatPlugin.class.getClassLoader()) != null;
 
     static {
         init();
@@ -243,7 +243,7 @@ public abstract class Plugin extends JavaPlugin {
     private static Class<?> getMainClass() {
         File file = file(new File("plugins/TabooLib/temp/" + UUID.randomUUID()));
         try {
-            ZipFile zipFile = new ZipFile(toFile(Plugin.class.getProtectionDomain().getCodeSource().getLocation().openStream(), file));
+            ZipFile zipFile = new ZipFile(toFile(LiteChatPlugin.class.getProtectionDomain().getCodeSource().getLocation().openStream(), file));
             try (InputStream inputStream = zipFile.getInputStream(zipFile.getEntry("plugin.yml"))) {
                 return Class.forName(YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream)).getString("main"));
             } catch (Throwable t) {
@@ -340,7 +340,7 @@ public abstract class Plugin extends JavaPlugin {
         // 检查 TabooLib 文件是否存在
         if (!libFile.exists()) {
             // 本地资源检测
-            InputStream resourceAsStream = Plugin.class.getClassLoader().getResourceAsStream("TabooLib.jar");
+            InputStream resourceAsStream = LiteChatPlugin.class.getClassLoader().getResourceAsStream("TabooLib.jar");
             if (resourceAsStream != null) {
                 // 写入文件
                 toFile(resourceAsStream, file(libFile));
@@ -496,7 +496,7 @@ public abstract class Plugin extends JavaPlugin {
         Bukkit.shutdown();
     }
 
-    public static Plugin getPlugin() {
+    public static LiteChatPlugin getPlugin() {
         return plugin;
     }
 

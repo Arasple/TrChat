@@ -1,6 +1,6 @@
 package me.arasple.mc.litechat.listeners;
 
-import me.arasple.mc.litechat.LCFiles;
+import me.arasple.mc.litechat.LiteChat;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,8 +17,8 @@ public class ListenerPlayerQuit implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
 
-        LCFiles.getData().set("UserData." + p.getUniqueId() + ".last-online", System.currentTimeMillis());
-        LCFiles.save();
+        LiteChat.getData().set("UserData." + p.getUniqueId() + ".last-online", System.currentTimeMillis());
+        LiteChat.save();
     }
 
 }

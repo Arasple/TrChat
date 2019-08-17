@@ -7,9 +7,8 @@ import io.izzel.taboolib.internal.apache.lang3.math.NumberUtils;
 import io.izzel.taboolib.module.inject.TListener;
 import io.izzel.taboolib.module.inject.TSchedule;
 import io.izzel.taboolib.module.locale.TLocale;
-import me.arasple.mc.litechat.LCFiles;
 import me.arasple.mc.litechat.LiteChat;
-import me.arasple.mc.litechat.Plugin;
+import me.arasple.mc.litechat.LiteChatPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -50,7 +49,7 @@ public class UpdateChecker implements Listener {
 
     @TSchedule(delay = 20, period = 30 * 60 * 20, async = true)
     public static void onCheck() {
-        if (!LCFiles.getSettings().getBoolean("GENERAL.CHECK-UPDATE")) {
+        if (!LiteChat.getSettings().getBoolean("GENERAL.CHECK-UPDATE")) {
             return;
         }
 
@@ -64,7 +63,7 @@ public class UpdateChecker implements Listener {
 
         String read;
         try (InputStream inputStream = new URL(URL).openStream(); BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
-            read = Plugin.readFully(bufferedInputStream, StandardCharsets.UTF_8);
+            read = LiteChatPlugin.readFully(bufferedInputStream, StandardCharsets.UTF_8);
 
             JsonObject json = (JsonObject) new JsonParser().parse(read);
             double latestVersion = json.get("tag_name").getAsDouble();

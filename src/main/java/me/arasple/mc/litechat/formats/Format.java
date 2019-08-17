@@ -5,7 +5,6 @@ import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.Strings;
 import io.izzel.taboolib.util.item.Items;
-import me.arasple.mc.litechat.LCFiles;
 import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.utils.MessageColors;
 import org.bukkit.ChatColor;
@@ -186,9 +185,11 @@ public class Format {
 
         @Override
         public TellrawJson toTellrawJson(Player p, String value) {
-            value = MessageColors.processWithPermission(p, value);
-            List<String> keys = LCFiles.getSettings().getStringList("CHAT-CONTROL.ITEM-SHOW.KEYS");
-            String format = LCFiles.getSettings().getStringColored("CHAT-CONTROL.ITEM-SHOW.FORMAT", "§8[§3{0} §bx{1}§8]");
+            if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.COLOR-CODE.CHAT")) {
+                value = MessageColors.processWithPermission(p, value);
+            }
+            List<String> keys = LiteChat.getSettings().getStringList("CHAT-CONTROL.ITEM-SHOW.KEYS");
+            String format = LiteChat.getSettings().getStringColored("CHAT-CONTROL.ITEM-SHOW.FORMAT", "§8[§3{0} §bx{1}§8]");
             String key = null;
             String[] args;
             for (String k : keys) {

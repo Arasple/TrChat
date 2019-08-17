@@ -1,7 +1,7 @@
 package me.arasple.mc.litechat.filter;
 
 import io.izzel.taboolib.module.inject.TSchedule;
-import me.arasple.mc.litechat.LCFiles;
+import me.arasple.mc.litechat.LiteChat;
 
 import java.util.*;
 
@@ -20,9 +20,9 @@ public class WordFilter {
 
     @TSchedule(delay = 3)
     public static void loadSettings() {
-        SIGN = LCFiles.getSettings().getString("CHAT-CONTROL.FILTER.REPLACEMENT", "*").charAt(0);
-        addSensitiveWord(LCFiles.getSettings().getStringList("CHAT-CONTROL.FILTER.SENSITIVE-WORDS"));
-        addPunctuations(LCFiles.getSettings().getStringList("CHAT-CONTROL.FILTER.IGNORED-PUNCTUATIONS"));
+        SIGN = LiteChat.getSettings().getString("CHAT-CONTROL.FILTER.REPLACEMENT", "*").charAt(0);
+        addSensitiveWord(LiteChat.getSettings().getStringList("CHAT-CONTROL.FILTER.SENSITIVE-WORDS"));
+        addPunctuations(LiteChat.getSettings().getStringList("CHAT-CONTROL.FILTER.IGNORED-PUNCTUATIONS"));
     }
 
     private static void addPunctuations(final List<String> words) {

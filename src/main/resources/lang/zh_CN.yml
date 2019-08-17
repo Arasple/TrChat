@@ -15,6 +15,8 @@ PLUGIN:
     - ''
   ENABLED:
     - '&8[&3L&bChat&8] &3启动成功. 当前运行版本: &aVersion {0}'
+  DISABLED:
+    - '&8[&3L&bChat&8] &7感谢使用本插件, 您在论坛为本插件评分即是对作者最大的鼓励!'
   COMMAND-TITLE: '&3「&8&m—————————————————————————&3」'
   UPDATE-NOTIFY:
     LATEST: '&8[&3L&bChat&8] &a你正在运行最新版的 &3LiteChat&a.'

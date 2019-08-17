@@ -6,7 +6,6 @@ import io.izzel.taboolib.module.inject.TSchedule;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.util.item.ItemBuilder;
 import io.izzel.taboolib.util.item.inventory.MenuBuilder;
-import me.arasple.mc.litechat.LCFiles;
 import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.updater.UpdateChecker;
 import org.bukkit.Material;
@@ -86,7 +85,7 @@ public class ControlMenu {
         lores.add("");
         lores.add("§7当前版本: §2" + UpdateChecker.getVersion());
 
-        if (!LCFiles.getSettings().getBoolean("GENERAL.CHECK-UPDATE")) {
+        if (!LiteChat.getSettings().getBoolean("GENERAL.CHECK-UPDATE")) {
             lores.add("§c自动更新检测已被禁用.");
         } else {
             if (UpdateChecker.hasNewerVersion()) {

@@ -3,7 +3,6 @@ package me.arasple.mc.litechat.listeners;
 import io.izzel.taboolib.module.inject.TListener;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
-import me.arasple.mc.litechat.LCFiles;
 import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.channels.StaffChat;
 import me.arasple.mc.litechat.data.Cooldowns;
@@ -36,7 +35,7 @@ public class ListenerAsyncChat implements Listener {
         String message = e.getMessage();
         e.setCancelled(true);
 
-        if (LCFiles.getSettings().getStringList("GENERAL.DISABLED-WORLDS").contains(p.getWorld().getName())) {
+        if (LiteChat.getSettings().getStringList("GENERAL.DISABLED-WORLDS").contains(p.getWorld().getName())) {
             e.setCancelled(false);
             return;
         }
@@ -56,8 +55,8 @@ public class ListenerAsyncChat implements Listener {
             p.setVelocity(vector);
         }
 
-        TellrawJson format = ChatFormats.getNormal(p, WordFilter.doFilter(message, LCFiles.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true) && !p.hasPermission("litechat.bypass.filter")));
-        List<Player> players = Bukkit.getOnlinePlayers().stream().filter(x -> !(LCFiles.getSettings().getBoolean("GENERAL.PER-WORLD-CHAT") && x.getWorld() == p.getWorld())).collect(Collectors.toList());
+        TellrawJson format = ChatFormats.getNormal(p, WordFilter.doFilter(message, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true) && !p.hasPermission("litechat.bypass.filter")));
+        List<Player> players = Bukkit.getOnlinePlayers().stream().filter(x -> !(LiteChat.getSettings().getBoolean("GENERAL.PER-WORLD-CHAT") && x.getWorld() == p.getWorld())).collect(Collectors.toList());
 
         players.forEach(format::send);
         format.send(Bukkit.getConsoleSender());
@@ -70,8 +69,8 @@ public class ListenerAsyncChat implements Listener {
         if (p.hasPermission("litechat.bypass.filter")) {
             return true;
         }
-        if (LCFiles.getSettings().getBoolean("CHAT-CONTROL.FILTER.BLOCK-SENDING.ENABLE", true)) {
-            if (WordFilter.getContainsAmount(message) >= LCFiles.getSettings().getInt("CHAT-CONTROL.FILTER.BLOCK-SENDING.MIN", 5)) {
+        if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.BLOCK-SENDING.ENABLE", true)) {
+            if (WordFilter.getContainsAmount(message) >= LiteChat.getSettings().getInt("CHAT-CONTROL.FILTER.BLOCK-SENDING.MIN", 5)) {
                 TLocale.sendTo(p, "GENERAL.NO-SWEAR");
                 return false;
             }
@@ -82,12 +81,12 @@ public class ListenerAsyncChat implements Listener {
     private boolean processCooldown(Player p, String message) {
         if (!p.hasPermission("litechat.bypass.itemcd")) {
             long itemShowCooldown = DataHandler.getCooldownLeft(p.getUniqueId(), Cooldowns.CooldownType.ITEM_SHOW);
-            if (LCFiles.getSettings().getStringList("CHAT-CONTROL.ITEM-SHOW.KEYS").stream().anyMatch(message::contains)) {
+            if (LiteChat.getSettings().getStringList("CHAT-CONTROL.ITEM-SHOW.KEYS").stream().anyMatch(message::contains)) {
                 if (itemShowCooldown > 0) {
                     TLocale.sendTo(p, "COOLDOWNS.ITEM-SHOW", String.valueOf(itemShowCooldown / 1000D));
                     return false;
                 } else {
-                    DataHandler.updateCooldown(p.getUniqueId(), Cooldowns.CooldownType.ITEM_SHOW, (long) (LCFiles.getSettings().getDouble("CHAT-CONTROL.ITEM-SHOW.COOLDOWN") * 1000));
+                    DataHandler.updateCooldown(p.getUniqueId(), Cooldowns.CooldownType.ITEM_SHOW, (long) (LiteChat.getSettings().getDouble("CHAT-CONTROL.ITEM-SHOW.COOLDOWN") * 1000));
                 }
             }
         }
@@ -97,7 +96,7 @@ public class ListenerAsyncChat implements Listener {
                 TLocale.sendTo(p, "COOLDOWNS.CHAT", String.valueOf(chatCooldown / 1000D));
                 return false;
             } else {
-                DataHandler.updateCooldown(p.getUniqueId(), Cooldowns.CooldownType.CHAT, (long) (LCFiles.getSettings().getDouble("CHAT-CONTROL.COOLDOWN") * 1000));
+                DataHandler.updateCooldown(p.getUniqueId(), Cooldowns.CooldownType.CHAT, (long) (LiteChat.getSettings().getDouble("CHAT-CONTROL.COOLDOWN") * 1000));
             }
         }
         return true;

@@ -1,7 +1,7 @@
 package me.arasple.mc.litechat.data;
 
 import io.izzel.taboolib.module.inject.TSchedule;
-import me.arasple.mc.litechat.LCFiles;
+import me.arasple.mc.litechat.LiteChat;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -18,14 +18,14 @@ public class DataHandler {
 
     @TSchedule(delay = 5)
     public static void init() {
-        if (!LCFiles.getData().isSet("UserData")) {
-            LCFiles.getData().set("UserData", null);
+        if (!LiteChat.getData().isSet("UserData")) {
+            LiteChat.getData().set("UserData", null);
         } else {
-            LCFiles.getData().getConfigurationSection("UserData").getKeys(false).forEach(x -> {
+            LiteChat.getData().getConfigurationSection("UserData").getKeys(false).forEach(x -> {
                 UUID uuid = UUID.fromString(x);
 
-                if (LCFiles.getData().isSet("UserData." + x + ".COOLDOWNs")) {
-                    COOLDOWNs.put(uuid, (Cooldowns) new Cooldowns().read(LCFiles.getData().getString("UserData." + x + ".COOLDOWNs")));
+                if (LiteChat.getData().isSet("UserData." + x + ".COOLDOWNs")) {
+                    COOLDOWNs.put(uuid, (Cooldowns) new Cooldowns().read(LiteChat.getData().getString("UserData." + x + ".COOLDOWNs")));
                 }
             });
         }
@@ -62,8 +62,8 @@ public class DataHandler {
     }
 
     public static void initFor(Player p) {
-        if (!LCFiles.getData().isSet("UserData." + p.getUniqueId())) {
-            LCFiles.getData().set("UserData." + p.getUniqueId() + ".last-online", System.currentTimeMillis());
+        if (!LiteChat.getData().isSet("UserData." + p.getUniqueId())) {
+            LiteChat.getData().set("UserData." + p.getUniqueId() + ".last-online", System.currentTimeMillis());
         }
     }
 
