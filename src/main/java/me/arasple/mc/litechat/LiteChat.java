@@ -16,25 +16,13 @@ import static org.bukkit.Bukkit.getMessenger;
  */
 public final class LiteChat extends Plugin {
 
+    @TInject
     private static LiteChat instance;
     @TInject("§3L§bChat")
     private static TLogger logger;
 
-    public static boolean isDebug() {
-        return LCFiles.getSettings().getBoolean("General.debug");
-    }
-
-    public static boolean switchDebug() {
-        boolean state = LCFiles.getSettings().getBoolean("General.debug");
-        state = !state;
-        LCFiles.getSettings().set("General.debug", state);
-        return state;
-    }
-
     @Override
     public void onStarting() {
-        instance = this;
-
         if (!getMessenger().isOutgoingChannelRegistered(this, "BungeeCord")) {
             getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
             getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new BungeeUtils());
@@ -72,6 +60,17 @@ public final class LiteChat extends Plugin {
 
     public static LiteChat getInst() {
         return instance;
+    }
+
+    public static boolean isDebug() {
+        return LCFiles.getSettings().getBoolean("General.debug");
+    }
+
+    public static boolean switchDebug() {
+        boolean state = LCFiles.getSettings().getBoolean("General.debug");
+        state = !state;
+        LCFiles.getSettings().set("General.debug", state);
+        return state;
     }
 
 }
