@@ -1,10 +1,13 @@
 1.1:
   Date: 2019.8.16
   Updates:
-    - 代码改进
-    - 自动读取 spigot.yml 配置判断是否启用 Bungee 支持
-    - 管理频道支持单独 Spigot 使用
-    - 现在即使未在管理频道, 也可通过/staff [MESSAGE]发送管频消息
+    Spigot:
+      - 代码改进
+      - 自动读取 spigot.yml 配置判断是否启用 Bungee 支持
+      - 管理频道支持单独 Spigot 使用
+      - 现在即使未在管理频道, 也可通过/staff [MESSAGE]发送管频消息
+    BungeeCord:
+      - 改进监听器代码
 
 1.0:
   Date: 2019.8.16
