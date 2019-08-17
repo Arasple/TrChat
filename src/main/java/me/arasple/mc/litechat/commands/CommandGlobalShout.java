@@ -3,12 +3,10 @@ package me.arasple.mc.litechat.commands;
 import io.izzel.taboolib.module.command.base.BaseCommand;
 import io.izzel.taboolib.module.command.base.BaseMainCommand;
 import io.izzel.taboolib.module.locale.TLocale;
-import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.ArrayUtil;
-import io.izzel.taboolib.util.chat.ComponentSerializer;
 import me.arasple.mc.litechat.LCFiles;
+import me.arasple.mc.litechat.channels.GlobalChat;
 import me.arasple.mc.litechat.filter.WordFilter;
-import me.arasple.mc.litechat.formats.ChatFormats;
 import me.arasple.mc.litechat.utils.BungeeUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -42,14 +40,14 @@ public class CommandGlobalShout extends BaseMainCommand {
             TLocale.sendTo(sender, "GLOBAL-MESSAGE.NO-MESSAGE");
             return true;
         }
-        String shoutMessage = ArrayUtil.arrayJoin(args, 0);
-        if (LCFiles.getSettings().getBoolean("ChatControl.filter.block-sending.enable", true)) {
-            if (WordFilter.getContainsAmount(shoutMessage) >= LCFiles.getSettings().getInt("ChatControl.filter.block-sending.min", 5)) {
+        String message = ArrayUtil.arrayJoin(args, 0);
+        if (LCFiles.getSettings().getBoolean("CHAT-CONTROL.FILTER.BLOCK-SENDING.ENABLE", true)) {
+            if (WordFilter.getContainsAmount(message) >= LCFiles.getSettings().getInt("CHAT-CONTROL.FILTER.BLOCK-SENDING.MIN", 5)) {
                 TLocale.sendTo(sender, "GENERAL.NO-SWEAR");
                 return true;
             }
         }
-        shoutMessage((Player) sender, WordFilter.doFilter(shoutMessage, LCFiles.getSettings().getBoolean("ChatControl.filter.enable.chat", true) && !sender.hasPermission("litechat.bypass.filter")));
+        GlobalChat.execute((Player) sender, WordFilter.doFilter(message, LCFiles.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true) && !sender.hasPermission("litechat.bypass.filter")));
         return true;
     }
 
@@ -58,10 +56,5 @@ public class CommandGlobalShout extends BaseMainCommand {
         return null;
     }
 
-    private static void shoutMessage(Player from, String message) {
-        TellrawJson format = ChatFormats.getGlobal(from, message);
-        String raw = ComponentSerializer.toString(format.getComponentsAll());
-        BungeeUtils.sendBungeeData(from, "LiteChat", "BroadcastRaw", raw);
-    }
 
 }

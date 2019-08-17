@@ -1,11 +1,16 @@
 package me.arasple.mc.litechat.utils;
 
+import io.izzel.taboolib.module.locale.TLocale;
 import me.arasple.mc.litechat.LiteChat;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.io.*;
 import java.util.Arrays;
+
+import static org.bukkit.Bukkit.getMessenger;
 
 /**
  * @author Arasple
@@ -13,14 +18,23 @@ import java.util.Arrays;
  */
 public class BungeeUtils implements PluginMessageListener {
 
-    private static boolean enable = false;
+    private static boolean ENABLE = false;
 
-    public static void setEnable(boolean enable) {
-        BungeeUtils.enable = enable;
+    public static void setEnable(boolean ENABLE) {
+        BungeeUtils.ENABLE = ENABLE;
     }
 
     public static boolean isEnable() {
-        return enable;
+        return ENABLE;
+    }
+
+    public static void init(Plugin plugin) {
+        if (!getMessenger().isOutgoingChannelRegistered(plugin, "BungeeCord")) {
+            getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
+            getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", new BungeeUtils());
+            setEnable(Bukkit.getServer().spigot().getConfig().getBoolean("settings.bungeecord", false));
+            TLocale.sendToConsole(isEnable() ? "PLUGIN.REGISTERED-BUNGEE" : "PLUGIN.NONE-BUNGEE");
+        }
     }
 
     @Override

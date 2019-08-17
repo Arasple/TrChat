@@ -33,10 +33,10 @@ public class CommandStaffChat extends BaseMainCommand {
         Player p = (Player) sender;
 
         if (args.length == 0) {
-            boolean result = StaffChat.switchStaff(p);
-            TLocale.sendTo(p, result ? "STAFF-CHANNEL.JOIN" : "STAFF-CHANNEL.QUIT");
+            boolean state = StaffChat.switchStaff(p);
+            TLocale.sendTo(p, state ? "STAFF-CHANNEL.JOIN" : "STAFF-CHANNEL.QUIT");
         } else {
-            StaffChat.send(p, ArrayUtil.arrayJoin(args, 0));
+            StaffChat.execute(p, ArrayUtil.arrayJoin(args, 0));
         }
         return true;
     }

@@ -22,7 +22,7 @@ public class ListenerSignChange implements Listener {
 
         for (int i = 0; i < e.getLines().length; i++) {
             String line = e.getLine(i);
-            e.setLine(i, WordFilter.doFilter(line == null ? "" : line, LCFiles.getSettings().getBoolean("ChatControl.filter.enable.sign", true) && !p.hasPermission("litechat.bypass.filter")));
+            e.setLine(i, WordFilter.doFilter(line == null ? "" : line, LCFiles.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.SIGN", true) && !p.hasPermission("litechat.bypass.filter")));
         }
     }
 

@@ -20,9 +20,9 @@ public class WordFilter {
 
     @TSchedule(delay = 3)
     public static void loadSettings() {
-        SIGN = LCFiles.getSettings().getString("ChatControl.filter.replacement", "*").charAt(0);
-        addSensitiveWord(LCFiles.getSettings().getStringList("ChatControl.filter.sensitive-words"));
-        addPunctuations(LCFiles.getSettings().getStringList("ChatControl.filter.ignored-punctuations"));
+        SIGN = LCFiles.getSettings().getString("CHAT-CONTROL.FILTER.REPLACEMENT", "*").charAt(0);
+        addSensitiveWord(LCFiles.getSettings().getStringList("CHAT-CONTROL.FILTER.SENSITIVE-WORDS"));
+        addPunctuations(LCFiles.getSettings().getStringList("CHAT-CONTROL.FILTER.IGNORED-PUNCTUATIONS"));
     }
 
     private static void addPunctuations(final List<String> words) {

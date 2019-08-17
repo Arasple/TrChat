@@ -181,16 +181,6 @@ public abstract class Plugin extends JavaPlugin {
         return null;
     }
 
-//    private static void addToPath(File file) {
-//        try {
-//            Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-//            method.setAccessible(true);
-//            method.invoke(Bukkit.class.getClassLoader(), file.toURI().toURL());
-//        } catch (Throwable e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     private static boolean downloadFile(String in, File file) {
         try (InputStream inputStream = new URL(in).openStream(); BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
             toFile(bufferedInputStream, file);

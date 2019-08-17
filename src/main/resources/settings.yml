@@ -1,136 +1,150 @@
-# 插件常规设置
-General:
+######################################################################
+#
+#  .____     .__   __           _________  .__               __
+# |    |    |__|_/  |_   ____  \_   ___ \ |  |__  _____   _/  |_
+# |    |    |  |\   __\_/ __ \ /    \  \/ |  |  \ \__  \  \   __\
+# |    |___ |  | |  |  \  ___/ \     \____|   Y  \ / __ \_ |  |
+# |_______ \|__| |__|   \___  > \______  /|___|  /(____  / |__|
+#         \/                \/         \/      \/      \/
+#
+# 插件的常规性设置
+#
+######################################################################
+GENERAL:
   # 自动是否检测更新并通知管理员, 推荐开启
-  check-update: true
+  CHECK-UPDATE: true
   # 禁用此插件功能的世界
-  disabled-worlds: [PUT_YOUR_WORLD_NAME_HERE, ANOTHER_WORLD]
+  DISABLED-WORLDS: [PUT_YOUR_WORLD_NAME_HERE, ANOTHER_WORLD]
   # 每个世界独立频道
-  per-world-chat: false
+  PER-WORLD-CHAT: false
   # 不活跃数据清理 (单位：天), 设置为-1禁用
-  purge: 30
+  PURGE: 30
   # 是否启用调试功能
-  debug: false
+  DEBUG: false
 
 # 聊天控制管理
-ChatControl:
+CHAT-CONTROL:
   # 每两次聊天需要等待的间隔时间
-  cooldown: 2.0
+  COOLDOWN: 2.0
   # 敏感词过滤器
-  filter:
+  FILTER:
     # 是否启用该功能
-    enable:
-      chat: true # 聊天
-      sign: true # 木牌
-      nametag: true # 命名牌
-      anvil: true # 铁砧命名
+    ENABLE:
+      CHAT: true # 聊天
+      SIGN: true # 木牌
+      ANVIL: true # 铁砧命名
     # 禁止发送带敏感词的消息
-    block-sending:
+    BLOCK-SENDING:
       # 是否启用
-      enable: true
+      ENABLE: true
       # 当语句中包含至少多少个敏感词时才会禁止发送
-      min: 3
-    # 忽略的标点符号
-    ignored-punctuations: ['!','.',',','#','$','%','&','*','(',')','|','?','/','@','"','\',';','[',']','{','}','+','~','-','_','=','^','<','>',' ','　','！','。','，','￥','（','）','？','、','“','‘','；','【','】','——','……','《','》','\\']
+      MIN: 3
+    # 过滤器忽略的标点符号
+    IGNORED-PUNCTUATIONS: ['!','.',',','#','$','%','&','*','(',')','|','?','/','@','"','\',';','[',']','{','}','+','~','-','_','=','^','<','>',' ','　','！','。','，','￥','（','）','？','、','“','‘','；','【','】','——','……','《','》','\\']
     # 敏感词列表
-    sensitive-words:
+    SENSITIVE-WORDS:
       - 'NMSL'
     # 替换符号
-    replacement: '*'
+    REPLACEMENT: '*'
   # 物品展示功能
-  item-show:
+  ITEM-SHOW:
     # 冷却
-    cooldown: 30
+    COOLDOWN: 30
     # 格式
-    format: '&8[&3{0} &bx{1}&8]'
+    FORMAT: '&8[&3{0} &bx{1}&8]'
     # 替换的符号
-    keys:
+    KEYS:
       - '%i'
       - '!i'
       - '%物品%'
 
+######################################################################
 # 聊天格式配置
 #
 # 默认提供的格式仅供参考, 且需要一些PAPI变量. 你可以设计自己的样式
-# 每个格式由 N 个自定义JSON模块组成, 除了消息内容的模块限制为指定格式
-# 其余都可以自行添加模块. 通通支持 PlaceholderAPI 变量 ({PLAYER} 为自带变量)
+# 每个聊天格式均由多个JSON模块组成, 每个模块都支持PlaceholderAPI变量
+# 你可以任意添加自己的模块 (消息显示模块统一不变)
 #
-# 消息模块为方便二次处理, 统一为 message, 不需写text
-# 其它的属性作为默认
+# 下面是实例
 #
-ChatFormats:
-  # 默认聊天
-  NORMAL:
-    world:
-      text: '&8[&3%player_world%&8]'
-      hover: |-
-        &r
-        &8▪ &7位置: &3%player_world%&7, &2%player_x%/%player_y%/%player_z%
-        &r
-        &6▶ &e点击请求传送到目标玩家位置
-        &r
-      command: '/tpa {PLAYER}'
-    part-before-player:
-      text: ' '
-    player:
-      text: '&7{PLAYER}'
-      hover: |-
-        &r
-        &8▪ &7延迟: &3%player_ping% Ms
-        &8▪ &7生命值: &c%player_health_rounded% ❤
-        &r
-        &6▶ &e点击发起私聊
-        &r
-      suggest: '/msg {PLAYER} '
-    part-before-msg:
-      text: '&7: '
-    message:
-      default-color: '7'
-      hover: '&7发送时间: %server_time_h:mm:ss a%'
-  # 私聊 [发送方]
-  PRIVATE-SENDER:
-    sender:
-      text: '&8[&a{SENDER} &7➦ &3{RECEIVER}&8] '
-    message:
-      default-color: 'f'
-      hover: '&7发送时间: %server_time_h:mm:ss a%'
-  # 私聊 [接收方]
-  PRIVATE-RECEIVER:
-    sender:
-      text: '&8[&6{SENDER} &7➥ &2{RECEIVER}&8] '
-    message:
-      default-color: 'f'
-      hover: '&7发送时间: %server_time_h:mm:ss a%'
-  # 全局喊话
-  GLOBAL:
-    server:
-      text: '&8[&3%server_name%&8] '
-      hover: |-
-        &7来自服务器 &3%server_name%
-        &r
-        &7版本: &6%server_version%
-        &7在线: &a%server_online%&7/&2%server_max_players%
-        &7TPS: &b%server_tps%
-    player:
-      text: '&e{PLAYER}&8: '
-    message:
-      default-color: 'f'
-      hover: '&7发送时间: %server_time_h:mm:ss a%'
+# FORMAT-EXAMPLE:
+#   example-part: 示例的一个JSON模块
+#     text: 'ABC' 该模块会显示ABC
+#     hover: '%player_name%' 悬浮在该模块上会显示玩家名称
+#     command: '/tpa %player_name%' 点击该模块会请求传送到该玩家
+#
+######################################################################
+
+##########
+FORMAT-NORMAL:
+  world:
+    text: '&8[&3%player_world%&8]'
+    hover: |-
+      &r
+      &8▪ &7位置: &3%player_world%&7, &2%player_x%/%player_y%/%player_z%
+      &r
+      &6▶ &e点击请求传送到目标玩家位置
+      &r
+    command: '/tpa {PLAYER}'
+  part-before-player:
+    text: ' '
+  player:
+    text: '&7{PLAYER}'
+    hover: |-
+      &r
+      &8▪ &7延迟: &3%player_ping% Ms
+      &8▪ &7生命值: &c%player_health_rounded% ❤
+      &r
+      &6▶ &e点击发起私聊
+      &r
+    suggest: '/msg {PLAYER} '
+  part-before-msg:
+    text: '&7: '
+  message:
+    default-color: '7'
+    hover: '&7发送时间: %server_time_h:mm:ss a%'
+FORMAT-PRIVATE-SENDER:
+  sender:
+    text: '&8[&a{SENDER} &7➦ &3{RECEIVER}&8] '
+  message:
+    default-color: 'f'
+    hover: '&7发送时间: %server_time_h:mm:ss a%'
+FORMAT-PRIVATE-RECEIVER:
+  sender:
+    text: '&8[&6{SENDER} &7➥ &2{RECEIVER}&8] '
+  message:
+    default-color: 'f'
+    hover: '&7发送时间: %server_time_h:mm:ss a%'
+FORMAT-GLOBAL:
+  server:
+    text: '&8[&3%server_name%&8] '
+    hover: |-
+      &7来自服务器 &3%server_name%
+      &r
+      &7版本: &6%server_version%
+      &7在线: &a%server_online%&7/&2%server_max_players%
+      &7TPS: &b%server_tps%
+  player:
+    text: '&e{PLAYER}&8: '
+  message:
+    default-color: 'f'
+    hover: '&7发送时间: %server_time_h:mm:ss a%'
   # 管理频道
   # 拥有管理权限的人能收到 (Spigot端的权限发，Bungee端的权限收)
-  STAFF:
-    staff:
-      text: '&8[&c管频&8] '
-      hover: |-
-        &7来自服务器 &3%server_name%
-        &r
-        &7版本: &6%server_version%
-        &7在线: &a%server_online%&7/&2%server_max_players%
-        &7TPS: &b%server_tps%
-        &7
-        &a▶ &2点击传送到此服务器
-      command: '/server %server_name%'
-    player:
-      text: '&e{PLAYER}&8: '
-    message:
-      default-color: 'a'
-      hover: '&7发送时间: %server_time_h:mm:ss a%'
+FORMAT-STAFF:
+  staff:
+    text: '&8[&c管频&8] '
+    hover: |-
+      &7来自服务器 &3%server_name%
+      &r
+      &7版本: &6%server_version%
+      &7在线: &a%server_online%&7/&2%server_max_players%
+      &7TPS: &b%server_tps%
+      &7
+      &a▶ &2点击传送到此服务器
+    command: '/server %server_name%'
+  player:
+    text: '&e{PLAYER}&8: '
+  message:
+    default-color: 'a'
+    hover: '&7发送时间: %server_time_h:mm:ss a%'

@@ -17,9 +17,7 @@ import java.util.UUID;
  */
 public class StaffChat {
 
-    private static List<UUID> staffs = Lists.newArrayList();
-
-    public static void send(Player player, String message) {
+    public static void execute(Player player, String message) {
         if (player.hasPermission("litechat.staff")) {
             TellrawJson format = ChatFormats.getStaff(player, message);
             if (BungeeUtils.isEnable()) {
@@ -30,6 +28,8 @@ public class StaffChat {
             }
         }
     }
+
+    private static List<UUID> staffs = Lists.newArrayList();
 
     public static boolean switchStaff(Player player) {
         if (!staffs.contains(player.getUniqueId())) {

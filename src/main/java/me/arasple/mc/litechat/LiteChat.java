@@ -9,11 +9,10 @@ import me.arasple.mc.litechat.utils.BungeeUtils;
 
 import java.io.IOException;
 
-import static org.bukkit.Bukkit.getMessenger;
-
 /**
  * @author Arasple
  */
+@Plugin.Version(5.02)
 public final class LiteChat extends Plugin {
 
     @TInject
@@ -22,18 +21,13 @@ public final class LiteChat extends Plugin {
     private static TLogger logger;
 
     @Override
-    public void onStarting() {
-        if (!getMessenger().isOutgoingChannelRegistered(this, "BungeeCord")) {
-            getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-            getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new BungeeUtils());
-            BungeeUtils.setEnable(getServer().spigot().getConfig().getBoolean("settings.bungeecord", false));
-            if (BungeeUtils.isEnable()) {
-                TLocale.sendToConsole("PLUGIN.REGISTERED-BUNGEE");
-            } else {
-                TLocale.sendToConsole("PLUGIN.NONE-BUNGEE");
-            }
-        }
+    public void onLoading() {
+        TLocale.sendToConsole("PLUGIN.LOADED");
+    }
 
+    @Override
+    public void onStarting() {
+        BungeeUtils.init(this);
         new Metrics(this);
 
         TLocale.sendToConsole("PLUGIN.ENABLED", getDescription().getVersion());
@@ -63,13 +57,13 @@ public final class LiteChat extends Plugin {
     }
 
     public static boolean isDebug() {
-        return LCFiles.getSettings().getBoolean("General.debug");
+        return LCFiles.getSettings().getBoolean("GENERAL.DEBUG");
     }
 
     public static boolean switchDebug() {
-        boolean state = LCFiles.getSettings().getBoolean("General.debug");
+        boolean state = LCFiles.getSettings().getBoolean("GENERAL.DEBUG");
         state = !state;
-        LCFiles.getSettings().set("General.debug", state);
+        LCFiles.getSettings().set("GENERAL.DEBUG", state);
         return state;
     }
 

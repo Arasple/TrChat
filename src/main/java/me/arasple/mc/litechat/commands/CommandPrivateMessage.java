@@ -3,21 +3,16 @@ package me.arasple.mc.litechat.commands;
 import io.izzel.taboolib.module.command.base.BaseCommand;
 import io.izzel.taboolib.module.command.base.BaseMainCommand;
 import io.izzel.taboolib.module.locale.TLocale;
-import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.ArrayUtil;
-import io.izzel.taboolib.util.chat.ComponentSerializer;
 import me.arasple.mc.litechat.LCFiles;
+import me.arasple.mc.litechat.channels.PrivateChat;
 import me.arasple.mc.litechat.filter.WordFilter;
-import me.arasple.mc.litechat.formats.ChatFormats;
-import me.arasple.mc.litechat.utils.BungeeUtils;
 import me.arasple.mc.litechat.utils.Players;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -50,13 +45,15 @@ public class CommandPrivateMessage extends BaseMainCommand {
             return true;
         }
         String privateMessage = ArrayUtil.arrayJoin(args, 1);
-        if (LCFiles.getSettings().getBoolean("ChatControl.filter.block-sending.enable", true)) {
-            if (WordFilter.getContainsAmount(privateMessage) >= LCFiles.getSettings().getInt("ChatControl.filter.block-sending.min", 5)) {
+
+        if (LCFiles.getSettings().getBoolean("CHAT-CONTROL.FILTER.BLOCK-SENDING.ENABLE", true)) {
+            if (WordFilter.getContainsAmount(privateMessage) >= LCFiles.getSettings().getInt("CHAT-CONTROL.FILTER.BLOCK-SENDING.MIN", 5)) {
                 TLocale.sendTo(sender, "GENERAL.NO-SWEAR");
                 return true;
             }
         }
-        sendPrivateMessage((Player) sender, Players.getPlayerFullName(args[0]), WordFilter.doFilter(privateMessage, LCFiles.getSettings().getBoolean("ChatControl.filter.enable.chat", true) && !sender.hasPermission("litechat.bypass.filter")));
+
+        PrivateChat.execute((Player) sender, Players.getPlayerFullName(args[0]), WordFilter.doFilter(privateMessage, LCFiles.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true) && !sender.hasPermission("litechat.bypass.filter")));
         return true;
     }
 
@@ -70,20 +67,5 @@ public class CommandPrivateMessage extends BaseMainCommand {
         return null;
     }
 
-    private static void sendPrivateMessage(Player from, String to, String message) {
-        TellrawJson sender = ChatFormats.getPrivateSender(from, to, message);
-        TellrawJson receiver = ChatFormats.getPrivateReceiver(from, to, message);
-
-        if (Objects.requireNonNull(Bukkit.getPlayer(to)).isOnline()) {
-            receiver.send(Bukkit.getPlayer(to));
-            TLocale.sendTo(Bukkit.getPlayer(to), "PRIVATE-MESSAGE.RECEIVE", from.getName());
-        } else {
-            String raw = ComponentSerializer.toString(receiver.getComponentsAll());
-            BungeeUtils.sendBungeeData(from, "LiteChat", "SendRaw", to, raw);
-        }
-
-        sender.send(from);
-        sender.send(Bukkit.getConsoleSender());
-    }
 
 }

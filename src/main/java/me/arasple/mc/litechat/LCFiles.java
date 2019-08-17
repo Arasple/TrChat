@@ -38,7 +38,7 @@ public class LCFiles {
 
     @TSchedule(delay = 5)
     private static void purgeData() {
-        long purgeDays = settings.getLong("General.purge", 30);
+        long purgeDays = settings.getLong("GENERAL.PURGE", 30);
         if (purgeDays != -1 && data.isSet("UserData")) {
             int count = 0;
             for (String u : data.getConfigurationSection("UserData").getKeys(false)) {
@@ -56,7 +56,7 @@ public class LCFiles {
 
     @TSchedule(delay = 20 * 10, period = 30 * 20)
     public static void save() {
-        DataHandler.getCooldowns().forEach((key, value) -> data.set("UserData." + key + ".cooldowns", value.write()));
+        DataHandler.getCooldowns().forEach((key, value) -> data.set("UserData." + key + ".COOLDOWNs", value.write()));
 
         try {
             data.save(data.getFile());

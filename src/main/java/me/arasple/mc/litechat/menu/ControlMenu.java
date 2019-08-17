@@ -86,7 +86,7 @@ public class ControlMenu {
         lores.add("");
         lores.add("§7当前版本: §2" + UpdateChecker.getVersion());
 
-        if (!LCFiles.getSettings().getBoolean("General.check-update")) {
+        if (!LCFiles.getSettings().getBoolean("GENERAL.CHECK-UPDATE")) {
             lores.add("§c自动更新检测已被禁用.");
         } else {
             if (UpdateChecker.hasNewerVersion()) {

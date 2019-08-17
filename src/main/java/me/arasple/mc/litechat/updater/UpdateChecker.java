@@ -50,7 +50,7 @@ public class UpdateChecker implements Listener {
 
     @TSchedule(delay = 20, period = 30 * 60 * 20, async = true)
     public static void onCheck() {
-        if (!LCFiles.getSettings().getBoolean("General.check-update")) {
+        if (!LCFiles.getSettings().getBoolean("GENERAL.CHECK-UPDATE")) {
             return;
         }
 

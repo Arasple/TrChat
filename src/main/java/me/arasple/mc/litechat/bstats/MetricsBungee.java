@@ -55,8 +55,8 @@ public class MetricsBungee {
     // The plugin
     private final Plugin plugin;
 
-    // Is bStats enabled on this server?
-    private boolean enabled;
+    // Is bStats ENABLEd on this server?
+    private boolean ENABLEd;
 
     // The uuid of the server
     private String serverUUID;
@@ -88,7 +88,7 @@ public class MetricsBungee {
         }
 
         // We are not allowed to send data about this server :(
-        if (!enabled) {
+        if (!ENABLEd) {
             return;
         }
 
@@ -114,12 +114,12 @@ public class MetricsBungee {
     }
 
     /**
-     * Checks if bStats is enabled.
+     * Checks if bStats is ENABLEd.
      *
-     * @return Whether bStats is enabled or not.
+     * @return Whether bStats is ENABLEd or not.
      */
     public boolean isEnabled() {
-        return enabled;
+        return ENABLEd;
     }
 
     /**
@@ -266,7 +266,7 @@ public class MetricsBungee {
                     "#To honor their work, you should not disable it.",
                     "#This has nearly no effect on the server performance!",
                     "#Check out https://bStats.org/ to learn more :)",
-                    "enabled: true",
+                    "ENABLEd: true",
                     "serverUuid: \"" + UUID.randomUUID().toString() + "\"",
                     "logFailedRequests: false",
                     "logSentData: false",
@@ -276,7 +276,7 @@ public class MetricsBungee {
         Configuration configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(configFile);
 
         // Load configuration
-        enabled = configuration.getBoolean("enabled", true);
+        ENABLEd = configuration.getBoolean("ENABLEd", true);
         serverUUID = configuration.getString("serverUuid");
         logFailedRequests = configuration.getBoolean("logFailedRequests", false);
         logSentData = configuration.getBoolean("logSentData", false);
@@ -325,7 +325,7 @@ public class MetricsBungee {
         }
         try (
                 FileReader fileReader = new FileReader(file);
-                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                BufferedReader bufferedReader = new BufferedReader(fileReader)
         ) {
             return bufferedReader.readLine();
         }

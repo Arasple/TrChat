@@ -14,18 +14,18 @@ public class Cooldowns implements TSerializable {
 
 
     @TSerializeCollection
-    private List<Cooldown> cooldowns = Lists.newArrayList();
+    private List<Cooldown> COOLDOWNs = Lists.newArrayList();
 
     public Cooldowns() {
 
     }
 
     public List<Cooldown> getCooldowns() {
-        return cooldowns;
+        return COOLDOWNs;
     }
 
-    public void setCooldowns(List<Cooldown> cooldowns) {
-        this.cooldowns = cooldowns;
+    public void setCooldowns(List<Cooldown> COOLDOWNs) {
+        this.COOLDOWNs = COOLDOWNs;
     }
 
 

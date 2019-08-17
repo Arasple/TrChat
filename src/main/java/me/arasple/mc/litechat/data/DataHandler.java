@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class DataHandler {
 
-    private static HashMap<UUID, Cooldowns> cooldowns = new HashMap<>();
+    private static HashMap<UUID, Cooldowns> COOLDOWNs = new HashMap<>();
 
     @TSchedule(delay = 5)
     public static void init() {
@@ -24,23 +24,23 @@ public class DataHandler {
             LCFiles.getData().getConfigurationSection("UserData").getKeys(false).forEach(x -> {
                 UUID uuid = UUID.fromString(x);
 
-                if (LCFiles.getData().isSet("UserData." + x + ".cooldowns")) {
-                    cooldowns.put(uuid, (Cooldowns) new Cooldowns().read(LCFiles.getData().getString("UserData." + x + ".cooldowns")));
+                if (LCFiles.getData().isSet("UserData." + x + ".COOLDOWNs")) {
+                    COOLDOWNs.put(uuid, (Cooldowns) new Cooldowns().read(LCFiles.getData().getString("UserData." + x + ".COOLDOWNs")));
                 }
             });
         }
     }
 
     private static void cleanCooldowns() {
-        cooldowns.forEach((key, value) -> value.getCooldowns().removeIf(c -> System.currentTimeMillis() > c.getTime()));
-        cooldowns.entrySet().removeIf(x -> x.getValue().getCooldowns().stream().noneMatch(c -> System.currentTimeMillis() < c.getTime()));
+        COOLDOWNs.forEach((key, value) -> value.getCooldowns().removeIf(c -> System.currentTimeMillis() > c.getTime()));
+        COOLDOWNs.entrySet().removeIf(x -> x.getValue().getCooldowns().stream().noneMatch(c -> System.currentTimeMillis() < c.getTime()));
     }
 
     public static long getCooldownLeft(UUID uuid, Cooldowns.CooldownType type) {
-        cooldowns.putIfAbsent(uuid, new Cooldowns());
-        for (Cooldowns.Cooldown cooldown : cooldowns.get(uuid).getCooldowns()) {
-            if (cooldown.getId().equalsIgnoreCase(type.getName())) {
-                return cooldown.getTime() - System.currentTimeMillis();
+        COOLDOWNs.putIfAbsent(uuid, new Cooldowns());
+        for (Cooldowns.Cooldown COOLDOWN : COOLDOWNs.get(uuid).getCooldowns()) {
+            if (COOLDOWN.getId().equalsIgnoreCase(type.getName())) {
+                return COOLDOWN.getTime() - System.currentTimeMillis();
             }
         }
         return -1;
@@ -51,14 +51,14 @@ public class DataHandler {
     }
 
     public static void updateCooldown(UUID uuid, Cooldowns.CooldownType type, long lasts) {
-        cooldowns.putIfAbsent(uuid, new Cooldowns());
-        cooldowns.get(uuid).getCooldowns().removeIf(c -> c.getId().equalsIgnoreCase(type.getName()));
-        cooldowns.get(uuid).getCooldowns().add(new Cooldowns.Cooldown(type.getName(), System.currentTimeMillis() + lasts));
+        COOLDOWNs.putIfAbsent(uuid, new Cooldowns());
+        COOLDOWNs.get(uuid).getCooldowns().removeIf(c -> c.getId().equalsIgnoreCase(type.getName()));
+        COOLDOWNs.get(uuid).getCooldowns().add(new Cooldowns.Cooldown(type.getName(), System.currentTimeMillis() + lasts));
     }
 
     public static HashMap<UUID, Cooldowns> getCooldowns() {
         cleanCooldowns();
-        return cooldowns;
+        return COOLDOWNs;
     }
 
     public static void initFor(Player p) {

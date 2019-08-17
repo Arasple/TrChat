@@ -6,8 +6,6 @@ import io.izzel.taboolib.module.tellraw.TellrawJson;
 import me.arasple.mc.litechat.LCFiles;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-
 /**
  * @author Arasple
  * @date 2019/8/4 14:51
@@ -40,11 +38,12 @@ public class ChatFormats {
 
     public static void load(boolean notify) {
         long start = System.currentTimeMillis();
-        normal = new Format(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.NORMAL")));
-        global = new Format(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.GLOBAL")));
-        staff = new Format(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.STAFF")));
-        private_sender = new PrivateFormat(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.PRIVATE-SENDER")));
-        private_receiver = new PrivateFormat(Objects.requireNonNull(LCFiles.getSettings().getConfigurationSection("ChatFormats.PRIVATE-RECEIVER")));
+        normal = new Format(LCFiles.getSettings().getConfigurationSection("FORMAT-NORMAL"));
+        private_sender = new PrivateFormat(LCFiles.getSettings().getConfigurationSection("FORMAT-PRIVATE-SENDER"));
+        private_receiver = new PrivateFormat(LCFiles.getSettings().getConfigurationSection("FORMAT-PRIVATE-RECEIVER"));
+        global = new Format(LCFiles.getSettings().getConfigurationSection("FORMAT-GLOBAL"));
+        staff = new Format(LCFiles.getSettings().getConfigurationSection("FORMAT-STAFF"));
+
         if (notify) {
             TLocale.sendToConsole("PLUGIN.LOADED-CHAT-FORMATS", String.valueOf(System.currentTimeMillis() - start));
         }

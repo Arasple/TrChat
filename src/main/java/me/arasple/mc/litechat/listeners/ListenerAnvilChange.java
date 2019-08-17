@@ -32,7 +32,7 @@ public class ListenerAnvilChange implements Listener {
         if (meta == null || !meta.hasDisplayName()) {
             return;
         }
-        meta.setDisplayName(WordFilter.doFilter(meta.getDisplayName(), LCFiles.getSettings().getBoolean("ChatControl.filter.enable.anvil", true) && !p.hasPermission("litechat.bypass.filter")));
+        meta.setDisplayName(WordFilter.doFilter(meta.getDisplayName(), LCFiles.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.ANVIL", true) && !p.hasPermission("litechat.bypass.filter")));
         result.setItemMeta(meta);
         e.setResult(result);
     }

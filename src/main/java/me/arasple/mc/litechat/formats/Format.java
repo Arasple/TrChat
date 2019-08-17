@@ -27,6 +27,10 @@ public class Format {
     private MessagePart msgPart;
 
     public Format(ConfigurationSection section) {
+        if (section == null) {
+            return;
+        }
+
         parts = Lists.newArrayList();
 
         section.getKeys(false).forEach(x -> {
@@ -183,8 +187,8 @@ public class Format {
         @Override
         public TellrawJson toTellrawJson(Player p, String value) {
             value = MessageColors.processWithPermission(p, value);
-            List<String> keys = LCFiles.getSettings().getStringList("ChatControl.item-show.keys");
-            String format = LCFiles.getSettings().getStringColored("ChatControl.item-show.format", "§8[§3{0} §bx{1}§8]");
+            List<String> keys = LCFiles.getSettings().getStringList("CHAT-CONTROL.ITEM-SHOW.KEYS");
+            String format = LCFiles.getSettings().getStringColored("CHAT-CONTROL.ITEM-SHOW.FORMAT", "§8[§3{0} §bx{1}§8]");
             String key = null;
             String[] args;
             for (String k : keys) {
