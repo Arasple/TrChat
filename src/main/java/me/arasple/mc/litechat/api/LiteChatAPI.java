@@ -22,4 +22,8 @@ public class LiteChatAPI {
         return WordFilter.doFilter(string, !player.hasPermission("litechat.bypass.filter"));
     }
 
+    public static String filterString(Player player, String string, boolean execute) {
+        return execute ? filterString(player, string) : string;
+    }
+
 }

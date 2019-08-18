@@ -33,6 +33,13 @@ PLUGIN:
     - '&8[&3L&bChat&8] &3启动成功. 当前运行版本: &aVersion {0}'
   DISABLED:
     - '&8[&3L&bChat&8] &7感谢使用本插件, 您在论坛为本插件评分即是对作者最大的鼓励!'
+  CONFIG:
+    LATEST:
+      - '&8[&3L&bChat&8] &a你当前正在使用最新版配置格式...'
+    UPDATED:
+      - '&8[&3L&bChat&8] &4警告: &c你的配置版本过旧, 已自动替换为最新版配置. (旧版另存到 settings-backup.yml)'
+    RELOADED:
+      - '&8[&3L&bChat&8] &7载入配置文件成功...'
   COMMAND-TITLE: '&3「&8&m--------------------------------------------------&3」'
   UPDATE-NOTIFY:
     LATEST: '&8[&3L&bChat&8] &a你正在运行最新版的 &3LiteChat&a.'
@@ -84,12 +91,12 @@ COOLDOWNS:
 
 PRIVATE-MESSAGE:
   SPY:
-    ON:
+    'ON':
       - ==: ACTION
         text: '&c&l&k|&r &a&l开启监听私聊模式 &c&l&k|'
       - ==: SOUND
         sound: 'BLOCK_NOTE_BLOCK_PLING-1-0'
-    OFF:
+    'OFF':
       - ==: ACTION
         text: '&c&l&k|&r &c&l关闭监听私聊模式 &c&l&k|'
       - ==: SOUND

@@ -374,7 +374,7 @@ public abstract class LiteChatPlugin extends JavaPlugin {
                     // 检查依赖版本是否合理
                     // 如果插件使用不合理的版本则跳过下载防止死循环
                     // 并跳过插件加载
-                    if (requireVersion > NumberConversions.toInt(newVersion[0])) {
+                    if (requireVersion > NumberConversions.toDouble(newVersion[0])) {
                         Bukkit.getConsoleSender().sendMessage("§4[TabooLib] §c无效的依赖版本...");
                         initFailed = true;
                         return;

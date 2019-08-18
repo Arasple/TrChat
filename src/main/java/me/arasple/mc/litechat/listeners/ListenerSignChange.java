@@ -2,7 +2,7 @@ package me.arasple.mc.litechat.listeners;
 
 import io.izzel.taboolib.module.inject.TListener;
 import me.arasple.mc.litechat.LiteChat;
-import me.arasple.mc.litechat.filter.WordFilter;
+import me.arasple.mc.litechat.api.LiteChatAPI;
 import me.arasple.mc.litechat.utils.MessageColors;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +26,7 @@ public class ListenerSignChange implements Listener {
             if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.COLOR-CODE.SIGN")) {
                 line = MessageColors.processWithPermission(p, line);
             }
-            e.setLine(i, WordFilter.doFilter(line == null ? "" : line, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.SIGN", true) && !p.hasPermission("litechat.bypass.filter")));
+            e.setLine(i, line != null ? LiteChatAPI.filterString(p, line, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.SIGN", true)) : null);
         }
     }
 

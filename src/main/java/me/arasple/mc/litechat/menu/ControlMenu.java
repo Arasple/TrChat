@@ -6,9 +6,9 @@ import io.izzel.taboolib.module.inject.TSchedule;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.util.item.ItemBuilder;
 import io.izzel.taboolib.util.item.inventory.MenuBuilder;
+import io.izzel.taboolib.util.lite.Materials;
 import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.updater.UpdateChecker;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -48,9 +48,9 @@ public class ControlMenu {
                         "$       $",
                         "#########"
                 )
-                .put('#', new ItemBuilder(MaterialVersion.getGlassPane("CYAN")).damage(9).name("§8LiteChat - Plane").build())
-                .put('$', new ItemBuilder(MaterialVersion.getGlassPane("GREEN")).damage(13).name("§8LiteChat - Plane").build())
-                .put('I', new ItemBuilder(MaterialVersion.getSign()).name("§3§lLite§b§lChat §e§lInformation").lore("",
+                .put('#', new ItemBuilder(Materials.CYAN_STAINED_GLASS_PANE.parseMaterial()).name("§8LiteChat - Plane").build()) //9
+                .put('$', new ItemBuilder(Materials.GREEN_STAINED_GLASS_PANE.parseMaterial()).name("§8LiteChat - Plane").build()) //13
+                .put('I', new ItemBuilder(Materials.OAK_SIGN.parseMaterial()).name("§3§lLite§b§lChat §e§lInformation").lore("",
                         "§8▪ §7插件名称: §6LiteChat",
                         "§8▪ §7插件作者: §aArasple",
                         "§8▪ §7联系方式: §21197897763",
@@ -71,7 +71,7 @@ public class ControlMenu {
                         p.closeInventory();
                     }
                     if (slot == 'D') {
-                        boolean result = LiteChat.switchDebug();
+                        boolean result = LiteChat.toggleDebug();
                         TLocale.sendTo(p, "PLUGIN.DEBUG." + (result ? "ON" : "OFF"));
                         p.closeInventory();
                     }
@@ -80,7 +80,7 @@ public class ControlMenu {
     }
 
     public static void openFor(Player p) {
-        ItemBuilder updates = new ItemBuilder(MaterialVersion.getClock()).name("§e更新检测");
+        ItemBuilder updates = new ItemBuilder(Materials.CLOCK.parseMaterial()).name("§e更新检测");
         List<String> lores = Lists.newArrayList();
         lores.add("");
         lores.add("§7当前版本: §2" + UpdateChecker.getVersion());
@@ -101,34 +101,8 @@ public class ControlMenu {
         updates.lore(lores);
 
         menu.put('U', updates.build());
-        menu.put('D', new ItemBuilder(Material.STICK).shiny().name("§9调试模式").lore("", "§6调试模式开启后会向后台", "§6输出更多详细内容.", "", "§8▪ §7当前状态: " + (LiteChat.isDebug() ? "§aON √" : "§cOFF ×"), "", "§3点击切换调试开关状态").build());
+        menu.put('D', new ItemBuilder(Materials.STICK.parseMaterial()).shiny().name("§9调试模式").lore("", "§6调试模式开启后会向后台", "§6输出更多详细内容.", "", "§8▪ §7当前状态: " + (LiteChat.isDebug() ? "§aON √" : "§cOFF ×"), "", "§3点击切换调试开关状态").build());
         p.openInventory(menu.build());
-    }
-
-    public static class MaterialVersion {
-
-        private static boolean isNew = false;
-
-        static {
-            try {
-                Material.valueOf("STAINED_GLASS_PANE");
-            } catch (Exception e) {
-                isNew = true;
-            }
-        }
-
-        public static Material getGlassPane(String... color) {
-            return isNew ? Material.valueOf(color[0] + "_STAINED_GLASS_PANE") : Material.valueOf("STAINED_GLASS_PANE");
-        }
-
-        public static Material getSign() {
-            return isNew ? Material.valueOf("OAK_SIGN") : Material.valueOf("SIGN");
-        }
-
-        public static Material getClock() {
-            return isNew ? Material.valueOf("CLOCK") : Material.valueOf("WATCH");
-        }
-
     }
 
 }

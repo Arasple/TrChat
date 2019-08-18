@@ -5,6 +5,7 @@ import io.izzel.taboolib.module.command.base.BaseMainCommand;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.util.ArrayUtil;
 import me.arasple.mc.litechat.LiteChat;
+import me.arasple.mc.litechat.api.LiteChatAPI;
 import me.arasple.mc.litechat.channels.GlobalChat;
 import me.arasple.mc.litechat.filter.WordFilter;
 import me.arasple.mc.litechat.utils.BungeeUtils;
@@ -47,7 +48,7 @@ public class CommandGlobalShout extends BaseMainCommand {
                 return true;
             }
         }
-        GlobalChat.execute((Player) sender, WordFilter.doFilter(message, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true) && !sender.hasPermission("litechat.bypass.filter")));
+        GlobalChat.execute((Player) sender, LiteChatAPI.filterString((Player) sender, message, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true)));
         return true;
     }
 

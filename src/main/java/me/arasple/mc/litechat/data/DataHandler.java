@@ -1,7 +1,10 @@
 package me.arasple.mc.litechat.data;
 
+import io.izzel.taboolib.module.db.local.LocalPlayer;
+import io.izzel.taboolib.module.inject.TFunction;
 import io.izzel.taboolib.module.inject.TSchedule;
-import me.arasple.mc.litechat.LiteChat;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -11,34 +14,27 @@ import java.util.UUID;
  * @author Arasple
  * @date 2019/8/15 12:37
  */
-
+@TFunction(disable = "save")
 public class DataHandler {
 
-    private static HashMap<UUID, Cooldowns> COOLDOWNs = new HashMap<>();
+    private static HashMap<UUID, Cooldowns> COOLDOWNS = new HashMap<>();
 
-    @TSchedule(delay = 5)
-    public static void init() {
-        if (!LiteChat.getData().isSet("UserData")) {
-            LiteChat.getData().set("UserData", null);
-        } else {
-            LiteChat.getData().getConfigurationSection("UserData").getKeys(false).forEach(x -> {
-                UUID uuid = UUID.fromString(x);
-
-                if (LiteChat.getData().isSet("UserData." + x + ".COOLDOWNs")) {
-                    COOLDOWNs.put(uuid, (Cooldowns) new Cooldowns().read(LiteChat.getData().getString("UserData." + x + ".COOLDOWNs")));
-                }
-            });
-        }
+    @TSchedule(delay = 20, period = 20 * 10)
+    public static void save() {
+        COOLDOWNS.forEach((key, value) -> {
+            OfflinePlayer player = Bukkit.getOfflinePlayer(key);
+            LocalPlayer.get(player).set("LITECHAT.COOLDOWNS", value.write());
+        });
     }
 
     private static void cleanCooldowns() {
-        COOLDOWNs.forEach((key, value) -> value.getCooldowns().removeIf(c -> System.currentTimeMillis() > c.getTime()));
-        COOLDOWNs.entrySet().removeIf(x -> x.getValue().getCooldowns().stream().noneMatch(c -> System.currentTimeMillis() < c.getTime()));
+        COOLDOWNS.forEach((key, value) -> value.getCooldowns().removeIf(c -> System.currentTimeMillis() > c.getTime()));
+        COOLDOWNS.entrySet().removeIf(x -> x.getValue().getCooldowns().stream().noneMatch(c -> System.currentTimeMillis() < c.getTime()));
     }
 
     public static long getCooldownLeft(UUID uuid, Cooldowns.CooldownType type) {
-        COOLDOWNs.putIfAbsent(uuid, new Cooldowns());
-        for (Cooldowns.Cooldown COOLDOWN : COOLDOWNs.get(uuid).getCooldowns()) {
+        COOLDOWNS.putIfAbsent(uuid, new Cooldowns());
+        for (Cooldowns.Cooldown COOLDOWN : COOLDOWNS.get(uuid).getCooldowns()) {
             if (COOLDOWN.getId().equalsIgnoreCase(type.getName())) {
                 return COOLDOWN.getTime() - System.currentTimeMillis();
             }
@@ -51,19 +47,22 @@ public class DataHandler {
     }
 
     public static void updateCooldown(UUID uuid, Cooldowns.CooldownType type, long lasts) {
-        COOLDOWNs.putIfAbsent(uuid, new Cooldowns());
-        COOLDOWNs.get(uuid).getCooldowns().removeIf(c -> c.getId().equalsIgnoreCase(type.getName()));
-        COOLDOWNs.get(uuid).getCooldowns().add(new Cooldowns.Cooldown(type.getName(), System.currentTimeMillis() + lasts));
+        COOLDOWNS.putIfAbsent(uuid, new Cooldowns());
+        COOLDOWNS.get(uuid).getCooldowns().removeIf(c -> c.getId().equalsIgnoreCase(type.getName()));
+        COOLDOWNS.get(uuid).getCooldowns().add(new Cooldowns.Cooldown(type.getName(), System.currentTimeMillis() + lasts));
     }
 
     public static HashMap<UUID, Cooldowns> getCooldowns() {
         cleanCooldowns();
-        return COOLDOWNs;
+        return COOLDOWNS;
     }
 
     public static void initFor(Player p) {
-        if (!LiteChat.getData().isSet("UserData." + p.getUniqueId())) {
-            LiteChat.getData().set("UserData." + p.getUniqueId() + ".last-online", System.currentTimeMillis());
+        if (!LocalPlayer.get(p).isSet(String.valueOf(p.getUniqueId()))) {
+            LocalPlayer.get(p).set("LITECHAT.LAST-ONLINE", System.currentTimeMillis());
+        }
+        if (LocalPlayer.get(p).isSet("LITECHAT.COOLDOWNS")) {
+            COOLDOWNS.put(p.getUniqueId(), (Cooldowns) new Cooldowns().read(LocalPlayer.get(p).getString(p.getUniqueId() + ".COOLDOWNS")));
         }
     }
 

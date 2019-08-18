@@ -57,8 +57,11 @@ CHAT-CONTROL:
     # 替换的符号
     KEYS:
       - '%i'
-      - '!i'
-      - '%物品%'
+      - '%item'
+      - '%i%'
+      - '%item%'
+      - '[i]'
+      - '[item]'
   # 颜色代码
   # 权限节点: litechat.color.<CODE>
   # 例如玩家拥有 litechat.color.a, 则可使用 &a 颜色代码

@@ -1,12 +1,15 @@
 package me.arasple.mc.litechat.channels;
 
 import com.google.common.collect.Lists;
+import io.izzel.taboolib.internal.apache.lang3.ArrayUtils;
 import io.izzel.taboolib.module.command.lite.CommandBuilder;
 import io.izzel.taboolib.module.inject.TFunction;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.chat.ComponentSerializer;
+import io.izzel.taboolib.util.chat.TextComponent;
 import me.arasple.mc.litechat.LiteChat;
+import me.arasple.mc.litechat.api.events.LChatPrivateMessageEvent;
 import me.arasple.mc.litechat.formats.ChatFormats;
 import me.arasple.mc.litechat.utils.BungeeUtils;
 import org.bukkit.Bukkit;
@@ -45,19 +48,26 @@ public class PrivateChat {
     public static void execute(Player from, String to, String message) {
         TellrawJson sender = ChatFormats.getPrivateSender(from, to, message);
         TellrawJson receiver = ChatFormats.getPrivateReceiver(from, to, message);
-
         Player toPlayer = Bukkit.getPlayer(to);
 
-        if (toPlayer != null && toPlayer.isOnline()) {
-            receiver.send(Bukkit.getPlayer(to));
-            TLocale.sendTo(Bukkit.getPlayer(to), "PRIVATE-MESSAGE.RECEIVE", from.getName());
-        } else {
+        LChatPrivateMessageEvent event = new LChatPrivateMessageEvent(from, to, message, toPlayer == null || !toPlayer.isOnline());
+//        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return;
+        }
+
+        if (event.isCrossServer()) {
             String raw = ComponentSerializer.toString(receiver.getComponentsAll());
             BungeeUtils.sendBungeeData(from, "LiteChat", "SendRaw", to, raw);
+        } else {
+            receiver.send(Bukkit.getPlayer(to));
+            TLocale.sendTo(Bukkit.getPlayer(to), "PRIVATE-MESSAGE.RECEIVE", from.getName());
         }
 
         sender.send(from);
         sender.send(Bukkit.getConsoleSender());
+        sender.setComponents(ArrayUtils.insert(0, sender.getComponentsAll(), TextComponent.fromLegacyText("§8[§3监听§8] ")));
         spying.forEach(spy -> {
             Player spyPlayer = Bukkit.getPlayer(spy);
             if (spyPlayer != null && spyPlayer.isOnline()) {

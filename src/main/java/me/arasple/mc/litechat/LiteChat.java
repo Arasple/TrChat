@@ -2,16 +2,15 @@ package me.arasple.mc.litechat;
 
 import io.izzel.taboolib.module.config.TConfig;
 import io.izzel.taboolib.module.inject.TInject;
-import io.izzel.taboolib.module.inject.TSchedule;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.locale.logger.TLogger;
+import io.izzel.taboolib.util.Files;
 import me.arasple.mc.litechat.bstats.Metrics;
-import me.arasple.mc.litechat.data.DataHandler;
 import me.arasple.mc.litechat.filter.WordFilter;
 import me.arasple.mc.litechat.formats.ChatFormats;
 import me.arasple.mc.litechat.utils.BungeeUtils;
 
-import java.io.IOException;
+import java.io.File;
 
 /**
  * @author Arasple
@@ -23,24 +22,32 @@ public final class LiteChat extends LiteChatPlugin {
     private static LiteChat instance;
     @TInject("§3L§bChat")
     private static TLogger logger;
-    @TInject("settings.yml")
+    @TInject(value = "settings.yml")
     private static TConfig settings;
-    @TInject("data.yml")
-    private static TConfig data;
 
-    @Override
-    public void onLoading() {
-        TLocale.sendToConsole("PLUGIN.LOADED");
+    static void configUpdate() {
+        if (settings.getInt("GENERAL.CONFIG-VERSION", -1) < 1) {
+            Files.copy(settings.getFile(), new File(getInst().getDataFolder(), "settings-backup.yml"));
+            Files.deepDelete(settings.getFile());
+            settings = TConfig.create(getInst(), "settings.yml");
+            TLocale.sendToConsole("PLUGIN.CONFIG.UPDATED");
+        } else {
+            TLocale.sendToConsole("PLUGIN.CONFIG.LATEST");
+        }
+        settings.listener(LiteChat::configReload);
+        configReload();
+    }
 
-        settings.listener(() -> {
-            WordFilter.loadSettings();
-            ChatFormats.load(false);
-            LiteChat.getTLogger().fine("&7重新载入配置...");
-        });
+    static void configReload() {
+        WordFilter.loadSettings();
+        ChatFormats.load(false);
+        TLocale.sendToConsole("PLUGIN.CONFIG.RELOADED");
     }
 
     @Override
     public void onStarting() {
+        configUpdate();
+
         BungeeUtils.init(this);
         new Metrics(this);
 
@@ -48,46 +55,13 @@ public final class LiteChat extends LiteChatPlugin {
     }
 
     @Override
-    public void onActivated() {
-        ChatFormats.load(true);
+    public void onLoading() {
+        TLocale.sendToConsole("PLUGIN.LOADED");
     }
-
 
     @Override
     public void onStopping() {
-        purgeData();
-        save();
-
         TLocale.sendToConsole("PLUGIN.DISABLED");
-    }
-
-    @TSchedule(delay = 5)
-    private static void purgeData() {
-        long purgeDays = settings.getLong("GENERAL.PURGE", 30);
-        if (purgeDays != -1 && data.isSet("UserData")) {
-            int count = 0;
-            for (String u : data.getConfigurationSection("UserData").getKeys(false)) {
-                long lastOnline = data.getLong("UserData." + u + ".last-online", System.currentTimeMillis());
-                if (System.currentTimeMillis() - lastOnline > purgeDays * 24 * 60 * 60 * 1000) {
-                    data.set("UserData." + u, null);
-                    count++;
-                }
-            }
-            if (count > 0) {
-                TLocale.sendToConsole("GENERAL.PURGE", String.valueOf(count));
-            }
-        }
-    }
-
-    @TSchedule(delay = 20 * 10, period = 30 * 20)
-    public static void save() {
-        DataHandler.getCooldowns().forEach((key, value) -> data.set("UserData." + key + ".COOLDOWNs", value.write()));
-
-        try {
-            data.save(data.getFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static TLogger getTLogger() {
@@ -102,19 +76,13 @@ public final class LiteChat extends LiteChatPlugin {
         return settings;
     }
 
-    public static TConfig getData() {
-        return data;
-    }
-
     public static boolean isDebug() {
         return getSettings().getBoolean("GENERAL.DEBUG");
     }
 
-    public static boolean switchDebug() {
-        boolean state = getSettings().getBoolean("GENERAL.DEBUG");
-        state = !state;
-        getSettings().set("GENERAL.DEBUG", state);
-        return state;
+    public static boolean toggleDebug() {
+        getSettings().set("GENERAL.DEBUG", !getSettings().getBoolean("GENERAL.DEBUG"));
+        return getSettings().getBoolean("GENERAL.DEBUG");
     }
 
 }

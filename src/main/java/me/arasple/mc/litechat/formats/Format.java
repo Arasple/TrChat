@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.Strings;
+import io.izzel.taboolib.util.Variables;
 import io.izzel.taboolib.util.item.Items;
 import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.utils.MessageColors;
@@ -35,7 +36,7 @@ public class Format {
         section.getKeys(false).forEach(x -> {
             ConfigurationSection s = section.getConfigurationSection(x);
             if (s != null) {
-                if (!"message".equals(x)) {
+                if (!"message".equalsIgnoreCase(x)) {
                     parts.add(new ChatPart(s));
                 } else {
                     msgPart = new MessagePart(section.getString("default-color", "7"), s);
@@ -184,43 +185,32 @@ public class Format {
         }
 
         @Override
-        public TellrawJson toTellrawJson(Player p, String value) {
+        public TellrawJson toTellrawJson(Player player, String message) {
             if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.COLOR-CODE.CHAT")) {
-                value = MessageColors.processWithPermission(p, value);
+                message = MessageColors.processWithPermission(player, message);
             }
-            List<String> keys = LiteChat.getSettings().getStringList("CHAT-CONTROL.ITEM-SHOW.KEYS");
-            String format = LiteChat.getSettings().getStringColored("CHAT-CONTROL.ITEM-SHOW.FORMAT", "§8[§3{0} §bx{1}§8]");
-            String key = null;
-            String[] args;
-            for (String k : keys) {
-                if (value.contains(k)) {
-                    key = k;
-                    keys.remove(k);
-                    break;
-                }
+            // 取得配置信息
+            List<String> itemKeys = LiteChat.getSettings().getStringList("CHAT-CONTROL.ITEM-SHOW.KEYS");
+            String itemFormat = LiteChat.getSettings().getStringColored("CHAT-CONTROL.ITEM-SHOW.FORMAT", "§8[§3{0} §bx{1}§8]");
+            // 替换物品变量
+            for (String key : itemKeys) {
+                message = message.replace(key, "<ITEM>");
             }
-            for (String k : keys) {
-                value = value.replace(k, "");
-            }
-            if (key != null) {
-                while (value.lastIndexOf(key) != value.indexOf(key)) {
-                    value = value.replaceFirst(key, "");
-                }
-                args = value.split(key).length > 0 ? value.split(key) : new String[]{""};
-            } else {
-                args = new String[]{value};
-            }
-            TellrawJson tellraw = applyJson(p, TellrawJson.create().append(defaultColor + args[0]));
-            if (key != null) {
-                ItemStack i = p.getInventory().getItemInMainHand();
-                tellraw.append(Strings.replaceWithOrder(format, Items.getName(i), i.getType() != Material.AIR ? i.getAmount() : 1)).hoverItem(i);
 
-                if (args.length > 1) {
-                    tellraw.append(applyJson(p, TellrawJson.create().append(defaultColor + args[1])));
+            TellrawJson format = TellrawJson.create();
+            ItemStack item = player.getInventory().getItemInMainHand();
+
+            for (Variables.Variable variable : new Variables(message).find().getVariableList()) {
+                if (variable.isVariable()) {
+                    format.append(Strings.replaceWithOrder(itemFormat, Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1)).hoverItem(item);
+                } else {
+                    format.append(applyJson(player, TellrawJson.create().append(defaultColor + variable.getText())));
                 }
             }
-            return tellraw;
+
+            return format;
         }
+
     }
 
 }
