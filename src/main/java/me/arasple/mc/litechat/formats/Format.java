@@ -8,6 +8,8 @@ import io.izzel.taboolib.util.Variables;
 import io.izzel.taboolib.util.item.Items;
 import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.utils.MessageColors;
+import me.arasple.mc.litechat.utils.Players;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -189,6 +191,14 @@ public class Format {
             if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.COLOR-CODE.CHAT")) {
                 message = MessageColors.processWithPermission(player, message);
             }
+
+            // At玩家的格式
+            String mentionFormat = LiteChat.getSettings().getStringColored("CHAT-CONTROL.MENTIONS.FORMAT");
+            for (Player o : Bukkit.getOnlinePlayers()) {
+                String playerName = o.getName();
+                message = message.replaceAll("(?i)@" + playerName, "<AT:" + playerName + ">");
+            }
+
             // 取得配置信息
             List<String> itemKeys = LiteChat.getSettings().getStringList("CHAT-CONTROL.ITEM-SHOW.KEYS");
             String itemFormat = LiteChat.getSettings().getStringColored("CHAT-CONTROL.ITEM-SHOW.FORMAT", "§8[§3{0} §bx{1}§8]");
@@ -202,7 +212,18 @@ public class Format {
 
             for (Variables.Variable variable : new Variables(message).find().getVariableList()) {
                 if (variable.isVariable()) {
-                    format.append(Strings.replaceWithOrder(itemFormat, Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1)).hoverItem(item);
+                    String var = variable.getText();
+                    if ("ITEM".equals(var)) {
+                        format.append(Strings.replaceWithOrder(itemFormat, Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1)).hoverItem(item);
+                    } else if (var.startsWith("AT:")) {
+                        String atPlayer = var.substring(3);
+                        if (Players.isPlayerOnline(atPlayer)) {
+                            format.append(Strings.replaceWithOrder(mentionFormat, atPlayer));
+                            if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.MENTIONS.NOTIFY")) {
+                                TLocale.sendTo(Bukkit.getPlayer(atPlayer), "MENTIONS.NOTIFY", player.getName());
+                            }
+                        }
+                    }
                 } else {
                     format.append(applyJson(player, TellrawJson.create().append(defaultColor + variable.getText())));
                 }

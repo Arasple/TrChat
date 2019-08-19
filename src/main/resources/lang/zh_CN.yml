@@ -89,6 +89,13 @@ COOLDOWNS:
     - ==: SOUND
       sound: 'ENTITY_ITEM_BREAK-1-0'
 
+MENTIONS:
+  NOTIFY:
+    - ==: ACTION
+      text: '&d&l&k|&r &3&l玩家 &a&l{0} &3&l在聊天中At了你 &d&l&k|'
+    - ==: SOUND
+      sound: 'BLOCK_NOTE_BLOCK_PLING-1-0'
+
 PRIVATE-MESSAGE:
   SPY:
     'ON':
