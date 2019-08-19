@@ -61,7 +61,7 @@ public class DataHandler {
         if (!LocalPlayer.get(p).isSet(String.valueOf(p.getUniqueId()))) {
             LocalPlayer.get(p).set("LITECHAT.LAST-ONLINE", System.currentTimeMillis());
         }
-        if (LocalPlayer.get(p).isSet("LITECHAT.COOLDOWNS")) {
+        if (LocalPlayer.get(p).isSet("LITECHAT.COOLDOWNS") && LocalPlayer.get(p).get("LITECHAT.COOLDOWNS") != null) {
             COOLDOWNS.put(p.getUniqueId(), (Cooldowns) new Cooldowns().read(LocalPlayer.get(p).getString(p.getUniqueId() + ".COOLDOWNS")));
         }
     }
