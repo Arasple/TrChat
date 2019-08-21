@@ -15,7 +15,7 @@ import java.io.File;
 /**
  * @author Arasple
  */
-@LiteChatPlugin.Version(5.03)
+@LiteChatPlugin.Version(5.04)
 public final class LiteChat extends LiteChatPlugin {
 
     @TInject
