@@ -26,11 +26,22 @@ public final class LiteChat extends LiteChatPlugin {
     private static TConfig settings;
 
     static void configUpdate() {
-        if (settings.getInt("GENERAL.CONFIG-VERSION", -1) < 1) {
+        int cfgVer = settings.getInt("GENERAL.CONFIG-VERSION", -1);
+        if (cfgVer < 1) {
             Files.copy(settings.getFile(), new File(getInst().getDataFolder(), "settings-backup.yml"));
             Files.deepDelete(settings.getFile());
             settings = TConfig.create(getInst(), "settings.yml");
             TLocale.sendToConsole("PLUGIN.CONFIG.UPDATED");
+        } else if (cfgVer != 2) {
+            switch (cfgVer) {
+                case 1:
+                    settings.set("CHAT-CONTROL.COLOR-CODE.BOOK", true);
+                    settings.set("GENERAL.CONFIG-VERSION", 2);
+                    settings.saveToFile();
+                    break;
+                default:
+                    break;
+            }
         } else {
             TLocale.sendToConsole("PLUGIN.CONFIG.LATEST");
         }

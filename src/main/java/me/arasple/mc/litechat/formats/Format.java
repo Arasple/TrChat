@@ -41,7 +41,7 @@ public class Format {
                 if (!"message".equalsIgnoreCase(x)) {
                     parts.add(new ChatPart(s));
                 } else {
-                    msgPart = new MessagePart(section.getString("default-color", "7"), s);
+                    msgPart = new MessagePart(section.getString("message.default-color", "7"), s);
                 }
             } else {
                 LiteChat.getTLogger().warn("&7加载聊天格式中发生错误. 请检查此节点: " + x);
@@ -214,11 +214,11 @@ public class Format {
                 if (variable.isVariable()) {
                     String var = variable.getText();
                     if ("ITEM".equals(var)) {
-                        format.append(Strings.replaceWithOrder(itemFormat, Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1)).hoverItem(item);
+                        format.append(Strings.replaceWithOrder(itemFormat, Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defaultColor).hoverItem(item);
                     } else if (var.startsWith("AT:")) {
                         String atPlayer = var.substring(3);
                         if (Players.isPlayerOnline(atPlayer)) {
-                            format.append(Strings.replaceWithOrder(mentionFormat, atPlayer));
+                            format.append(Strings.replaceWithOrder(mentionFormat, atPlayer) + defaultColor);
                             if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.MENTIONS.NOTIFY")) {
                                 TLocale.sendTo(Bukkit.getPlayer(atPlayer), "MENTIONS.NOTIFY", player.getName());
                             }

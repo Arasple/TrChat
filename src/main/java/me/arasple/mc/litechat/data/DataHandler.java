@@ -3,6 +3,7 @@ package me.arasple.mc.litechat.data;
 import io.izzel.taboolib.module.db.local.LocalPlayer;
 import io.izzel.taboolib.module.inject.TFunction;
 import io.izzel.taboolib.module.inject.TSchedule;
+import me.arasple.mc.litechat.LiteChat;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -62,7 +63,12 @@ public class DataHandler {
             LocalPlayer.get(p).set("LITECHAT.LAST-ONLINE", System.currentTimeMillis());
         }
         if (LocalPlayer.get(p).isSet("LITECHAT.COOLDOWNS") && LocalPlayer.get(p).get("LITECHAT.COOLDOWNS") != null) {
-            COOLDOWNS.put(p.getUniqueId(), (Cooldowns) new Cooldowns().read(LocalPlayer.get(p).getString(p.getUniqueId() + ".COOLDOWNS")));
+            try {
+                COOLDOWNS.put(p.getUniqueId(), (Cooldowns) new Cooldowns().read(LocalPlayer.get(p).getString(p.getUniqueId() + ".COOLDOWNS")));
+            } catch (Exception e) {
+                LiteChat.getTLogger().error("发生一个异常. 请通知作者! (暂时不影响正常使用)");
+                e.printStackTrace();
+            }
         }
     }
 
