@@ -18,7 +18,7 @@ public class WordFilter {
     private static final Set<Integer> PUNCTUATIONS_SET = new HashSet<>();
     private static char SIGN;
 
-    @TSchedule(delay = 3)
+    @TSchedule
     public static void loadSettings() {
         SIGN = LiteChat.getSettings().getString("CHAT-CONTROL.FILTER.REPLACEMENT", "*").charAt(0);
         addSensitiveWord(LiteChat.getSettings().getStringList("CHAT-CONTROL.FILTER.SENSITIVE-WORDS"));

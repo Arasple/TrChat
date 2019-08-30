@@ -10,6 +10,7 @@ Version 1.3X:
       - 修复玩家数据报错
       - 修复API事件不被call
       - 自动更新配置文件选项
+      - 聊天内容的发包将改为 CHAT 类型
       - 依赖更至 Taboolib v5.04
 
 Version 1.3:

@@ -22,7 +22,7 @@ public class ControlMenu {
 
     private static MenuBuilder menu;
 
-    @TSchedule(delay = 10)
+    @TSchedule
     public static void init() {
         CommandBuilder.create("litechat", LiteChat.getInst())
                 .permission("litechat.admin")
