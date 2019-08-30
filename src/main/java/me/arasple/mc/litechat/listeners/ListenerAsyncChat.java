@@ -15,7 +15,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.util.Vector;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,17 +48,12 @@ public class ListenerAsyncChat implements Listener {
             return;
         }
 
-        if (e.getMessage().toLowerCase().startsWith("kb")) {
-            Vector vector = p.getLocation().getDirection();
-            vector = vector.multiply(-Double.parseDouble(e.getMessage().split(" ")[1]));
-            p.setVelocity(vector);
-        }
-
         TellrawJson format = ChatFormats.getNormal(p, WordFilter.doFilter(message, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true) && !p.hasPermission("litechat.bypass.filter")));
         List<Player> players = Bukkit.getOnlinePlayers().stream().filter(x -> !(LiteChat.getSettings().getBoolean("GENERAL.PER-WORLD-CHAT") && x.getWorld() == p.getWorld())).collect(Collectors.toList());
 
         players.forEach(format::send);
         format.send(Bukkit.getConsoleSender());
+
         if (LiteChat.isDebug()) {
             LiteChat.getTLogger().fine("[Chat-Event]: Process Took " + (System.currentTimeMillis() - start) + " Ms");
         }

@@ -17,9 +17,8 @@ public class GlobalChat {
         TellrawJson format = ChatFormats.getGlobal(from, message);
 
         LChatGlobalShoutEvent event = new LChatGlobalShoutEvent(from, message, format);
-//        Bukkit.getPluginManager().callEvent(event);
 
-        if (!event.isCancelled()) {
+        if (event.callEvent()) {
             String raw = ComponentSerializer.toString(event.getFormat().getComponentsAll());
             BungeeUtils.sendBungeeData(from, "LiteChat", "BroadcastRaw", raw);
         }

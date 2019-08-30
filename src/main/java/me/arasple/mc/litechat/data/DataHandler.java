@@ -64,7 +64,7 @@ public class DataHandler {
         }
         if (LocalPlayer.get(p).isSet("LITECHAT.COOLDOWNS") && LocalPlayer.get(p).get("LITECHAT.COOLDOWNS") != null) {
             try {
-                COOLDOWNS.put(p.getUniqueId(), (Cooldowns) new Cooldowns().read(LocalPlayer.get(p).getString(p.getUniqueId() + ".COOLDOWNS")));
+                COOLDOWNS.put(p.getUniqueId(), (Cooldowns) new Cooldowns().read(LocalPlayer.get(p).getString("LITECHAT.COOLDOWNS")));
             } catch (Exception e) {
                 LiteChat.getTLogger().error("发生一个异常. 请通知作者! (暂时不影响正常使用)");
                 e.printStackTrace();

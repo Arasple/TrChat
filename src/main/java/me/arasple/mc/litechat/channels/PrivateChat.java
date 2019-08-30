@@ -51,9 +51,7 @@ public class PrivateChat {
         Player toPlayer = Bukkit.getPlayer(to);
 
         LChatPrivateMessageEvent event = new LChatPrivateMessageEvent(from, to, message, toPlayer == null || !toPlayer.isOnline());
-//        Bukkit.getPluginManager().callEvent(event);
-
-        if (event.isCancelled()) {
+        if (!event.callEvent()) {
             return;
         }
 
