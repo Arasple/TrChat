@@ -61,7 +61,6 @@ public final class LiteChat extends LiteChatPlugin {
 
         BungeeUtils.init(this);
         new Metrics(this);
-
         TLocale.sendToConsole("PLUGIN.ENABLED", getDescription().getVersion());
     }
 

@@ -211,21 +211,20 @@ public class Format {
             ItemStack item = player.getInventory().getItemInMainHand();
 
             for (Variables.Variable variable : new Variables(message).find().getVariableList()) {
-                if (variable.isVariable()) {
-                    String var = variable.getText();
-                    if ("ITEM".equals(var)) {
-                        format.append(Strings.replaceWithOrder(itemFormat, Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defaultColor).hoverItem(item);
-                    } else if (var.startsWith("AT:")) {
-                        String atPlayer = var.substring(3);
-                        if (Players.isPlayerOnline(atPlayer)) {
-                            format.append(Strings.replaceWithOrder(mentionFormat, atPlayer) + defaultColor);
-                            if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.MENTIONS.NOTIFY")) {
-                                TLocale.sendTo(Bukkit.getPlayer(atPlayer), "MENTIONS.NOTIFY", player.getName());
-                            }
+                String var = variable.getText();
+
+                if ("ITEM".equals(var)) {
+                    format.append(Strings.replaceWithOrder(itemFormat, Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defaultColor).hoverItem(item);
+                } else if (var.startsWith("AT:")) {
+                    String atPlayer = var.substring(3);
+                    if (Players.isPlayerOnline(atPlayer)) {
+                        format.append(Strings.replaceWithOrder(mentionFormat, atPlayer) + defaultColor);
+                        if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.MENTIONS.NOTIFY")) {
+                            TLocale.sendTo(Bukkit.getPlayer(atPlayer), "MENTIONS.NOTIFY", player.getName());
                         }
                     }
                 } else {
-                    format.append(applyJson(player, TellrawJson.create().append(defaultColor + variable.getText())));
+                    format.append(applyJson(player, TellrawJson.create().append(defaultColor + Strings.replaceWithOrder("{0}" + variable.getText() + "{1}", variable.isVariable() ? "<" : "", variable.isVariable() ? ">" : ""))));
                 }
             }
 
