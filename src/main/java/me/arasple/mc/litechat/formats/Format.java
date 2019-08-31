@@ -7,6 +7,8 @@ import io.izzel.taboolib.util.Strings;
 import io.izzel.taboolib.util.Variables;
 import io.izzel.taboolib.util.item.Items;
 import me.arasple.mc.litechat.LiteChat;
+import me.arasple.mc.litechat.data.Cooldowns;
+import me.arasple.mc.litechat.data.DataHandler;
 import me.arasple.mc.litechat.utils.MessageColors;
 import me.arasple.mc.litechat.utils.Players;
 import org.bukkit.Bukkit;
@@ -186,17 +188,20 @@ public class Format {
             this.defaultColor = ChatColor.getByChar(defaultColor);
         }
 
-        @Override
-        public TellrawJson toTellrawJson(Player player, String message) {
+        public TellrawJson toTellrawJson(Player player, String message, boolean... values) {
             if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.COLOR-CODE.CHAT")) {
                 message = MessageColors.processWithPermission(player, message);
             }
 
-            // At玩家的格式
+            boolean mentionEnable = DataHandler.getCooldownLeft(player.getUniqueId(), Cooldowns.CooldownType.MENTION) <= 0 && values.length > 0 && values[0];
             String mentionFormat = LiteChat.getSettings().getStringColored("CHAT-CONTROL.MENTIONS.FORMAT");
-            for (Player o : Bukkit.getOnlinePlayers()) {
-                String playerName = o.getName();
-                message = message.replaceAll("(?i)@" + playerName, "<AT:" + playerName + ">");
+
+            if (mentionEnable) {
+                // At玩家的格式
+                for (Player o : Bukkit.getOnlinePlayers()) {
+                    String playerName = o.getName();
+                    message = message.replaceAll("(?i)@" + playerName, "<AT:" + playerName + ">");
+                }
             }
 
             // 取得配置信息
@@ -214,8 +219,8 @@ public class Format {
                 String var = variable.getText();
 
                 if ("ITEM".equals(var)) {
-                    format.append(Strings.replaceWithOrder(itemFormat, Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defaultColor).hoverItem(item);
-                } else if (var.startsWith("AT:")) {
+                    format.append(DataHandler.getItemshowCache().computeIfAbsent(item, i -> TellrawJson.create().append(Strings.replaceWithOrder(itemFormat, Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defaultColor).hoverItem(item)));
+                } else if (mentionEnable && var.startsWith("AT:")) {
                     String atPlayer = var.substring(3);
                     if (Players.isPlayerOnline(atPlayer)) {
                         format.append(Strings.replaceWithOrder(mentionFormat, atPlayer) + defaultColor);
@@ -223,6 +228,7 @@ public class Format {
                             TLocale.sendTo(Bukkit.getPlayer(atPlayer), "MENTIONS.NOTIFY", player.getName());
                         }
                     }
+                    DataHandler.updateCooldown(player.getUniqueId(), Cooldowns.CooldownType.MENTION, LiteChat.getSettings().getLong("CHAT-CONTROL.MENTIONS.COOLDOWNS"));
                 } else {
                     format.append(applyJson(player, TellrawJson.create().append(defaultColor + Strings.replaceWithOrder("{0}" + variable.getText() + "{1}", variable.isVariable() ? "<" : "", variable.isVariable() ? ">" : ""))));
                 }

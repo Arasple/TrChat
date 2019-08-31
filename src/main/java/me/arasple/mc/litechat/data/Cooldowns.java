@@ -68,7 +68,8 @@ public class Cooldowns implements TSerializable {
          */
 
         CHAT("Chat"),
-        ITEM_SHOW("ItemShow");
+        ITEM_SHOW("ItemShow"),
+        MENTION("Mention");
 
         private String name;
 

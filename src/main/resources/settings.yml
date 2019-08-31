@@ -80,14 +80,10 @@ CHAT-CONTROL:
     ENABLE: true
     # 显示格式
     FORMAT: '&r &a@&2{0}&r '
+    # At冷却
+    COOLDOWNS: 30
     # 是否提示被At玩家 (语言文件中改)
     NOTIFY: true
-  # 展示命令
-  COMMAND-SHOW:
-    # 是否启用
-    ENABLE: true
-    # 显示格式
-    FORMAT: '&r &9/{0}&r '
 
 ######################################################################
 # 聊天格式配置

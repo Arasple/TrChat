@@ -3,10 +3,12 @@ package me.arasple.mc.litechat.data;
 import io.izzel.taboolib.module.db.local.LocalPlayer;
 import io.izzel.taboolib.module.inject.TFunction;
 import io.izzel.taboolib.module.inject.TSchedule;
+import io.izzel.taboolib.module.tellraw.TellrawJson;
 import me.arasple.mc.litechat.LiteChat;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -18,6 +20,7 @@ import java.util.UUID;
 @TFunction(disable = "save")
 public class DataHandler {
 
+    private static HashMap<ItemStack, TellrawJson> ITEMSHOW_CACHE = new HashMap<>();
     private static HashMap<UUID, Cooldowns> COOLDOWNS = new HashMap<>();
 
     @TSchedule(delay = 20, period = 20 * 10)
@@ -56,6 +59,10 @@ public class DataHandler {
     public static HashMap<UUID, Cooldowns> getCooldowns() {
         cleanCooldowns();
         return COOLDOWNS;
+    }
+
+    public static HashMap<ItemStack, TellrawJson> getItemshowCache() {
+        return ITEMSHOW_CACHE;
     }
 
     public static void initFor(Player p) {
