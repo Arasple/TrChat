@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.izzel.taboolib.internal.apache.lang3.math.NumberUtils;
 import io.izzel.taboolib.module.inject.TListener;
-import io.izzel.taboolib.module.inject.TSchedule;
 import io.izzel.taboolib.module.locale.TLocale;
 import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.LiteChatPlugin;
@@ -15,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -27,95 +27,102 @@ import java.util.List;
  * @author Arasple
  * @date 2019/8/15 22:35
  */
-@TListener
+@TListener(
+        condition = "isEnable",
+        register = "init"
+)
 public class UpdateChecker implements Listener {
 
-    private static final String URL = "https://api.github.com/repos/Arasple/LiteChat/releases/latest";
-    private static double version = -1;
-    private static double latestVersion = -1;
-    private static boolean hasNewerVersion = false;
-    private static String[] updatesMessages;
-    private static boolean[] noticed = new boolean[]{false, false};
+    private String url;
+    private double version;
+    private LatestInfo latest;
+
+    public void init() {
+        url = "https://api.github.com/repos/Arasple/" + LiteChat.getPlugin().getDescription().getName() + "/releases/latest";
+        version = NumberUtils.toDouble(LiteChat.getPlugin().getDescription().getVersion().split("-")[0], -1);
+        latest = new LatestInfo(false, -1, new String[]{});
+
+        if (version == -1) {
+            LiteChat.getTLogger().error("检测版本号时发生异常... 关闭服务器!");
+            Bukkit.shutdown();
+        }
+
+        startTask();
+    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
 
-        if (!noticed[1] && hasNewerVersion && p.hasPermission("litechat.admin")) {
-            notifyUpdates(p);
-            noticed[1] = true;
+        if (latest.hasLatest && !latest.noticed[1] && p.hasPermission("litechat.admin")) {
+            latest.notifyUpdates(version, p);
+            latest.noticed[1] = true;
         }
     }
 
-    @TSchedule(delay = 20, period = 30 * 60 * 20, async = true)
-    public static void onCheck() {
-        if (!LiteChat.getSettings().getBoolean("GENERAL.CHECK-UPDATE")) {
-            return;
-        }
+    public boolean isEnable() {
+        return LiteChat.getSettings().getBoolean("GENERAL.CHECK-UPDATE", true);
+    }
 
-        if (version == -1) {
-            version = NumberUtils.toDouble(LiteChat.getInst().getDescription().getVersion().split("-")[0], -1);
-            if (version == -1) {
-                LiteChat.getTLogger().error("检测版本号时发生异常... 关闭服务器!");
-                Bukkit.shutdown();
-            }
-        }
-
-        String read;
-        try (InputStream inputStream = new URL(URL).openStream(); BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
-            read = LiteChatPlugin.readFully(bufferedInputStream, StandardCharsets.UTF_8);
-
-            JsonObject json = (JsonObject) new JsonParser().parse(read);
-            double latestVersion = json.get("tag_name").getAsDouble();
-            if (latestVersion > version) {
-                if (hasNewerVersion) {
-                    if (UpdateChecker.latestVersion != -1 && latestVersion > UpdateChecker.latestVersion) {
-                        UpdateChecker.latestVersion = latestVersion;
-                        updatesMessages = json.get("body").getAsString().replace("\r", "").split("\n");
-                        noticed[1] = false;
-                        notifyUpdates(Bukkit.getConsoleSender());
-                    }
-                } else {
-                    hasNewerVersion = true;
-                    noticed[0] = true;
-                    UpdateChecker.latestVersion = latestVersion;
-                    updatesMessages = json.get("body").getAsString().replace("\r", "").split("\n");
-                    notifyUpdates(Bukkit.getConsoleSender());
+    private void startTask() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // 若已抓取到新版本信息或插件关闭了更新检测, 则取消
+                if (latest.hasLatest || !isEnable()) {
+                    cancel();
+                    return;
                 }
-            } else if (!noticed[0]) {
-                noticed[0] = true;
-                TLocale.sendToConsole(version > latestVersion ? "PLUGIN.UPDATE-NOTIFY.DEV" : "PLUGIN.UPDATE-NOTIFY.LATEST");
+
+                String read;
+                try (InputStream inputStream = new URL(url).openStream(); BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
+                    read = LiteChatPlugin.readFully(bufferedInputStream, StandardCharsets.UTF_8);
+                    JsonObject json = (JsonObject) new JsonParser().parse(read);
+                    double latestVersion = json.get("tag_name").getAsDouble();
+
+                    // 如果抓取到新版本
+                    if (latestVersion > version) {
+                        latest.hasLatest = true;
+                        latest.newVersion = latestVersion;
+                        latest.noticed[0] = true;
+                        latest.updates = json.get("body").getAsString().replace("\r", "").split("\n");
+                        latest.notifyUpdates(version, Bukkit.getConsoleSender());
+                    } else if (!latest.noticed[0]) {
+                        latest.noticed[0] = true;
+                        TLocale.sendToConsole(version > latestVersion ? "PLUGIN.UPDATE-NOTIFY.DEV" : "PLUGIN.UPDATE-NOTIFY.LATEST");
+                    }
+                } catch (Exception t) {
+                    if (LiteChat.isDebug()) {
+                        LiteChat.getTLogger().warn("[Updater-Checker]: ");
+                        t.printStackTrace();
+                    }
+                }
             }
-        } catch (Exception t) {
-            if (LiteChat.isDebug()) {
-                LiteChat.getTLogger().warn("[Updater-Checker]: ");
-                t.printStackTrace();
-            }
+        }.runTaskTimerAsynchronously(LiteChat.getPlugin(), 20 * 5, 20 * 60 * 30);
+    }
+
+    private static class LatestInfo {
+
+        private boolean hasLatest;
+        private double newVersion;
+        private String[] updates;
+        private boolean[] noticed;
+
+        public LatestInfo(boolean hasLatest, double newVersion, String[] updates) {
+            this.hasLatest = hasLatest;
+            this.newVersion = newVersion;
+            this.updates = updates;
+            this.noticed = new boolean[]{false, false};
+        }
+
+        public void notifyUpdates(double version, CommandSender sender) {
+            List<String> messages = Lists.newArrayList();
+            messages.addAll(TLocale.asStringList("PLUGIN.UPDATE-NOTIFY.HEADER", String.valueOf(version), String.valueOf(newVersion)));
+            messages.addAll(Arrays.asList(updates));
+            messages.addAll(TLocale.asStringList("PLUGIN.UPDATE-NOTIFY.FOOTER"));
+            messages.forEach(sender::sendMessage);
         }
     }
 
-    public static void notifyUpdates(CommandSender sender) {
-        List<String> messages = Lists.newArrayList();
-        messages.addAll(TLocale.asStringList("PLUGIN.UPDATE-NOTIFY.HEADER", String.valueOf(version), String.valueOf(latestVersion)));
-        messages.addAll(Arrays.asList(getUpdatesMessages()));
-        messages.addAll(TLocale.asStringList("PLUGIN.UPDATE-NOTIFY.FOOTER"));
-        messages.forEach(sender::sendMessage);
-    }
-
-    public static boolean hasNewerVersion() {
-        return hasNewerVersion;
-    }
-
-    public static double getVersion() {
-        return version;
-    }
-
-    public static double getLatestVersion() {
-        return latestVersion;
-    }
-
-    public static String[] getUpdatesMessages() {
-        return updatesMessages != null ? updatesMessages : new String[]{};
-    }
 
 }

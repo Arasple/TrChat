@@ -3,6 +3,8 @@ package me.arasple.mc.litechat.bstats;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.izzel.taboolib.module.inject.TSchedule;
+import me.arasple.mc.litechat.LiteChat;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -48,6 +50,11 @@ public class Metrics {
     private static boolean logResponseStatusText;
     private static String serverUUID;
     private final Plugin plugin;
+
+    @TSchedule
+    public static void init() {
+        new Metrics(LiteChat.getPlugin());
+    }
 
     public Metrics(Plugin plugin) {
         if (plugin == null) {

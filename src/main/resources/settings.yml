@@ -28,6 +28,8 @@ GENERAL:
 CHAT-CONTROL:
   # 每两次聊天需要等待的间隔时间
   COOLDOWN: 2.0
+  # 聊天内容的字符限制
+  LENGTH-LIMIT: 100
   # 敏感词过滤器
   FILTER:
     # 是否启用该功能

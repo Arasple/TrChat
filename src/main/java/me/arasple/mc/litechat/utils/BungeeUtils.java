@@ -1,5 +1,6 @@
 package me.arasple.mc.litechat.utils;
 
+import io.izzel.taboolib.module.inject.TSchedule;
 import io.izzel.taboolib.module.locale.TLocale;
 import me.arasple.mc.litechat.LiteChat;
 import org.bukkit.Bukkit;
@@ -28,7 +29,9 @@ public class BungeeUtils implements PluginMessageListener {
         return ENABLE;
     }
 
-    public static void init(Plugin plugin) {
+    @TSchedule
+    public static void init() {
+        Plugin plugin = LiteChat.getPlugin();
         if (!getMessenger().isOutgoingChannelRegistered(plugin, "BungeeCord")) {
             getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
             getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", new BungeeUtils());
@@ -63,7 +66,7 @@ public class BungeeUtils implements PluginMessageListener {
                 e.printStackTrace();
             }
         }
-        player.sendPluginMessage(LiteChat.getInst(), "BungeeCord", byteArray.toByteArray());
+        player.sendPluginMessage(LiteChat.getPlugin(), "BungeeCord", byteArray.toByteArray());
     }
 
 }

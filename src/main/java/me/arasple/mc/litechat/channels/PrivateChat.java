@@ -11,7 +11,6 @@ import io.izzel.taboolib.util.chat.TextComponent;
 import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.api.events.LChatPrivateMessageEvent;
 import me.arasple.mc.litechat.formats.ChatFormats;
-import me.arasple.mc.litechat.tellraw.Tellraws;
 import me.arasple.mc.litechat.utils.BungeeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -28,7 +27,7 @@ public class PrivateChat {
 
     public static void init() {
         CommandBuilder
-                .create("spy", LiteChat.getInst())
+                .create("spy", LiteChat.getPlugin())
                 .permission("litechat.admin")
                 .permissionMessage(TLocale.asString("GENERAL.NO-PERMISSION"))
                 .tab((sender, args) -> null)
@@ -55,22 +54,21 @@ public class PrivateChat {
         if (!event.callEvent()) {
             return;
         }
-
         if (event.isCrossServer()) {
             String raw = ComponentSerializer.toString(receiver.getComponentsAll());
             BungeeUtils.sendBungeeData(from, "LiteChat", "SendRaw", to, raw);
         } else {
-            Tellraws.getBaseTellraws().sendTellraw(receiver, Bukkit.getPlayer(to));
+            receiver.send(Bukkit.getPlayer(to));
             TLocale.sendTo(Bukkit.getPlayer(to), "PRIVATE-MESSAGE.RECEIVE", from.getName());
         }
 
-        Tellraws.getBaseTellraws().sendTellraw(sender, from);
+        sender.send(from);
         sender.send(Bukkit.getConsoleSender());
         sender.setComponents(ArrayUtils.insert(0, sender.getComponentsAll(), TextComponent.fromLegacyText("§8[§3监听§8] ")));
         spying.forEach(spy -> {
             Player spyPlayer = Bukkit.getPlayer(spy);
             if (spyPlayer != null && spyPlayer.isOnline()) {
-                Tellraws.getBaseTellraws().sendTellraw(sender, spyPlayer);
+                sender.send(spyPlayer);
             }
         });
     }

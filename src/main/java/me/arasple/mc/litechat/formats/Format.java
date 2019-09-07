@@ -37,16 +37,16 @@ public class Format {
 
         parts = Lists.newArrayList();
 
-        section.getKeys(false).forEach(x -> {
-            ConfigurationSection s = section.getConfigurationSection(x);
-            if (s != null) {
-                if (!"message".equalsIgnoreCase(x)) {
-                    parts.add(new ChatPart(s));
+        section.getKeys(false).forEach(key -> {
+            ConfigurationSection part = section.getConfigurationSection(key);
+            if (part != null) {
+                if (!"message".equalsIgnoreCase(key)) {
+                    parts.add(new ChatPart(part));
                 } else {
-                    msgPart = new MessagePart(section.getString("message.default-color", "7"), s);
+                    msgPart = new MessagePart(section.getString("message.default-color", "7"), part);
                 }
             } else {
-                LiteChat.getTLogger().warn("&7加载聊天格式中发生错误. 请检查此节点: " + x);
+                LiteChat.getTLogger().warn("&7加载聊天格式中发生错误. 请检查此节点: " + key);
             }
         });
     }
@@ -54,7 +54,7 @@ public class Format {
     public TellrawJson replaceFor(Player player, String message) {
         TellrawJson result = TellrawJson.create();
         parts.forEach(p -> result.append(p.toTellrawJson(player, player.getName())));
-        result.append(msgPart.toTellrawJson(player, message));
+        result.append(msgPart.toTellrawJson(player, message, false));
         return result;
     }
 
@@ -78,13 +78,7 @@ public class Format {
         private String url;
 
         public ChatPart(ConfigurationSection section) {
-            this(
-                    section.getString(".text", null),
-                    section.getString(".hover", null),
-                    section.getString(".command", null),
-                    section.getString(".suggest", null),
-                    section.getString(".url", null)
-            );
+            this(section.getString(".text", null), section.getString(".hover", null), section.getString(".command", null), section.getString(".suggest", null), section.getString(".url", null));
         }
 
         public ChatPart(String text, String hover, String command, String suggest, String url) {
@@ -184,7 +178,6 @@ public class Format {
 
         public MessagePart(String defaultColor, ConfigurationSection section) {
             super(section);
-
             this.defaultColor = ChatColor.getByChar(defaultColor);
         }
 

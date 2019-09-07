@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.chat.ComponentSerializer;
 import me.arasple.mc.litechat.formats.ChatFormats;
-import me.arasple.mc.litechat.tellraw.Tellraws;
 import me.arasple.mc.litechat.utils.BungeeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -25,7 +24,7 @@ public class StaffChat {
                 String raw = ComponentSerializer.toString(format.getComponentsAll());
                 BungeeUtils.sendBungeeData(player, "LiteChat", "SendRawPerm", raw, "litechat.staff");
             } else {
-                Bukkit.getOnlinePlayers().stream().filter(p -> p.hasPermission("litechat.staff")).forEach(p -> Tellraws.getBaseTellraws().sendTellraw(format, p));
+                Bukkit.getOnlinePlayers().stream().filter(p -> p.hasPermission("litechat.staff")).forEach(format::send);
             }
         }
     }

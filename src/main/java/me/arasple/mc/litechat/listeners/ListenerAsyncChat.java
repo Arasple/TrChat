@@ -9,7 +9,6 @@ import me.arasple.mc.litechat.data.Cooldowns;
 import me.arasple.mc.litechat.data.DataHandler;
 import me.arasple.mc.litechat.filter.WordFilter;
 import me.arasple.mc.litechat.formats.ChatFormats;
-import me.arasple.mc.litechat.tellraw.Tellraws;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -40,7 +39,7 @@ public class ListenerAsyncChat implements Listener {
             return;
         }
 
-        if (!processCooldown(p, message) || !processFilter(p, message)) {
+        if (!processLimit(p, message) || !processFilter(p, message)) {
             e.setCancelled(true);
             return;
         }
@@ -52,7 +51,7 @@ public class ListenerAsyncChat implements Listener {
         TellrawJson format = ChatFormats.getNormal(p, WordFilter.doFilter(message, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true) && !p.hasPermission("litechat.bypass.filter")));
         List<Player> players = Bukkit.getOnlinePlayers().stream().filter(x -> !(LiteChat.getSettings().getBoolean("GENERAL.PER-WORLD-CHAT") && x.getWorld() == p.getWorld())).collect(Collectors.toList());
 
-        players.forEach(player -> Tellraws.getBaseTellraws().sendTellraw(format, player));
+        players.forEach(format::send);
         format.send(Bukkit.getConsoleSender());
 
         if (LiteChat.isDebug()) {
@@ -73,7 +72,14 @@ public class ListenerAsyncChat implements Listener {
         return true;
     }
 
-    private boolean processCooldown(Player p, String message) {
+    private boolean processLimit(Player p, String message) {
+        if (!p.hasPermission("litechat.bypass.*")) {
+            long limit = LiteChat.getSettings().getLong("CHAT-CONTROL.LENGTH-LIMIT", 100);
+            if (message.length() > limit) {
+                TLocale.sendTo(p, "GENERAL.TOO-LONG", message.length(), limit);
+                return false;
+            }
+        }
         if (!p.hasPermission("litechat.bypass.itemcd")) {
             long itemShowCooldown = DataHandler.getCooldownLeft(p.getUniqueId(), Cooldowns.CooldownType.ITEM_SHOW);
             if (LiteChat.getSettings().getStringList("CHAT-CONTROL.ITEM-SHOW.KEYS").stream().anyMatch(message::contains)) {

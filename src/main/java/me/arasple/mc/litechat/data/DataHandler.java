@@ -62,6 +62,9 @@ public class DataHandler {
     }
 
     public static HashMap<ItemStack, TellrawJson> getItemshowCache() {
+        if (LiteChat.isDebug()) {
+            LiteChat.getTLogger().info("Iitemshow caches: " + ITEMSHOW_CACHE.size());
+        }
         return ITEMSHOW_CACHE;
     }
 
