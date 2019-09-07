@@ -14,7 +14,7 @@ GENERAL:
   # 自动是否检测更新并通知管理员, 推荐开启
   CHECK-UPDATE: true
   # 配置文件版本号 (不要更改)
-  CONFIG-VERSION: 2
+  CONFIG-VERSION: 3
   # 禁用此插件功能的世界
   DISABLED-WORLDS: [PUT_YOUR_WORLD_NAME_HERE, ANOTHER_WORLD]
   # 每个世界独立频道

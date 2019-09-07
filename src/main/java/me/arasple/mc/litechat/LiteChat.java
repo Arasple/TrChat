@@ -1,6 +1,7 @@
 package me.arasple.mc.litechat;
 
 import io.izzel.taboolib.module.config.TConfig;
+import io.izzel.taboolib.module.db.local.LocalPlayer;
 import io.izzel.taboolib.module.inject.TInject;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.locale.logger.TLogger;
@@ -32,16 +33,18 @@ public final class LiteChat extends LiteChatPlugin {
             Files.deepDelete(settings.getFile());
             settings = TConfig.create(getInst(), "settings.yml");
             TLocale.sendToConsole("PLUGIN.CONFIG.UPDATED");
-        } else if (cfgVer != 2) {
+        } else if (cfgVer != 3) {
             switch (cfgVer) {
                 case 1:
                     settings.set("CHAT-CONTROL.COLOR-CODE.BOOK", true);
-                    settings.set("GENERAL.CONFIG-VERSION", 2);
                     settings.saveToFile();
                     break;
+                case 2:
+                    Files.deepDelete(LocalPlayer.getFolder());
                 default:
                     break;
             }
+            settings.set("GENERAL.CONFIG-VERSION", 3);
         } else {
             TLocale.sendToConsole("PLUGIN.CONFIG.LATEST");
         }
