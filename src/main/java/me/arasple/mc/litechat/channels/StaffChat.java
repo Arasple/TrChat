@@ -3,6 +3,7 @@ package me.arasple.mc.litechat.channels;
 import com.google.common.collect.Lists;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.chat.ComponentSerializer;
+import me.arasple.mc.litechat.bstats.Metrics;
 import me.arasple.mc.litechat.formats.ChatFormats;
 import me.arasple.mc.litechat.utils.BungeeUtils;
 import org.bukkit.Bukkit;
@@ -26,6 +27,7 @@ public class StaffChat {
             } else {
                 Bukkit.getOnlinePlayers().stream().filter(p -> p.hasPermission("litechat.staff")).forEach(format::send);
             }
+            Metrics.increaseChatTimes();
         }
     }
 

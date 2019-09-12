@@ -37,7 +37,7 @@ public class ListenerAnvilChange implements Listener {
         if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.COLOR-CODE.ANVIL")) {
             name = MessageColors.processWithPermission(p, name);
         }
-        meta.setDisplayName(LiteChatAPI.filterString(p, name, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.ANVIL", true)));
+        meta.setDisplayName(LiteChatAPI.filterString(p, name, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.ANVIL", true)).getFiltered());
         result.setItemMeta(meta);
         e.setResult(result);
     }

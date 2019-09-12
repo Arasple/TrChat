@@ -51,6 +51,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="PlaceholderAPI" level="application" />
     <orderEntry type="library" name="Maven: org.spigotmc:spigot:1.14.4-R0.1-SNAPSHOT" level="project" />
   </component>
 </module>

@@ -7,7 +7,7 @@ import io.izzel.taboolib.util.ArrayUtil;
 import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.api.LiteChatAPI;
 import me.arasple.mc.litechat.channels.GlobalChat;
-import me.arasple.mc.litechat.filter.WordFilter;
+import me.arasple.mc.litechat.filter.FilteredObject;
 import me.arasple.mc.litechat.utils.BungeeUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -42,13 +42,16 @@ public class CommandGlobalShout extends BaseMainCommand {
             return true;
         }
         String message = ArrayUtil.arrayJoin(args, 0);
+        FilteredObject filteredObject = LiteChatAPI.filterString((Player) sender, message, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true));
+
         if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.BLOCK-SENDING.ENABLE", true)) {
-            if (WordFilter.getContainsAmount(message) >= LiteChat.getSettings().getInt("CHAT-CONTROL.FILTER.BLOCK-SENDING.MIN", 5)) {
+            if (filteredObject.getSensitiveWords() >= LiteChat.getSettings().getInt("CHAT-CONTROL.FILTER.BLOCK-SENDING.MIN", 5)) {
                 TLocale.sendTo(sender, "GENERAL.NO-SWEAR");
                 return true;
             }
         }
-        GlobalChat.execute((Player) sender, LiteChatAPI.filterString((Player) sender, message, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true)));
+
+        GlobalChat.execute((Player) sender, filteredObject.getFiltered());
         return true;
     }
 

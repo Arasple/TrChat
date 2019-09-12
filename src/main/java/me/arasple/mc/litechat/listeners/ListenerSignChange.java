@@ -26,7 +26,7 @@ public class ListenerSignChange implements Listener {
             if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.COLOR-CODE.SIGN")) {
                 line = MessageColors.processWithPermission(p, line);
             }
-            e.setLine(i, line != null ? LiteChatAPI.filterString(p, line, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.SIGN", true)) : null);
+            e.setLine(i, line != null ? LiteChatAPI.filterString(p, line, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.SIGN", true)).getFiltered() : null);
         }
     }
 

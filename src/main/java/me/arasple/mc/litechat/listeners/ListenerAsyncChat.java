@@ -4,9 +4,11 @@ import io.izzel.taboolib.module.inject.TListener;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import me.arasple.mc.litechat.LiteChat;
+import me.arasple.mc.litechat.bstats.Metrics;
 import me.arasple.mc.litechat.channels.StaffChat;
 import me.arasple.mc.litechat.data.Cooldowns;
 import me.arasple.mc.litechat.data.DataHandler;
+import me.arasple.mc.litechat.filter.FilteredObject;
 import me.arasple.mc.litechat.filter.WordFilter;
 import me.arasple.mc.litechat.formats.ChatFormats;
 import org.bukkit.Bukkit;
@@ -32,6 +34,7 @@ public class ListenerAsyncChat implements Listener {
 
         Player p = e.getPlayer();
         String message = e.getMessage();
+        FilteredObject filteredObject = WordFilter.doFilter(message, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true) && !p.hasPermission("litechat.bypass.filter"));
         e.setCancelled(true);
 
         if (LiteChat.getSettings().getStringList("GENERAL.DISABLED-WORLDS").contains(p.getWorld().getName())) {
@@ -39,7 +42,7 @@ public class ListenerAsyncChat implements Listener {
             return;
         }
 
-        if (!processLimit(p, message) || !processFilter(p, message)) {
+        if (!processLimit(p, message) || !processFilter(p, filteredObject)) {
             e.setCancelled(true);
             return;
         }
@@ -48,7 +51,7 @@ public class ListenerAsyncChat implements Listener {
             return;
         }
 
-        TellrawJson format = ChatFormats.getNormal(p, WordFilter.doFilter(message, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true) && !p.hasPermission("litechat.bypass.filter")));
+        TellrawJson format = ChatFormats.getNormal(p, filteredObject.getFiltered());
         List<Player> players = Bukkit.getOnlinePlayers().stream().filter(x -> !(LiteChat.getSettings().getBoolean("GENERAL.PER-WORLD-CHAT") && x.getWorld() == p.getWorld())).collect(Collectors.toList());
 
         players.forEach(format::send);
@@ -57,14 +60,16 @@ public class ListenerAsyncChat implements Listener {
         if (LiteChat.isDebug()) {
             LiteChat.getTLogger().fine("[Chat-Event]: Process Took " + (System.currentTimeMillis() - start) + " Ms");
         }
+
+        Metrics.increaseChatTimes();
     }
 
-    private boolean processFilter(Player p, String message) {
+    private boolean processFilter(Player p, FilteredObject filteredObject) {
         if (p.hasPermission("litechat.bypass.filter")) {
             return true;
         }
         if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.BLOCK-SENDING.ENABLE", true)) {
-            if (WordFilter.getContainsAmount(message) >= LiteChat.getSettings().getInt("CHAT-CONTROL.FILTER.BLOCK-SENDING.MIN", 5)) {
+            if (filteredObject.getSensitiveWords() >= LiteChat.getSettings().getInt("CHAT-CONTROL.FILTER.BLOCK-SENDING.MIN", 5)) {
                 TLocale.sendTo(p, "GENERAL.NO-SWEAR");
                 return false;
             }

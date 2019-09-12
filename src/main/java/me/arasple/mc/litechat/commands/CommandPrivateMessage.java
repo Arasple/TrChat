@@ -5,8 +5,9 @@ import io.izzel.taboolib.module.command.base.BaseMainCommand;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.util.ArrayUtil;
 import me.arasple.mc.litechat.LiteChat;
+import me.arasple.mc.litechat.api.LiteChatAPI;
 import me.arasple.mc.litechat.channels.PrivateChat;
-import me.arasple.mc.litechat.filter.WordFilter;
+import me.arasple.mc.litechat.filter.FilteredObject;
 import me.arasple.mc.litechat.utils.Players;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -45,15 +46,16 @@ public class CommandPrivateMessage extends BaseMainCommand {
             return true;
         }
         String privateMessage = ArrayUtil.arrayJoin(args, 1);
+        FilteredObject filteredObject = LiteChatAPI.filterString((Player) sender, privateMessage, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true) && !sender.hasPermission("litechat.bypass.filter"));
 
         if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.BLOCK-SENDING.ENABLE", true)) {
-            if (WordFilter.getContainsAmount(privateMessage) >= LiteChat.getSettings().getInt("CHAT-CONTROL.FILTER.BLOCK-SENDING.MIN", 5)) {
+            if (filteredObject.getSensitiveWords() >= LiteChat.getSettings().getInt("CHAT-CONTROL.FILTER.BLOCK-SENDING.MIN", 5)) {
                 TLocale.sendTo(sender, "GENERAL.NO-SWEAR");
                 return true;
             }
         }
 
-        PrivateChat.execute((Player) sender, Players.getPlayerFullName(args[0]), WordFilter.doFilter(privateMessage, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true) && !sender.hasPermission("litechat.bypass.filter")));
+        PrivateChat.execute((Player) sender, Players.getPlayerFullName(args[0]), filteredObject.getFiltered());
         return true;
     }
 

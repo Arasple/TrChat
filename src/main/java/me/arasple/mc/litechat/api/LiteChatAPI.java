@@ -1,5 +1,6 @@
 package me.arasple.mc.litechat.api;
 
+import me.arasple.mc.litechat.filter.FilteredObject;
 import me.arasple.mc.litechat.filter.WordFilter;
 import org.bukkit.entity.Player;
 
@@ -18,12 +19,12 @@ public class LiteChatAPI {
      * @param string 字符串
      * @return 过滤后的
      */
-    public static String filterString(Player player, String string) {
+    public static FilteredObject filterString(Player player, String string) {
         return WordFilter.doFilter(string, !player.hasPermission("litechat.bypass.filter"));
     }
 
-    public static String filterString(Player player, String string, boolean execute) {
-        return execute ? filterString(player, string) : string;
+    public static FilteredObject filterString(Player player, String string, boolean execute) {
+        return execute ? filterString(player, string) : new FilteredObject(string, 0);
     }
 
 }

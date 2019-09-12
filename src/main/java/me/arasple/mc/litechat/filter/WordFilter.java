@@ -2,6 +2,7 @@ package me.arasple.mc.litechat.filter;
 
 import io.izzel.taboolib.module.inject.TSchedule;
 import me.arasple.mc.litechat.LiteChat;
+import me.arasple.mc.litechat.bstats.Metrics;
 
 import java.util.*;
 
@@ -64,19 +65,16 @@ public class WordFilter {
         }
     }
 
-    public static String doFilter(String src) {
+    public static FilteredObject doFilter(String src) {
         return doFilter(src, true);
     }
 
-    public static String doFilter(String src, boolean filter) {
+    public static FilteredObject doFilter(String src, boolean filter) {
         if (!filter) {
-            return src;
+            return new FilteredObject(src, 0);
         }
         char[] chs = src.toCharArray();
-        int length = chs.length;
-        int curr;
-        int curry;
-        int k;
+        int length = chs.length, curr, curry, k, count = 0;
         WordNode node;
         for (int i = 0; i < length; i++) {
             curr = charConvert(chs[i]);
@@ -117,61 +115,14 @@ public class WordFilter {
                 for (k = 0; k <= markNum; k++) {
                     if (!PUNCTUATIONS_SET.contains(charConvert(chs[k + i]))) {
                         chs[k + i] = SIGN;
+                        count++;
                     }
                 }
                 i = i + markNum;
             }
         }
-        return new String(chs);
-
-    }
-
-    public static int getContainsAmount(final String src) {
-        char[] chs = src.toCharArray();
-        int length = chs.length;
-        int curr;
-        int curry;
-        int k;
-        WordNode node;
-        int count = 0;
-        for (int i = 0; i < length; i++) {
-            curr = charConvert(chs[i]);
-            if (!SET.contains(curr)) {
-                continue;
-            }
-            node = NODES.get(curr);
-            if (node == null) {
-                continue;
-            }
-            boolean couldMark = false;
-            if (node.isLast()) {
-                couldMark = true;
-            }
-
-            k = i;
-            curry = curr;
-            for (; ++k < length; ) {
-                int temp = charConvert(chs[k]);
-                if (temp == curry) {
-                    continue;
-                }
-                if (PUNCTUATIONS_SET.contains(temp)) {
-                    continue;
-                }
-                node = node.querySub(temp);
-                if (node == null) {
-                    break;
-                }
-                if (node.isLast()) {
-                    couldMark = true;
-                }
-                curry = temp;
-            }
-            if (couldMark) {
-                count++;
-            }
-        }
-        return count;
+        Metrics.increaseFilteredWords(count);
+        return new FilteredObject(new String(chs), count);
     }
 
     private static int charConvert(char src) {

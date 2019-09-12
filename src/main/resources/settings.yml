@@ -19,8 +19,6 @@ GENERAL:
   DISABLED-WORLDS: [PUT_YOUR_WORLD_NAME_HERE, ANOTHER_WORLD]
   # 每个世界独立频道
   PER-WORLD-CHAT: false
-  # 不活跃数据清理 (单位：天), 设置为-1禁用
-  PURGE: 30
   # 是否启用调试功能
   DEBUG: false
 
