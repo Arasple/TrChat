@@ -3,31 +3,25 @@ package me.arasple.mc.litechat.api.events;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
 
 /**
  * @author Arasple
  * @date 2019/8/17 23:08
  */
-public class LChatGlobalShoutEvent extends Event implements Cancellable {
+public class GlobalShoutEvent extends PlayerEvent implements Cancellable {
 
-    private Player player;
+    private static HandlerList handlers = new HandlerList();
     private String message;
     private TellrawJson format;
+    private boolean canceled;
 
-    public LChatGlobalShoutEvent(Player player, String message, TellrawJson format) {
-        this.player = player;
+    public GlobalShoutEvent(Player player, String message, TellrawJson format) {
+        super(player);
         this.message = message;
         this.format = format;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
+        this.canceled = false;
     }
 
     public String getMessage() {
@@ -48,17 +42,17 @@ public class LChatGlobalShoutEvent extends Event implements Cancellable {
 
     @Override
     public boolean isCancelled() {
-        return false;
+        return canceled;
     }
 
     @Override
     public void setCancelled(boolean cancel) {
-
+        canceled = cancel;
     }
 
     @Override
     public HandlerList getHandlers() {
-        return null;
+        return handlers;
     }
 
 }

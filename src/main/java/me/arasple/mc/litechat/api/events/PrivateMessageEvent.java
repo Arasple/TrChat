@@ -2,33 +2,27 @@ package me.arasple.mc.litechat.api.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerEvent;
 
 /**
  * @author Arasple
  * @date 2019/8/17 23:08
  */
-public class LChatPrivateMessageEvent extends Event implements Cancellable {
+public class PrivateMessageEvent extends PlayerEvent implements Cancellable {
 
-    private Player from;
+    private static HandlerList handlers = new HandlerList();
     private String to;
     private String message;
     private boolean crossServer;
+    private boolean canceled;
 
-    public LChatPrivateMessageEvent(Player from, String to, String message, boolean crossServer) {
-        this.from = from;
+    public PrivateMessageEvent(Player from, String to, String message, boolean crossServer) {
+        super(from);
         this.to = to;
         this.message = message;
         this.crossServer = crossServer;
-    }
-
-    public Player getFrom() {
-        return from;
-    }
-
-    public void setFrom(Player from) {
-        this.from = from;
+        this.canceled = false;
     }
 
     public String getTo() {
@@ -57,17 +51,17 @@ public class LChatPrivateMessageEvent extends Event implements Cancellable {
 
     @Override
     public boolean isCancelled() {
-        return false;
+        return canceled;
     }
 
     @Override
-    public void setCancelled(boolean cancel) {
-
+    public void setCancelled(boolean b) {
+        canceled = b;
     }
 
     @Override
     public HandlerList getHandlers() {
-        return null;
+        return handlers;
     }
 
 }

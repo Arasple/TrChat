@@ -1,6 +1,7 @@
 package me.arasple.mc.litechat.formats;
 
 import com.google.common.collect.Lists;
+import io.izzel.taboolib.internal.apache.lang3.math.NumberUtils;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.Strings;
@@ -202,16 +203,21 @@ public class Format {
             String itemFormat = LiteChat.getSettings().getStringColored("CHAT-CONTROL.ITEM-SHOW.FORMAT", "§8[§3{0} §bx{1}§8]");
             // 替换物品变量
             for (String key : itemKeys) {
-                message = message.replace(key, "<ITEM>");
+                for (int i = 0; i < 9; i++) {
+                    message = message.replace(key + "-" + i, "<ITEM:" + i + ">");
+                }
+
+                message = message.replace(key, "<ITEM:" + player.getInventory().getHeldItemSlot() + ">");
             }
 
             TellrawJson format = TellrawJson.create();
-            ItemStack item = player.getInventory().getItemInMainHand();
 
             for (Variables.Variable variable : new Variables(message).find().getVariableList()) {
                 String var = variable.getText();
 
-                if ("ITEM".equals(var)) {
+                if (var.startsWith("ITEM")) {
+                    int slot = NumberUtils.toInt(var.split(":")[1], player.getInventory().getHeldItemSlot());
+                    ItemStack item = player.getInventory().getItem(slot) != null ? player.getInventory().getItem(slot) : new ItemStack(Material.AIR);
                     format.append(DataHandler.getItemshowCache().computeIfAbsent(item, i -> TellrawJson.create().append(Strings.replaceWithOrder(itemFormat, Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defaultColor).hoverItem(item)));
                 } else if (mentionEnable && var.startsWith("AT:")) {
                     String atPlayer = var.substring(3);

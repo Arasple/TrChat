@@ -27,6 +27,11 @@ Version 1.3X:
       - 增加了更多 bStats 自定义统计项
       - 修复了私聊中过滤器绕过权限无效的问题
       - 改进了过滤器
+    1.37:
+      - 修复了 GlobalShoutEvent & PrivateMessageEvent
+      - 修复了 私聊报错问题
+      - 现在可以通过 "[展示物品变量]-[槽位]" 来展示背包指定位置的物品
+      - 👆 例如 %i-0 ~ %i-9
 
 Version 1.3:
   Date: 2019.8.18

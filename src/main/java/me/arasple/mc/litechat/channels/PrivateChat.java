@@ -9,7 +9,7 @@ import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.chat.ComponentSerializer;
 import io.izzel.taboolib.util.chat.TextComponent;
 import me.arasple.mc.litechat.LiteChat;
-import me.arasple.mc.litechat.api.events.LChatPrivateMessageEvent;
+import me.arasple.mc.litechat.api.events.PrivateMessageEvent;
 import me.arasple.mc.litechat.formats.ChatFormats;
 import me.arasple.mc.litechat.utils.BungeeUtils;
 import org.bukkit.Bukkit;
@@ -48,9 +48,10 @@ public class PrivateChat {
     public static void execute(Player from, String to, String message) {
         TellrawJson sender = ChatFormats.getPrivateSender(from, to, message);
         TellrawJson receiver = ChatFormats.getPrivateReceiver(from, to, message);
-        Player toPlayer = Bukkit.getPlayer(to);
+        Player toPlayer = Bukkit.getPlayerExact(to);
 
-        LChatPrivateMessageEvent event = new LChatPrivateMessageEvent(from, to, message, toPlayer == null || !toPlayer.isOnline());
+        PrivateMessageEvent event = new PrivateMessageEvent(from, to, message, toPlayer == null || !toPlayer.isOnline());
+
         if (!event.callEvent()) {
             return;
         }
