@@ -1,6 +1,7 @@
 package me.arasple.mc.litechat.api.events;
 
 import io.izzel.taboolib.module.tellraw.TellrawJson;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
@@ -38,6 +39,11 @@ public class GlobalShoutEvent extends PlayerEvent implements Cancellable {
 
     public void setFormat(TellrawJson format) {
         this.format = format;
+    }
+
+    public boolean call() {
+        Bukkit.getPluginManager().callEvent(this);
+        return !((Cancellable) this).isCancelled();
     }
 
     @Override

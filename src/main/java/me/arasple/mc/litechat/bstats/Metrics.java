@@ -6,8 +6,7 @@ import me.arasple.mc.litechat.LiteChat;
 import java.text.DecimalFormat;
 
 /**
- * bStats collects some data for plugin authors.
- * Check out https://bStats.org/ to learn more about bStats!
+ * @author Arasple
  */
 public class Metrics {
 

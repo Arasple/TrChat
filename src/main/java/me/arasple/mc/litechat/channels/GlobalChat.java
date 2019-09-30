@@ -19,7 +19,7 @@ public class GlobalChat {
 
         GlobalShoutEvent event = new GlobalShoutEvent(from, message, format);
 
-        if (event.callEvent()) {
+        if (event.call()) {
             String raw = ComponentSerializer.toString(event.getFormat().getComponentsAll());
             BungeeUtils.sendBungeeData(from, "LiteChat", "BroadcastRaw", raw);
             Metrics.increaseChatTimes();

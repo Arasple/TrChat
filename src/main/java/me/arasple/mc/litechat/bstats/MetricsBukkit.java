@@ -27,7 +27,7 @@ import java.util.zip.GZIPOutputStream;
  * Check out https://bStats.org/ to learn more about bStats!
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class MetricsBukkit {
+class MetricsBukkit {
 
     static {
         // You can use the property to disable the check in your test environment

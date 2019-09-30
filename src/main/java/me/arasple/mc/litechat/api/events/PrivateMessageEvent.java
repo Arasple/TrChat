@@ -1,5 +1,6 @@
 package me.arasple.mc.litechat.api.events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
@@ -47,6 +48,11 @@ public class PrivateMessageEvent extends PlayerEvent implements Cancellable {
 
     public void setCrossServer(boolean crossServer) {
         this.crossServer = crossServer;
+    }
+
+    public boolean call() {
+        Bukkit.getPluginManager().callEvent(this);
+        return !((Cancellable) this).isCancelled();
     }
 
     @Override

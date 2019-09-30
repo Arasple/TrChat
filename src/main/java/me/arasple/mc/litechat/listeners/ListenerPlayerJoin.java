@@ -1,7 +1,9 @@
 package me.arasple.mc.litechat.listeners;
 
 import io.izzel.taboolib.module.inject.TListener;
+import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.data.DataHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -19,7 +21,7 @@ public class ListenerPlayerJoin implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
 
-        DataHandler.initFor(p);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(LiteChat.getPlugin(), () -> DataHandler.initFor(p), 3);
     }
 
 }

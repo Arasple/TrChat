@@ -52,7 +52,7 @@ public class PrivateChat {
 
         PrivateMessageEvent event = new PrivateMessageEvent(from, to, message, toPlayer == null || !toPlayer.isOnline());
 
-        if (!event.callEvent()) {
+        if (!event.call()) {
             return;
         }
         if (event.isCrossServer()) {
