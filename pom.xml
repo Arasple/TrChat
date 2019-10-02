@@ -6,7 +6,7 @@
 
     <groupId>me.arasple.mc</groupId>
     <artifactId>LiteChat</artifactId>
-    <version>1.38</version>
+    <version>1.39</version>
     <packaging>jar</packaging>
 
     <name>LiteChat</name>

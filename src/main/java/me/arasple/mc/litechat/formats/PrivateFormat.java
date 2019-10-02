@@ -17,7 +17,7 @@ public class PrivateFormat extends Format {
     public TellrawJson replaceFor(Player sender, String receiver, String message) {
         TellrawJson result = TellrawJson.create();
         getParts().forEach(p -> result.append(p.toTellrawJson(sender, receiver)));
-        result.append(getMsgPart().toTellrawJson(sender, message, true));
+        result.append(getMsgPart().toTellrawJson(sender, message, false));
         return result;
     }
 

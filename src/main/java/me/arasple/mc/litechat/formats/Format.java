@@ -55,7 +55,7 @@ public class Format {
     public TellrawJson replaceFor(Player player, String message) {
         TellrawJson result = TellrawJson.create();
         parts.forEach(p -> result.append(p.toTellrawJson(player, player.getName())));
-        result.append(msgPart.toTellrawJson(player, message, false));
+        result.append(msgPart.toTellrawJson(player, message, true));
         return result;
     }
 
