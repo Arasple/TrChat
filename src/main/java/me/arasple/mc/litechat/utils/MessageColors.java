@@ -1,5 +1,6 @@
 package me.arasple.mc.litechat.utils;
 
+import com.google.common.collect.Lists;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -18,20 +19,19 @@ public class MessageColors {
 
     private static final String COLOR_PERMISSION_NODE = "litechat.color";
 
-    public static List<String> replaceWithPermission(Player player, List<String> message) {
-        for (int i = 0; i < message.size(); i++) {
-            message.set(i, replaceWithPermission(player, message.get(i)));
-        }
-        return message;
+    public static List<String> replaceWithPermission(Player player, List<String> strings) {
+        List<String> result = Lists.newArrayList();
+        strings.forEach(s -> result.add(replaceWithPermission(player, s)));
+        return result;
     }
 
-    public static String replaceWithPermission(Player player, String message) {
+    public static String replaceWithPermission(Player player, String string) {
         for (Character code : COLOR_CODES) {
             if (player.hasPermission(COLOR_PERMISSION_NODE + "." + code)) {
-                message = message.replace("&" + code, "§" + code);
+                string = string.replace("&" + code, "§" + code);
             }
         }
-        return message;
+        return string;
     }
 
 }
