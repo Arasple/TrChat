@@ -5,7 +5,7 @@ import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.chat.ComponentSerializer;
 import me.arasple.mc.litechat.bstats.Metrics;
 import me.arasple.mc.litechat.formats.ChatFormats;
-import me.arasple.mc.litechat.utils.BungeeUtils;
+import me.arasple.mc.litechat.utils.Bungees;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -18,20 +18,20 @@ import java.util.UUID;
  */
 public class StaffChat {
 
+    private static List<UUID> staffs = Lists.newArrayList();
+
     public static void execute(Player player, String message) {
         if (player.hasPermission("litechat.staff")) {
             TellrawJson format = ChatFormats.getStaff(player, message);
-            if (BungeeUtils.isEnable()) {
+            if (Bungees.isEnable()) {
                 String raw = ComponentSerializer.toString(format.getComponentsAll());
-                BungeeUtils.sendBungeeData(player, "LiteChat", "SendRawPerm", raw, "litechat.staff");
+                Bungees.sendBungeeData(player, "LiteChat", "SendRawPerm", raw, "litechat.staff");
             } else {
                 Bukkit.getOnlinePlayers().stream().filter(p -> p.hasPermission("litechat.staff")).forEach(format::send);
             }
-            Metrics.increaseChatTimes();
+            Metrics.increase(0);
         }
     }
-
-    private static List<UUID> staffs = Lists.newArrayList();
 
     public static boolean switchStaff(Player player) {
         if (!staffs.contains(player.getUniqueId())) {

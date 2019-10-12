@@ -10,8 +10,9 @@ import io.izzel.taboolib.util.chat.ComponentSerializer;
 import io.izzel.taboolib.util.chat.TextComponent;
 import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.api.events.PrivateMessageEvent;
+import me.arasple.mc.litechat.bstats.Metrics;
 import me.arasple.mc.litechat.formats.ChatFormats;
-import me.arasple.mc.litechat.utils.BungeeUtils;
+import me.arasple.mc.litechat.utils.Bungees;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -24,6 +25,8 @@ import java.util.UUID;
  */
 @TFunction(enable = "init")
 public class PrivateChat {
+
+    private static List<UUID> spying = Lists.newArrayList();
 
     public static void init() {
         CommandBuilder
@@ -57,7 +60,7 @@ public class PrivateChat {
         }
         if (event.isCrossServer()) {
             String raw = ComponentSerializer.toString(receiver.getComponentsAll());
-            BungeeUtils.sendBungeeData(from, "LiteChat", "SendRaw", to, raw);
+            Bungees.sendBungeeData(from, "LiteChat", "SendRaw", to, raw);
         } else {
             receiver.send(Bukkit.getPlayer(to));
             TLocale.sendTo(Bukkit.getPlayer(to), "PRIVATE-MESSAGE.RECEIVE", from.getName());
@@ -72,9 +75,9 @@ public class PrivateChat {
                 sender.send(spyPlayer);
             }
         });
-    }
 
-    private static List<UUID> spying = Lists.newArrayList();
+        Metrics.increase(0);
+    }
 
     public static boolean switchSpy(Player player) {
         if (!spying.contains(player.getUniqueId())) {

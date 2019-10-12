@@ -4,12 +4,14 @@ import io.izzel.taboolib.module.inject.TListener;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import me.arasple.mc.litechat.LiteChat;
+import me.arasple.mc.litechat.LiteChatFiles;
+import me.arasple.mc.litechat.api.LiteChatAPI;
 import me.arasple.mc.litechat.bstats.Metrics;
 import me.arasple.mc.litechat.channels.StaffChat;
 import me.arasple.mc.litechat.data.Cooldowns;
 import me.arasple.mc.litechat.data.DataHandler;
-import me.arasple.mc.litechat.filter.FilteredObject;
-import me.arasple.mc.litechat.filter.WordFilter;
+import me.arasple.mc.litechat.filter.ChatFilter;
+import me.arasple.mc.litechat.filter.process.FilteredObject;
 import me.arasple.mc.litechat.formats.ChatFormats;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,9 +19,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Arasple
@@ -34,52 +33,48 @@ public class ListenerAsyncChat implements Listener {
 
         Player p = e.getPlayer();
         String message = e.getMessage();
-        FilteredObject filteredObject = WordFilter.doFilter(message, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true) && !p.hasPermission("litechat.bypass.filter"));
+        FilteredObject filteredObject = LiteChatAPI.filterString(p, message, ChatFilter.getEnable()[0]);
         e.setCancelled(true);
 
-        if (LiteChat.getSettings().getStringList("GENERAL.DISABLED-WORLDS").contains(p.getWorld().getName())) {
+        // 世界是否启用
+        if (LiteChatFiles.getSettings().getStringList("GENERAL.DISABLED-WORLDS").contains(p.getWorld().getName())) {
             e.setCancelled(false);
             return;
         }
-
+        // 长度限制、敏感词数限制
         if (!processLimit(p, message) || !processFilter(p, filteredObject)) {
-            e.setCancelled(true);
             return;
         }
+        // 管理频道聊天
         if (StaffChat.isInStaffChannel(p)) {
             StaffChat.execute(p, message);
             return;
         }
 
         TellrawJson format = ChatFormats.getNormal(p, filteredObject.getFiltered());
-        List<Player> players = Bukkit.getOnlinePlayers().stream().filter(x -> !(LiteChat.getSettings().getBoolean("GENERAL.PER-WORLD-CHAT") && x.getWorld() == p.getWorld())).collect(Collectors.toList());
-
-        players.forEach(format::send);
+        Bukkit.getOnlinePlayers().forEach(format::send);
         format.send(Bukkit.getConsoleSender());
+        Metrics.increase(0);
 
         if (LiteChat.isDebug()) {
-            LiteChat.getTLogger().fine("[Chat-Event]: Process Took " + (System.currentTimeMillis() - start) + " Ms");
+            LiteChat.getTLogger().info("[DEBUG] Process ChatEvent in " + (System.currentTimeMillis() - start) + " ms");
         }
-
-        Metrics.increaseChatTimes();
     }
 
     private boolean processFilter(Player p, FilteredObject filteredObject) {
         if (p.hasPermission("litechat.bypass.filter")) {
             return true;
         }
-        if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.BLOCK-SENDING.ENABLE", true)) {
-            if (filteredObject.getSensitiveWords() >= LiteChat.getSettings().getInt("CHAT-CONTROL.FILTER.BLOCK-SENDING.MIN", 5)) {
-                TLocale.sendTo(p, "GENERAL.NO-SWEAR");
-                return false;
-            }
+        if (filteredObject.getSensitiveWords() >= ChatFilter.getBlockSending()) {
+            TLocale.sendTo(p, "GENERAL.NO-SWEAR");
+            return false;
         }
         return true;
     }
 
     private boolean processLimit(Player p, String message) {
         if (!p.hasPermission("litechat.bypass.*")) {
-            long limit = LiteChat.getSettings().getLong("CHAT-CONTROL.LENGTH-LIMIT", 100);
+            long limit = LiteChatFiles.getSettings().getLong("CHAT-CONTROL.LENGTH-LIMIT", 100);
             if (message.length() > limit) {
                 TLocale.sendTo(p, "GENERAL.TOO-LONG", message.length(), limit);
                 return false;
@@ -87,12 +82,12 @@ public class ListenerAsyncChat implements Listener {
         }
         if (!p.hasPermission("litechat.bypass.itemcd")) {
             long itemShowCooldown = DataHandler.getCooldownLeft(p.getUniqueId(), Cooldowns.CooldownType.ITEM_SHOW);
-            if (LiteChat.getSettings().getStringList("CHAT-CONTROL.ITEM-SHOW.KEYS").stream().anyMatch(message::contains)) {
+            if (LiteChatFiles.getFuncitons().getStringList("ITEM-SHOW.KEYS").stream().anyMatch(message::contains)) {
                 if (itemShowCooldown > 0) {
                     TLocale.sendTo(p, "COOLDOWNS.ITEM-SHOW", String.valueOf(itemShowCooldown / 1000D));
                     return false;
                 } else {
-                    DataHandler.updateCooldown(p.getUniqueId(), Cooldowns.CooldownType.ITEM_SHOW, (long) (LiteChat.getSettings().getDouble("CHAT-CONTROL.ITEM-SHOW.COOLDOWN") * 1000));
+                    DataHandler.updateCooldown(p.getUniqueId(), Cooldowns.CooldownType.ITEM_SHOW, (long) (LiteChatFiles.getFuncitons().getDouble("ITEM-SHOW.COOLDOWNS") * 1000));
                 }
             }
         }
@@ -102,7 +97,7 @@ public class ListenerAsyncChat implements Listener {
                 TLocale.sendTo(p, "COOLDOWNS.CHAT", String.valueOf(chatCooldown / 1000D));
                 return false;
             } else {
-                DataHandler.updateCooldown(p.getUniqueId(), Cooldowns.CooldownType.CHAT, (long) (LiteChat.getSettings().getDouble("CHAT-CONTROL.COOLDOWN") * 1000));
+                DataHandler.updateCooldown(p.getUniqueId(), Cooldowns.CooldownType.CHAT, (long) (LiteChatFiles.getSettings().getDouble("CHAT-CONTROL.COOLDOWN") * 1000));
             }
         }
         return true;

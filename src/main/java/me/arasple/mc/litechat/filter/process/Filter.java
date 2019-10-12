@@ -1,7 +1,5 @@
-package me.arasple.mc.litechat.filter;
+package me.arasple.mc.litechat.filter.process;
 
-import io.izzel.taboolib.module.inject.TSchedule;
-import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.bstats.Metrics;
 
 import java.util.*;
@@ -9,27 +7,35 @@ import java.util.*;
 /**
  * @author andy
  * @version 2.2
- * <p>
+ * -
  * https://github.com/andyzty/sensitivewd-filter
  */
-public class WordFilter {
+public class Filter {
 
-    private static final FilterSet SET = new FilterSet();
-    private static final Map<Integer, WordNode> NODES = new HashMap<>(1024, 1);
-    private static final Set<Integer> PUNCTUATIONS_SET = new HashSet<>();
+    private static FilterSet SET;
+    private static Map<Integer, WordNode> NODES;
+    private static Set<Integer> PUNCTUATIONS_SET;
     private static char SIGN;
 
-    @TSchedule
-    public static void loadSettings() {
-        SIGN = LiteChat.getSettings().getString("CHAT-CONTROL.FILTER.REPLACEMENT", "*").charAt(0);
-        addSensitiveWord(LiteChat.getSettings().getStringList("CHAT-CONTROL.FILTER.SENSITIVE-WORDS"));
-        addPunctuations(LiteChat.getSettings().getStringList("CHAT-CONTROL.FILTER.IGNORED-PUNCTUATIONS"));
+    public static void setPunctuations(List<String> punctuations) {
+        PUNCTUATIONS_SET = new HashSet<>();
+        addPunctuations(punctuations);
     }
 
-    private static void addPunctuations(final List<String> words) {
-        if (!isEmpty(words)) {
+    public static void setSensitiveWord(List<String> punctuations) {
+        SET = new FilterSet();
+        NODES = new HashMap<>();
+        addSensitiveWord(punctuations);
+    }
+
+    public static void setReplacement(char sign) {
+        Filter.SIGN = sign;
+    }
+
+    private static void addPunctuations(List<String> punctuations) {
+        if (!punctuations.isEmpty()) {
             char[] chs;
-            for (String curr : words) {
+            for (String curr : punctuations) {
                 chs = curr.toCharArray();
                 for (char c : chs) {
                     PUNCTUATIONS_SET.add(charConvert(c));
@@ -38,8 +44,8 @@ public class WordFilter {
         }
     }
 
-    private static void addSensitiveWord(final List<String> words) {
-        if (!isEmpty(words)) {
+    public static void addSensitiveWord(List<String> words) {
+        if (!words.isEmpty()) {
             char[] chs;
             int fchar;
             int lastIndex;
@@ -47,7 +53,7 @@ public class WordFilter {
             for (String curr : words) {
                 chs = curr.toCharArray();
                 fchar = charConvert(chs[0]);
-                if (!SET.contains(fchar)) {
+                if (SET.contains(fchar)) {
                     SET.add(fchar);
                     fnode = new WordNode(fchar, chs.length == 1);
                     NODES.put(fchar, fnode);
@@ -78,7 +84,7 @@ public class WordFilter {
         WordNode node;
         for (int i = 0; i < length; i++) {
             curr = charConvert(chs[i]);
-            if (!SET.contains(curr)) {
+            if (SET.contains(curr)) {
                 continue;
             }
             node = NODES.get(curr);
@@ -115,23 +121,19 @@ public class WordFilter {
                 for (k = 0; k <= markNum; k++) {
                     if (!PUNCTUATIONS_SET.contains(charConvert(chs[k + i]))) {
                         chs[k + i] = SIGN;
-                        count++;
                     }
                 }
+                count++;
                 i = i + markNum;
             }
         }
-        Metrics.increaseFilteredWords(count);
+        Metrics.increase(1, count);
         return new FilteredObject(new String(chs), count);
     }
 
     private static int charConvert(char src) {
         int r = BCConvert.qj2bj(src);
         return (r >= 'A' && r <= 'Z') ? r + 32 : r;
-    }
-
-    public static <T> boolean isEmpty(final Collection<T> col) {
-        return col == null || col.isEmpty();
     }
 
 }

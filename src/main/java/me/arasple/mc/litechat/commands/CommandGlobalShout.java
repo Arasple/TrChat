@@ -4,11 +4,11 @@ import io.izzel.taboolib.module.command.base.BaseCommand;
 import io.izzel.taboolib.module.command.base.BaseMainCommand;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.util.ArrayUtil;
-import me.arasple.mc.litechat.LiteChat;
 import me.arasple.mc.litechat.api.LiteChatAPI;
 import me.arasple.mc.litechat.channels.GlobalChat;
-import me.arasple.mc.litechat.filter.FilteredObject;
-import me.arasple.mc.litechat.utils.BungeeUtils;
+import me.arasple.mc.litechat.filter.ChatFilter;
+import me.arasple.mc.litechat.filter.process.FilteredObject;
+import me.arasple.mc.litechat.utils.Bungees;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -29,7 +29,7 @@ public class CommandGlobalShout extends BaseMainCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!BungeeUtils.isEnable()) {
+        if (!Bungees.isEnable()) {
             TLocale.sendTo(sender, "GLOBAL-MESSAGE.NOT-ENABLE");
             return true;
         }
@@ -42,13 +42,11 @@ public class CommandGlobalShout extends BaseMainCommand {
             return true;
         }
         String message = ArrayUtil.arrayJoin(args, 0);
-        FilteredObject filteredObject = LiteChatAPI.filterString((Player) sender, message, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.CHAT", true));
+        FilteredObject filteredObject = LiteChatAPI.filterString((Player) sender, message, ChatFilter.getEnable()[0]);
 
-        if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.BLOCK-SENDING.ENABLE", true)) {
-            if (filteredObject.getSensitiveWords() >= LiteChat.getSettings().getInt("CHAT-CONTROL.FILTER.BLOCK-SENDING.MIN", 5)) {
-                TLocale.sendTo(sender, "GENERAL.NO-SWEAR");
-                return true;
-            }
+        if (filteredObject.getSensitiveWords() >= ChatFilter.getBlockSending()) {
+            TLocale.sendTo(sender, "GENERAL.NO-SWEAR");
+            return true;
         }
 
         GlobalChat.execute((Player) sender, filteredObject.getFiltered());

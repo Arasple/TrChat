@@ -1,8 +1,9 @@
 package me.arasple.mc.litechat.listeners;
 
 import io.izzel.taboolib.module.inject.TListener;
-import me.arasple.mc.litechat.LiteChat;
+import me.arasple.mc.litechat.LiteChatFiles;
 import me.arasple.mc.litechat.api.LiteChatAPI;
+import me.arasple.mc.litechat.filter.ChatFilter;
 import me.arasple.mc.litechat.utils.MessageColors;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,10 +24,10 @@ public class ListenerSignChange implements Listener {
 
         for (int i = 0; i < e.getLines().length; i++) {
             String line = e.getLine(i);
-            if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.COLOR-CODE.SIGN")) {
-                line = MessageColors.processWithPermission(p, line);
+            if (LiteChatFiles.getSettings().getBoolean("COLOR-CODE.SIGN")) {
+                line = MessageColors.replaceWithPermission(p, line);
             }
-            e.setLine(i, line != null ? LiteChatAPI.filterString(p, line, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.SIGN", true)).getFiltered() : null);
+            e.setLine(i, line != null ? LiteChatAPI.filterString(p, line, ChatFilter.getEnable()[1]).getFiltered() : null);
         }
     }
 

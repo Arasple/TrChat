@@ -17,42 +17,18 @@ import static org.bukkit.Bukkit.getMessenger;
  * @author Arasple
  * @date 2019/8/4 21:23
  */
-public class BungeeUtils implements PluginMessageListener {
+public class Bungees implements PluginMessageListener {
 
     private static boolean ENABLE = false;
-
-    public static void setEnable(boolean ENABLE) {
-        BungeeUtils.ENABLE = ENABLE;
-    }
-
-    public static boolean isEnable() {
-        return ENABLE;
-    }
 
     @TSchedule
     public static void init() {
         Plugin plugin = LiteChat.getPlugin();
         if (!getMessenger().isOutgoingChannelRegistered(plugin, "BungeeCord")) {
             getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
-            getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", new BungeeUtils());
+            getMessenger().registerIncomingPluginChannel(plugin, "BungeeCord", new Bungees());
             setEnable(Bukkit.getServer().spigot().getConfig().getBoolean("settings.bungeecord", false));
             TLocale.sendToConsole(isEnable() ? "PLUGIN.REGISTERED-BUNGEE" : "PLUGIN.NONE-BUNGEE");
-        }
-    }
-
-    @Override
-    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-        if (!"BungeeCord".equals(channel)) {
-            return;
-        }
-        DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
-        try {
-            String subChannel = in.readUTF();
-            if ("PlayerList".equals(subChannel)) {
-                String server = in.readUTF();
-                Players.setPlayers(Arrays.asList(in.readUTF().split(", ")));
-            }
-        } catch (IOException ignored) {
         }
     }
 
@@ -67,6 +43,37 @@ public class BungeeUtils implements PluginMessageListener {
             }
         }
         player.sendPluginMessage(LiteChat.getPlugin(), "BungeeCord", byteArray.toByteArray());
+    }
+
+    public static boolean isEnable() {
+        return ENABLE;
+    }
+
+    /*
+    GETTERS & SETTERS
+     */
+
+    public static void setEnable(boolean ENABLE) {
+        Bungees.ENABLE = ENABLE;
+    }
+
+    @Override
+    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+        if (channel == null || player == null || message == null) {
+            return;
+        }
+        if (!"BungeeCord".equals(channel)) {
+            return;
+        }
+        DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
+        try {
+            String subChannel = in.readUTF();
+            if ("PlayerList".equals(subChannel)) {
+                String server = in.readUTF();
+                Players.setPlayers(Arrays.asList(in.readUTF().split(", ")));
+            }
+        } catch (IOException ignored) {
+        }
     }
 
 }

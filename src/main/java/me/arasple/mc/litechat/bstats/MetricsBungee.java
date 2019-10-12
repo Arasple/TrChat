@@ -27,6 +27,12 @@ import java.util.zip.GZIPOutputStream;
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class MetricsBungee {
 
+    public static final int B_STATS_VERSION = 1;
+    private static final String URL = "https://bStats.org/submitData/bungeecord";
+    private static final List<Object> knownMetricsInstances = new ArrayList<>();
+    private static boolean logSentData;
+    private static boolean logResponseStatusText;
+
     static {
         if (System.getProperty("bstats.relocatecheck") == null || !System.getProperty("bstats.relocatecheck").equals("false")) {
             final String defaultPackage = new String(new byte[]{'o', 'r', 'g', '.', 'b', 's', 't', 'a', 't', 's', '.', 'b', 'u', 'n', 'g', 'e', 'e', 'c', 'o', 'r', 'd'});
@@ -37,15 +43,10 @@ public class MetricsBungee {
         }
     }
 
-    public static final int B_STATS_VERSION = 1;
-    private static final String URL = "https://bStats.org/submitData/bungeecord";
     private final Plugin plugin;
     private boolean enabled;
     private String serverUUID;
     private boolean logFailedRequests = false;
-    private static boolean logSentData;
-    private static boolean logResponseStatusText;
-    private static final List<Object> knownMetricsInstances = new ArrayList<>();
 
     public MetricsBungee(Plugin plugin) {
         this.plugin = plugin;
@@ -76,12 +77,57 @@ public class MetricsBungee {
         }
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
     public static void linkMetrics(Object metrics) {
         knownMetricsInstances.add(metrics);
+    }
+
+    private static void sendData(Plugin plugin, JsonObject data) throws Exception {
+        if (data == null) {
+            throw new IllegalArgumentException("Data cannot be null");
+        }
+        if (logSentData) {
+            plugin.getLogger().info("Sending data to bStats: " + data.toString());
+        }
+        HttpsURLConnection connection = (HttpsURLConnection) new URL(URL).openConnection();
+        byte[] compressedData = compress(data.toString());
+        connection.setRequestMethod("POST");
+        connection.addRequestProperty("Accept", "application/json");
+        connection.addRequestProperty("Connection", "close");
+        connection.addRequestProperty("Content-Encoding", "gzip");
+        connection.addRequestProperty("Content-Length", String.valueOf(compressedData.length));
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("User-Agent", "MC-Server/" + B_STATS_VERSION);
+        connection.setDoOutput(true);
+        DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
+        outputStream.write(compressedData);
+        outputStream.flush();
+        outputStream.close();
+        InputStream inputStream = connection.getInputStream();
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder builder = new StringBuilder();
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            builder.append(line);
+        }
+        bufferedReader.close();
+        if (logResponseStatusText) {
+            plugin.getLogger().info("Sent data to bStats and received response: " + builder.toString());
+        }
+    }
+
+    private static byte[] compress(final String str) throws IOException {
+        if (str == null) {
+            return null;
+        }
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        GZIPOutputStream gzip = new GZIPOutputStream(outputStream);
+        gzip.write(str.getBytes(StandardCharsets.UTF_8));
+        gzip.close();
+        return outputStream.toByteArray();
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public JsonObject getPluginData() {
@@ -202,51 +248,6 @@ public class MetricsBungee {
                 bufferedWriter.newLine();
             }
         }
-    }
-
-    private static void sendData(Plugin plugin, JsonObject data) throws Exception {
-        if (data == null) {
-            throw new IllegalArgumentException("Data cannot be null");
-        }
-        if (logSentData) {
-            plugin.getLogger().info("Sending data to bStats: " + data.toString());
-        }
-        HttpsURLConnection connection = (HttpsURLConnection) new URL(URL).openConnection();
-        byte[] compressedData = compress(data.toString());
-        connection.setRequestMethod("POST");
-        connection.addRequestProperty("Accept", "application/json");
-        connection.addRequestProperty("Connection", "close");
-        connection.addRequestProperty("Content-Encoding", "gzip");
-        connection.addRequestProperty("Content-Length", String.valueOf(compressedData.length));
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("User-Agent", "MC-Server/" + B_STATS_VERSION);
-        connection.setDoOutput(true);
-        DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
-        outputStream.write(compressedData);
-        outputStream.flush();
-        outputStream.close();
-        InputStream inputStream = connection.getInputStream();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        StringBuilder builder = new StringBuilder();
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            builder.append(line);
-        }
-        bufferedReader.close();
-        if (logResponseStatusText) {
-            plugin.getLogger().info("Sent data to bStats and received response: " + builder.toString());
-        }
-    }
-
-    private static byte[] compress(final String str) throws IOException {
-        if (str == null) {
-            return null;
-        }
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        GZIPOutputStream gzip = new GZIPOutputStream(outputStream);
-        gzip.write(str.getBytes(StandardCharsets.UTF_8));
-        gzip.close();
-        return outputStream.toByteArray();
     }
 
 }

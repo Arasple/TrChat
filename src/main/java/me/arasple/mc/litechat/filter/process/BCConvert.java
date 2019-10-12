@@ -1,4 +1,4 @@
-package me.arasple.mc.litechat.filter;
+package me.arasple.mc.litechat.filter.process;
 
 public class BCConvert {
 

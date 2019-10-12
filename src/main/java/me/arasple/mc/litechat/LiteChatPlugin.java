@@ -65,79 +65,6 @@ public abstract class LiteChatPlugin extends JavaPlugin {
         init();
     }
 
-    @Override
-    public final void onLoad() {
-        if (initFailed) {
-            setEnabled(false);
-            return;
-        }
-        plugin = this;
-        PluginLoader.addPlugin(this);
-        PluginLoader.load(this);
-        try {
-            onLoading();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-    }
-
-    @Override
-    public final void onEnable() {
-        if (initFailed) {
-            return;
-        }
-        PluginLoader.start(this);
-        try {
-            onStarting();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        Bukkit.getScheduler().runTask(this, () -> {
-            PluginLoader.active(this);
-            onActivated();
-        });
-    }
-
-    @Override
-    public final void onDisable() {
-        if (initFailed) {
-            return;
-        }
-        PluginLoader.stop(this);
-        try {
-            onStopping();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-    }
-
-    /**
-     * 代替 JavaPlugin 本身的 onLoad 方法
-     */
-    public void onLoading() {
-    }
-
-    /**
-     * 代替 JavaPlugin 本身的 onEnable 方法
-     */
-    public void onStarting() {
-    }
-
-    /**
-     * 代替 JavaPlugin 本身的 onDisable 方法
-     */
-    public void onStopping() {
-    }
-
-    /**
-     * 当服务端完全启动时执行该方法
-     * 完全启动指 "控制台可以输入命令且得到反馈时"
-     * <p>
-     * 使用 @TSchedule 同样可以代替该方法
-     */
-    public void onActivated() {
-    }
-
     /**
      * 检查 TabooLib 是否已经被载入
      * 跳过 TabooLib 主类的初始化过程
@@ -165,7 +92,12 @@ public abstract class LiteChatPlugin extends JavaPlugin {
      */
     public static String[] getNewVersion() {
         for (String[] url : URL) {
-            String read = readFromURL(url[0]);
+            String read = null;
+            try {
+                read = readFromURL(url[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             if (read == null) {
                 continue;
             }
@@ -213,17 +145,14 @@ public abstract class LiteChatPlugin extends JavaPlugin {
         return file;
     }
 
-    private static String readFromURL(String in, String def) {
+    private static String readFromURL(String in, String def) throws IOException {
         return Optional.ofNullable(readFromURL(in)).orElse(def);
     }
 
-    private static String readFromURL(String in) {
+    public static String readFromURL(String in) throws IOException {
         try (InputStream inputStream = new URL(in).openStream(); BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
-            return new String(readFully(bufferedInputStream));
-        } catch (Throwable t) {
-            t.printStackTrace();
+            return readFully(bufferedInputStream, StandardCharsets.UTF_8);
         }
-        return null;
     }
 
     public static String readFully(InputStream inputStream, Charset charset) throws IOException {
@@ -502,6 +431,79 @@ public abstract class LiteChatPlugin extends JavaPlugin {
 
     public static File getLibFile() {
         return libFile;
+    }
+
+    @Override
+    public final void onLoad() {
+        if (initFailed) {
+            setEnabled(false);
+            return;
+        }
+        plugin = this;
+        PluginLoader.addPlugin(this);
+        PluginLoader.load(this);
+        try {
+            onLoading();
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+
+    @Override
+    public final void onEnable() {
+        if (initFailed) {
+            return;
+        }
+        PluginLoader.start(this);
+        try {
+            onStarting();
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        Bukkit.getScheduler().runTask(this, () -> {
+            PluginLoader.active(this);
+            onActivated();
+        });
+    }
+
+    @Override
+    public final void onDisable() {
+        if (initFailed) {
+            return;
+        }
+        PluginLoader.stop(this);
+        try {
+            onStopping();
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+
+    /**
+     * 代替 JavaPlugin 本身的 onLoad 方法
+     */
+    public void onLoading() {
+    }
+
+    /**
+     * 代替 JavaPlugin 本身的 onEnable 方法
+     */
+    public void onStarting() {
+    }
+
+    /**
+     * 代替 JavaPlugin 本身的 onDisable 方法
+     */
+    public void onStopping() {
+    }
+
+    /**
+     * 当服务端完全启动时执行该方法
+     * 完全启动指 "控制台可以输入命令且得到反馈时"
+     * <p>
+     * 使用 @TSchedule 同样可以代替该方法
+     */
+    public void onActivated() {
     }
 
     @Target(ElementType.TYPE)

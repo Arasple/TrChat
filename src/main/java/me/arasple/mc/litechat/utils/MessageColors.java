@@ -18,14 +18,14 @@ public class MessageColors {
 
     private static final String COLOR_PERMISSION_NODE = "litechat.color";
 
-    public static List<String> processWithPermission(Player player, List<String> message) {
+    public static List<String> replaceWithPermission(Player player, List<String> message) {
         for (int i = 0; i < message.size(); i++) {
-            message.set(i, processWithPermission(player, message.get(i)));
+            message.set(i, replaceWithPermission(player, message.get(i)));
         }
         return message;
     }
 
-    public static String processWithPermission(Player player, String message) {
+    public static String replaceWithPermission(Player player, String message) {
         for (Character code : COLOR_CODES) {
             if (player.hasPermission(COLOR_PERMISSION_NODE + "." + code)) {
                 message = message.replace("&" + code, "§" + code);

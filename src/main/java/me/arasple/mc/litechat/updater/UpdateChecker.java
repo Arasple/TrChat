@@ -27,10 +27,7 @@ import java.util.List;
  * @author Arasple
  * @date 2019/8/15 22:35
  */
-@TListener(
-        condition = "isEnable",
-        register = "init"
-)
+@TListener(register = "init")
 public class UpdateChecker implements Listener {
 
     private String url;
@@ -60,16 +57,12 @@ public class UpdateChecker implements Listener {
         }
     }
 
-    public boolean isEnable() {
-        return LiteChat.getSettings().getBoolean("GENERAL.CHECK-UPDATE", true);
-    }
-
     private void startTask() {
         new BukkitRunnable() {
             @Override
             public void run() {
                 // 若已抓取到新版本信息或插件关闭了更新检测, 则取消
-                if (latest.hasLatest || !isEnable()) {
+                if (latest.hasLatest) {
                     cancel();
                     return;
                 }
@@ -91,11 +84,7 @@ public class UpdateChecker implements Listener {
                         latest.noticed[0] = true;
                         TLocale.sendToConsole(version > latestVersion ? "PLUGIN.UPDATE-NOTIFY.DEV" : "PLUGIN.UPDATE-NOTIFY.LATEST");
                     }
-                } catch (Exception t) {
-                    if (LiteChat.isDebug()) {
-                        LiteChat.getTLogger().warn("[Updater-Checker]: ");
-                        t.printStackTrace();
-                    }
+                } catch (Exception ignored) {
                 }
             }
         }.runTaskTimerAsynchronously(LiteChat.getPlugin(), 20 * 5, 20 * 60 * 30);
@@ -123,6 +112,5 @@ public class UpdateChecker implements Listener {
             messages.forEach(sender::sendMessage);
         }
     }
-
 
 }

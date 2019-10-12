@@ -16,6 +16,10 @@
 
 PLUGIN:
   LOADED-CHAT-FORMATS: '&8[&3L&bChat&8] &3成功载入聊天格式... &8[{0} Ms]'
+  LOADED-FILTER-LOCAL: '&8[&3L&bChat&8] &2已载入本地敏感词库总计 &e{0} &2个. &8[{1} Ms]'
+  LOADED-FILTER-CLOUD: '&8[&3L&bChat&8] &2成功从云端更新敏感词汇总计 &b{0} &2个... &8[{1}]'
+  RELOADED: '&8[&3L&bChat&8] &7监听到配置文件改动, 已自动载入相关配置等...'
+  FAILED-LOAD-FILTER-CLOUD: '&8[&3L&bChat&8] &7无法从云端更新敏感词库, 请检测网络连接...'
   REGISTERED-BUNGEE: '&8[&3L&bChat&8] &6已支持 &eBungee &6通讯.'
   NONE-BUNGEE: '&8[&3L&bChat&8] &7当前无 Bungee 支持.'
   LOADED:
@@ -33,31 +37,20 @@ PLUGIN:
     - '&8[&3L&bChat&8] &3启动成功. 当前运行版本: &aVersion {0}'
   DISABLED:
     - '&8[&3L&bChat&8] &7感谢使用本插件, 您在论坛为本插件评分即是对作者最大的鼓励!'
-  CONFIG:
-    LATEST:
-      - '&8[&3L&bChat&8] &a你当前正在使用最新版配置格式...'
-    UPDATED:
-      - '&8[&3L&bChat&8] &4警告: &c你的配置版本过旧, 已自动替换为最新版配置. (旧版另存到 settings-backup.yml)'
-    RELOADED:
-      - '&8[&3L&bChat&8] &7载入配置文件成功...'
   COMMAND-TITLE: '&3「&8&m--------------------------------------------------&3」'
   UPDATE-NOTIFY:
-    LATEST: '&8[&3L&bChat&8] &a你正在运行最新版的 &3LiteChat&a.'
-    DEV: '&8[&3L&bChat&8] &e你正在运行开发版本的LiteChat, 请及时反馈漏洞!'
+    LATEST: '&8[&3L&bChat&8] &2你正在运行最新版的 &3LiteChat&a.'
+    DEV: '&8[&3L&bChat&8] &6你正在运行开发版本的 LiteChat, 请及时反馈漏洞!'
     HEADER:
       - ''
+      - '§3--------------------------------------------------'
+      - '&7▪ &3LiteChat &a更新通知 &8{0} &7➦ &8{1}'
       - ''
-      - ''
-      - '&3「&8&m--------------------------------------------------&3」'
-      - '&7▪ &3LiteChat &6更新通知 &8v{0} &7➦ &av{1}'
-      - ''
-      - '&7▪ &b更新内容'
+      - '&7▪ &e内容: '
     FOOTER:
       - ''
       - '&7▪ &2Github下载: &a&nhttps://github.com/Arasple/LiteChat/releases/latest'
-      - '&7▪ &2Mcbbs下载: &ahttps://www.mcbbs.net/thread-903335-1-1.html'
-      - '&3「&8&m--------------------------------------------------&3」'
-
+      - '§3--------------------------------------------------'
   DEBUG:
     'ON':
       - ==: TITLE

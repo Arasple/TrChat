@@ -5,7 +5,7 @@ import io.izzel.taboolib.util.chat.ComponentSerializer;
 import me.arasple.mc.litechat.api.events.GlobalShoutEvent;
 import me.arasple.mc.litechat.bstats.Metrics;
 import me.arasple.mc.litechat.formats.ChatFormats;
-import me.arasple.mc.litechat.utils.BungeeUtils;
+import me.arasple.mc.litechat.utils.Bungees;
 import org.bukkit.entity.Player;
 
 /**
@@ -21,8 +21,8 @@ public class GlobalChat {
 
         if (event.call()) {
             String raw = ComponentSerializer.toString(event.getFormat().getComponentsAll());
-            BungeeUtils.sendBungeeData(from, "LiteChat", "BroadcastRaw", raw);
-            Metrics.increaseChatTimes();
+            Bungees.sendBungeeData(from, "LiteChat", "BroadcastRaw", raw);
+            Metrics.increase(0);
         }
     }
 

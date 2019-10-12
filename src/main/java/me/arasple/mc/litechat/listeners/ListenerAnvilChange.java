@@ -1,8 +1,9 @@
 package me.arasple.mc.litechat.listeners;
 
 import io.izzel.taboolib.module.inject.TListener;
-import me.arasple.mc.litechat.LiteChat;
+import me.arasple.mc.litechat.LiteChatFiles;
 import me.arasple.mc.litechat.api.LiteChatAPI;
+import me.arasple.mc.litechat.filter.ChatFilter;
 import me.arasple.mc.litechat.utils.MessageColors;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -34,10 +35,10 @@ public class ListenerAnvilChange implements Listener {
             return;
         }
         String name = meta.getDisplayName();
-        if (LiteChat.getSettings().getBoolean("CHAT-CONTROL.COLOR-CODE.ANVIL")) {
-            name = MessageColors.processWithPermission(p, name);
+        if (LiteChatFiles.getSettings().getBoolean("CHAT-COLOR.ANVIL")) {
+            name = MessageColors.replaceWithPermission(p, name);
         }
-        meta.setDisplayName(LiteChatAPI.filterString(p, name, LiteChat.getSettings().getBoolean("CHAT-CONTROL.FILTER.ENABLE.ANVIL", true)).getFiltered());
+        meta.setDisplayName(LiteChatAPI.filterString(p, name, ChatFilter.getEnable()[2]).getFiltered());
         result.setItemMeta(meta);
         e.setResult(result);
     }

@@ -1,4 +1,4 @@
-package me.arasple.mc.litechat.filter;
+package me.arasple.mc.litechat.filter.process;
 
 public class FilterSet {
 
@@ -33,12 +33,11 @@ public class FilterSet {
         int eWordNum = no >>> 6;
         long oldElements = elements[eWordNum];
         elements[eWordNum] &= ~(1L << (no & 63));
-        boolean result = elements[eWordNum] != oldElements;
-        return result;
+        return elements[eWordNum] != oldElements;
     }
 
     public boolean contains(final int no) {
-        return (elements[no >>> 6] & (1L << (no & 63))) != 0;
+        return (elements[no >>> 6] & (1L << (no & 63))) == 0;
     }
 
     public boolean containsAll(final int... no) {
@@ -57,8 +56,7 @@ public class FilterSet {
         long[] elements = new long[this.elements.length];
         for (int currNo : no) {
             elements[currNo >>> 6] |= (1L << (currNo & 63));
-        }//这一步执行完跟循环调用contains差不多了
-
+        }
         for (int i = 0; i < elements.length; i++) {
             if ((elements[i] & ~this.elements[i]) != 0) {
                 return false;

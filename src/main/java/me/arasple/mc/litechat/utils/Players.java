@@ -15,15 +15,11 @@ public class Players {
 
     private static List<String> players = Lists.newArrayList();
 
-    public static List<String> getPlayers() {
-        return players;
-    }
-
     @TSchedule(delay = 20, period = 20 * 5)
     public static void updateOnline() {
         if (Bukkit.getOnlinePlayers().size() > 0) {
-            if (BungeeUtils.isEnable()) {
-                BungeeUtils.sendBungeeData(Bukkit.getOnlinePlayers().iterator().next(), "PlayerList", "ALL");
+            if (Bungees.isEnable()) {
+                Bungees.sendBungeeData(Bukkit.getOnlinePlayers().iterator().next(), "PlayerList", "ALL");
             }
             Bukkit.getOnlinePlayers().forEach(p -> {
                 if (!players.contains(p.getName())) {
@@ -34,16 +30,23 @@ public class Players {
         }
     }
 
+    /*
+    GETTERS & SETTERS
+     */
+    public static List<String> getPlayers() {
+        return players;
+    }
+
+    public static void setPlayers(List<String> players) {
+        Players.players = players;
+    }
+
     public static boolean isPlayerOnline(String target) {
         return players.stream().anyMatch(p -> p.equalsIgnoreCase(target));
     }
 
     public static String getPlayerFullName(String target) {
         return players.stream().filter(p -> p.equalsIgnoreCase(target)).findFirst().orElse(null);
-    }
-
-    public static void setPlayers(List<String> players) {
-        Players.players = players;
     }
 
 }

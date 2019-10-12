@@ -7,20 +7,35 @@
 # |_______ \|__| |__|   \___  > \______  /|___|  /(____  / |__|
 #         \/                \/         \/      \/      \/
 #
-# 插件的常规性设置
+# 插件的常规性设置 Version 1.4+
 #
 ######################################################################
 GENERAL:
-  # 自动是否检测更新并通知管理员, 推荐开启
-  CHECK-UPDATE: true
-  # 配置文件版本号 (不要更改)
-  CONFIG-VERSION: 3
+  # 调试模式
+  DEBUG: false
   # 禁用此插件功能的世界
   DISABLED-WORLDS: [PUT_YOUR_WORLD_NAME_HERE, ANOTHER_WORLD]
-  # 每个世界独立频道
-  PER-WORLD-CHAT: false
-  # 是否启用调试功能
-  DEBUG: false
+  # 依赖的 PAPI 变量
+  # 若安装 PAPI，将自动帮你下载填写到这里的变量拓展 (如果存在)
+  DEPEND-EXPANSIONS:
+    - 'player'
+    - 'server'
+    - 'vault'
+    - 'multiverse'
+
+
+# 聊天颜色代码相关设置
+# 颜色代码权限节点: litechat.color.<CODE>
+# 例如玩家拥有 litechat.color.a, 则可使用 &a 颜色代码
+CHAT-COLOR:
+  # 是否在常规聊天中启用颜色代码
+  CHAT: true
+  # 是否在木牌中启用颜色代码
+  SIGN: true
+  # 是否在铁砧中启用颜色代码
+  ANVIL: true
+  # 是否在编辑书时启用颜色代码
+  BOOK: true
 
 # 聊天控制管理
 CHAT-CONTROL:
@@ -28,182 +43,3 @@ CHAT-CONTROL:
   COOLDOWN: 2.0
   # 聊天内容的字符限制
   LENGTH-LIMIT: 100
-  # 敏感词过滤器
-  FILTER:
-    # 是否启用该功能
-    ENABLE:
-      CHAT: true # 聊天
-      SIGN: true # 木牌
-      ANVIL: true # 铁砧命名
-    # 禁止发送带敏感词的消息
-    BLOCK-SENDING:
-      # 是否启用
-      ENABLE: true
-      # 当语句中包含至少多少个敏感词时才会禁止发送
-      MIN: 3
-    # 过滤器忽略的标点符号
-    IGNORED-PUNCTUATIONS: ['!','.',',','#','$','%','&','*','(',')','|','?','/','@','"','\',';','[',']','{','}','+','~','-','_','=','^','<','>',' ','　','！','。','，','￥','（','）','？','、','“','‘','；','【','】','——','……','《','》','\\']
-    # 敏感词列表
-    SENSITIVE-WORDS:
-      - 'NMSL'
-    # 替换符号
-    REPLACEMENT: '*'
-  # 物品展示功能
-  ITEM-SHOW:
-    # 冷却
-    COOLDOWN: 30
-    # 格式
-    FORMAT: '&8[&3{0} &bx{1}&8]'
-    # 替换的符号
-    KEYS:
-      - '%i'
-      - '%item'
-      - '%i%'
-      - '%item%'
-      - '[i]'
-      - '[item]'
-  # 颜色代码
-  # 权限节点: litechat.color.<CODE>
-  # 例如玩家拥有 litechat.color.a, 则可使用 &a 颜色代码
-  COLOR-CODE:
-    # 是否在聊天中启用该功能
-    CHAT: true
-    # 是否在木牌中启用该功能
-    SIGN: true
-    # 是否在铁砧中启用该功能
-    ANVIL: true
-    # 是否在编辑书时启用该功能
-    BOOK: true
-  # At玩家功能
-  MENTIONS:
-    # 是否启用
-    ENABLE: true
-    # 显示格式
-    FORMAT: '&r &a@&2{0}&r '
-    # At冷却
-    COOLDOWNS: 30
-    # 是否提示被At玩家 (语言文件中改)
-    NOTIFY: true
-
-######################################################################
-# 聊天格式配置
-#
-# 默认提供的格式仅供参考, 且需要一些PAPI变量. 你可以设计自己的样式
-# 每个聊天格式均由多个JSON模块组成, 每个模块都支持PlaceholderAPI变量
-# 你可以任意添加自己的模块 (消息显示模块统一不变)
-#
-# 下面是实例
-#
-# FORMAT-EXAMPLE:
-#   example-part: 示例的一个JSON模块
-#     text: 'ABC' 该模块会显示ABC
-#     hover: '%player_name%' 悬浮在该模块上会显示玩家名称
-#     command: '/tpa %player_name%' 点击该模块会请求传送到该玩家
-#
-######################################################################
-
-######################################################################
-#
-# 普通常规聊天格式
-#
-######################################################################
-FORMAT-NORMAL:
-  world:
-    text: '&8[&3%player_world%&8]'
-    hover: |-
-      &r
-      &8▪ &7位置: &3%player_world%&7, &2%player_x%/%player_y%/%player_z%
-      &r
-      &6▶ &e点击请求传送到目标玩家位置
-      &r
-    command: '/tpa {PLAYER}'
-  part-before-player:
-    text: ' '
-  player:
-    text: '&7{PLAYER}'
-    hover: |-
-      &r
-      &8▪ &7延迟: &3%player_ping% Ms
-      &8▪ &7生命值: &c%player_health_rounded% ❤
-      &r
-      &6▶ &e点击发起私聊
-      &r
-    suggest: '/msg {PLAYER} '
-  part-before-msg:
-    text: '&7: '
-  message:
-    default-color: '7'
-    hover: '&7发送时间: %server_time_h:mm:ss a%'
-
-######################################################################
-#
-# 私聊玩家格式 (发送方)
-#
-######################################################################
-FORMAT-PRIVATE-SENDER:
-  sender:
-    text: '&8[&a{SENDER} &7➦ &3{RECEIVER}&8] '
-  message:
-    default-color: 'f'
-    hover: '&7发送时间: %server_time_h:mm:ss a%'
-
-######################################################################
-#
-# 私聊玩家格式 (接受方)
-#
-######################################################################
-FORMAT-PRIVATE-RECEIVER:
-  sender:
-    text: '&8[&6{SENDER} &7➥ &2{RECEIVER}&8] '
-  message:
-    default-color: 'f'
-    hover: '&7发送时间: %server_time_h:mm:ss a%'
-
-######################################################################
-#
-# 全局喊话格式
-#
-######################################################################
-FORMAT-GLOBAL:
-  server:
-    text: '&8[&3%server_name%&8] '
-    hover: |-
-      &7来自服务器 &3%server_name%
-      &r
-      &7版本: &6%server_version%
-      &7在线: &a%server_online%&7/&2%server_max_players%
-      &7TPS: &b%server_tps%
-  player:
-    text: '&e{PLAYER}&8: '
-  message:
-    default-color: 'f'
-    hover: '&7发送时间: %server_time_h:mm:ss a%'
-
-######################################################################
-#
-# 管理频道聊天格式
-#
-######################################################################
-FORMAT-STAFF:
-  staff:
-    text: '&8[&c管频&8] '
-    hover: |-
-      &7来自服务器 &3%server_name%
-      &r
-      &7版本: &6%server_version%
-      &7在线: &a%server_online%&7/&2%server_max_players%
-      &7TPS: &b%server_tps%
-      &7
-      &a▶ &2点击传送到此服务器
-    command: '/server %server_name%'
-  player:
-    text: '&e{PLAYER}&8: '
-  message:
-    default-color: 'a'
-    hover: '&7发送时间: %server_time_h:mm:ss a%'
-
-######################################################################
-#
-# 配置到此结束, 如果你存在任何疑问欢迎联系作者
-#
-######################################################################

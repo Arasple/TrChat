@@ -1,8 +1,6 @@
 package me.arasple.mc.litechat.data;
 
 import com.google.common.collect.Lists;
-import io.izzel.taboolib.util.serialize.TSerializable;
-import io.izzel.taboolib.util.serialize.TSerializeCollection;
 
 import java.util.List;
 
@@ -10,15 +8,9 @@ import java.util.List;
  * @author Arasple
  * @date 2019/8/15 18:38
  */
-public class Cooldowns implements TSerializable {
+public class Cooldowns {
 
-
-    @TSerializeCollection
     private List<Cooldown> COOLDOWNs = Lists.newArrayList();
-
-    public Cooldowns() {
-
-    }
 
     public List<Cooldown> getCooldowns() {
         return COOLDOWNs;
@@ -28,8 +20,28 @@ public class Cooldowns implements TSerializable {
         this.COOLDOWNs = COOLDOWNs;
     }
 
+    public enum CooldownType {
 
-    public static class Cooldown implements TSerializable {
+        /**
+         * Chat Cooldown Types
+         */
+
+        CHAT("Chat"),
+        ITEM_SHOW("ItemShow"),
+        MENTION("Mention");
+
+        private String name;
+
+        CooldownType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    public static class Cooldown {
 
         private String id;
         private long time;
@@ -59,27 +71,6 @@ public class Cooldowns implements TSerializable {
             this.time = time;
         }
 
-    }
-
-    public enum CooldownType {
-
-        /**
-         * Chat Cooldown Types
-         */
-
-        CHAT("Chat"),
-        ITEM_SHOW("ItemShow"),
-        MENTION("Mention");
-
-        private String name;
-
-        CooldownType(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
     }
 
 }

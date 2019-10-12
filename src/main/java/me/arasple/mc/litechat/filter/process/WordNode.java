@@ -1,4 +1,4 @@
-package me.arasple.mc.litechat.filter;
+package me.arasple.mc.litechat.filter.process;
 
 import java.util.LinkedList;
 import java.util.List;

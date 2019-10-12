@@ -1,0 +1,136 @@
+######################################################################
+#
+#  .____     .__   __           _________  .__               __
+# |    |    |__|_/  |_   ____  \_   ___ \ |  |__  _____   _/  |_
+# |    |    |  |\   __\_/ __ \ /    \  \/ |  |  \ \__  \  \   __\
+# |    |___ |  | |  |  \  ___/ \     \____|   Y  \ / __ \_ |  |
+# |_______ \|__| |__|   \___  > \______  /|___|  /(____  / |__|
+#         \/                \/         \/      \/      \/
+#
+# LiteChat Chat Formats 高级 JSON 格式自定义聊天格式
+# 现已支持定义多个聊天格式, 从前到后根据权限筛选
+#
+# [!]
+# 默认提供的格式仅供参考, 需要自行安装一些 PlaceholderAPI 变量拓展
+# 每个聊天格式均由多个JSON模块组成, 你可以任意添加自己的模块
+# "消息内容" 模块统一节点, 但仍可自定义属性
+#
+# FORMAT-EXAMPLE:
+#   example-part: 示例的一个JSON模块
+#     text: 'ABC' 该模块会显示ABC
+#     hover: '%player_name%' 悬浮在该模块上会显示玩家名称
+#     command: '/tpa %player_name%' 点击该模块会请求传送到该玩家
+#
+######################################################################
+#
+# 常规聊天频道的格式设置
+NORMAL:
+  # 该聊天格式需要的权限 (不写或null则默认不设置权限)
+  - permission: null
+    # 聊天组件
+    parts:
+      world: # 自定义组件节点名称
+        text: '&8[&3%player_world%&8]' # 该组件显示的内容
+        # 该组件的悬浮显示文本
+        hover: |-
+          &r
+          &8▪ &7位置: &3%player_world%&7, &2%player_x%/%player_y%/%player_z%
+          &r
+          &6▶ &e点击请求传送到目标玩家位置
+          &r
+        # 该组件的点击执行命令
+        command: '/tpa {PLAYER}'
+        # 此项为可选项, 如果设置则玩家必须有该权限才会显示这个组件  (不写或null则默认显示)
+        permission: null
+      part-before-player:
+        text: ' '
+      player:
+        text: '&7{PLAYER}'
+        hover: |-
+          &r
+          &8▪ &7延迟: &3%player_ping% Ms
+          &8▪ &7生命值: &c%player_health_rounded% ❤
+          &r
+          &6▶ &e点击发起私聊
+          &r
+        suggest: '/msg {PLAYER} '
+      part-before-msg:
+        text: '&7: '
+      message:
+        default-color: '7'
+        hover: '&7发送时间: %server_time_h:mm:ss a%'
+
+######################################################################
+#
+# 私聊玩家格式 (发送方)
+#
+######################################################################
+PRIVATE-SENDER:
+  - permission: null
+    parts:
+      sender:
+        text: '&8[&a{SENDER} &7➦ &3{RECEIVER}&8] '
+      message:
+        default-color: 'f'
+        hover: '&7发送时间: %server_time_h:mm:ss a%'
+
+######################################################################
+#
+# 私聊玩家格式 (接收方)
+#
+######################################################################
+PRIVATE-RECEIVER:
+  - permission: null
+    parts:
+      sender:
+        text: '&8[&6{SENDER} &7➥ &2{RECEIVER}&8] '
+      message:
+        default-color: 'f'
+        hover: '&7发送时间: %server_time_h:mm:ss a%'
+
+######################################################################
+#
+# 全局喊话格式
+#
+######################################################################
+GLOBAL:
+  - permission: null
+    parts:
+      server:
+        text: '&8[&3%server_name%&8] '
+        hover: |-
+          &7来自服务器 &3%server_name%
+          &r
+          &7版本: &6%server_version%
+          &7在线: &a%server_online%&7/&2%server_max_players%
+          &7TPS: &b%server_tps%
+      player:
+        text: '&e{PLAYER}&8: '
+      message:
+        default-color: 'f'
+        hover: '&7发送时间: %server_time_h:mm:ss a%'
+
+######################################################################
+#
+# 管理频道聊天格式
+#
+######################################################################
+STAFF:
+  - permission: null
+    parts:
+      staff:
+        text: '&8[&c管频&8] '
+        hover: |-
+          &7来自服务器 &3%server_name%
+          &r
+          &7版本: &6%server_version%
+          &7在线: &a%server_online%&7/&2%server_max_players%
+          &7TPS: &b%server_tps%
+          &7
+          &a▶ &2点击传送到此服务器
+        command: '/server %server_name%'
+      player:
+        text: '&e{PLAYER}&8: '
+      message:
+        default-color: 'a'
+        hover: '&7发送时间: %server_time_h:mm:ss a%'

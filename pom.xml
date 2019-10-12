@@ -6,7 +6,7 @@
 
     <groupId>me.arasple.mc</groupId>
     <artifactId>LiteChat</artifactId>
-    <version>1.39</version>
+    <version>1.40</version>
     <packaging>jar</packaging>
 
     <name>LiteChat</name>
@@ -70,6 +70,12 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.14.4-R0.1-20190826.092701-9</version>
+        </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.10.4</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
