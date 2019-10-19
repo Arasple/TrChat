@@ -25,8 +25,8 @@ GENERAL:
 
 
 # 聊天颜色代码相关设置
-# 颜色代码权限节点: litechat.color.<CODE>
-# 例如玩家拥有 litechat.color.a, 则可使用 &a 颜色代码
+# 颜色代码权限节点: trchat.color.<CODE>
+# 例如玩家拥有 trchat.color.a, 则可使用 &a 颜色代码
 CHAT-COLOR:
   # 是否在常规聊天中启用颜色代码
   CHAT: true

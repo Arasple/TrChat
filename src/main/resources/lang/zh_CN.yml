@@ -7,7 +7,7 @@
 # |_______ \|__| |__|   \___  > \______  /|___|  /(____  / |__|
 #         \/                \/         \/      \/      \/
 #
-# LiteChat 的语言文件, 基于 TLocale
+# TrChat 的语言文件, 基于 TLocale
 #
 # 如何自定义更强的消息？查阅文档：https://bkm016.github.io/TabooLib/#/tlocale
 # 所有消息均支持 BOOK / SOUND / TITLE / ACTIONBAR / BOSSBAR /JSON 等
@@ -15,13 +15,13 @@
 ######################################################################
 
 PLUGIN:
-  LOADED-CHAT-FORMATS: '&8[&3L&bChat&8] &3成功载入聊天格式... &8[{0} Ms]'
-  LOADED-FILTER-LOCAL: '&8[&3L&bChat&8] &2已载入本地敏感词库总计 &e{0} &2个. &8[{1} Ms]'
-  LOADED-FILTER-CLOUD: '&8[&3L&bChat&8] &2成功从云端更新敏感词汇总计 &b{0} &2个... &8[{1}]'
-  RELOADED: '&8[&3L&bChat&8] &7监听到配置文件改动, 已自动载入相关配置等...'
-  FAILED-LOAD-FILTER-CLOUD: '&8[&3L&bChat&8] &7无法从云端更新敏感词库, 请检测网络连接...'
-  REGISTERED-BUNGEE: '&8[&3L&bChat&8] &6已支持 &eBungee &6通讯.'
-  NONE-BUNGEE: '&8[&3L&bChat&8] &7当前无 Bungee 支持.'
+  LOADED-CHAT-FORMATS: '&8[&3Tr&bChat&8] &3成功载入聊天格式... &8[{0} Ms]'
+  LOADED-FILTER-LOCAL: '&8[&3Tr&bChat&8] &2已载入本地敏感词库总计 &e{0} &2个. &8[{1} Ms]'
+  LOADED-FILTER-CLOUD: '&8[&3Tr&bChat&8] &2成功从云端更新敏感词汇总计 &b{0} &2个... &8[{1}]'
+  RELOADED: '&8[&3Tr&bChat&8] &7监听到配置文件改动, 已自动载入相关配置等...'
+  FAILED-LOAD-FILTER-CLOUD: '&8[&3Tr&bChat&8] &7无法从云端更新敏感词库, 请检测网络连接...'
+  REGISTERED-BUNGEE: '&8[&3Tr&bChat&8] &6已支持 &eBungee &6通讯.'
+  NONE-BUNGEE: '&8[&3Tr&bChat&8] &7当前无 Bungee 支持.'
   LOADED:
     - ''
     - '&5.____     .__   __           _________  .__               __'
@@ -31,25 +31,25 @@ PLUGIN:
     - '&5|_______ \|__| |__|   \___  > \______  /|___|  /(____  / |__|'
     - '&5    \/                \/         \/      \/      \/        '
     - ''
-    - '&3Lite&bChat &7正在载入中...'
+    - '&3Tr&bChat &7正在载入中...'
     - ''
   ENABLED:
-    - '&8[&3L&bChat&8] &3启动成功. 当前运行版本: &aVersion {0}'
+    - '&8[&3Tr&bChat&8] &3启动成功. 当前运行版本: &aVersion {0}'
   DISABLED:
-    - '&8[&3L&bChat&8] &7感谢使用本插件, 您在论坛为本插件评分即是对作者最大的鼓励!'
+    - '&8[&3Tr&bChat&8] &7感谢使用本插件, 您在论坛为本插件评分即是对作者最大的鼓励!'
   COMMAND-TITLE: '&3「&8&m--------------------------------------------------&3」'
   UPDATE-NOTIFY:
-    LATEST: '&8[&3L&bChat&8] &2你正在运行最新版的 &3LiteChat&a.'
-    DEV: '&8[&3L&bChat&8] &6你正在运行开发版本的 LiteChat, 请及时反馈漏洞!'
+    LATEST: '&8[&3Tr&bChat&8] &2你正在运行最新版的 &3TrChat&a.'
+    DEV: '&8[&3Tr&bChat&8] &6你正在运行开发版本的 TrChat, 请及时反馈漏洞!'
     HEADER:
       - ''
       - '§3--------------------------------------------------'
-      - '&7▪ &3LiteChat &a更新通知 &8{0} &7➦ &8{1}'
+      - '&7▪ &3TrChat &a更新通知 &8{0} &7➦ &8{1}'
       - ''
       - '&7▪ &e内容: '
     FOOTER:
       - ''
-      - '&7▪ &2Github下载: &a&nhttps://github.com/Arasple/LiteChat/releases/latest'
+      - '&7▪ &2Github下载: &a&nhttps://github.com/Arasple/TrChat/releases/latest'
       - '§3--------------------------------------------------'
   DEBUG:
     'ON':
@@ -66,11 +66,11 @@ PLUGIN:
         sound: 'BLOCK_ANVIL_LAND-1-0'
 
 GENERAL:
-  TOO-LONG: '&8[&3L&bChat&8] &7你的聊天内容过长. &8[&6{0}&8/&2{1}&8]'
-  NO-SWEAR: '&8[&3L&bChat&8] &6你的聊天内容中包含过多敏感词, 已被中止发送.'
-  NO-PERMISSION: '&8[&3L&bChat&8] &7你没有足够的权限执行此操作.'
-  NOT-PLAYER: '&8[&3L&bChat&8] &c你必须是一个玩家才能执行此操作.'
-  PURGE: '&8[&3L&bChat&8] &7清理了 &a{0} &7个不活跃数据...'
+  TOO-LONG: '&8[&3Tr&bChat&8] &7你的聊天内容过长. &8[&6{0}&8/&2{1}&8]'
+  NO-SWEAR: '&8[&3Tr&bChat&8] &6你的聊天内容中包含过多敏感词, 已被中止发送.'
+  NO-PERMISSION: '&8[&3Tr&bChat&8] &7你没有足够的权限执行此操作.'
+  NOT-PLAYER: '&8[&3Tr&bChat&8] &c你必须是一个玩家才能执行此操作.'
+  PURGE: '&8[&3Tr&bChat&8] &7清理了 &a{0} &7个不活跃数据...'
 
 COOLDOWNS:
   CHAT:
@@ -103,7 +103,7 @@ PRIVATE-MESSAGE:
         text: '&c&l&k|&r &c&l关闭监听私聊模式 &c&l&k|'
       - ==: SOUND
         sound: 'BLOCK_ANVIL_LAND-1-0'
-  NOT-PLAYER: '&8[&3L&bChat&8] &c你必须是一个玩家才能执行此操作.'
+  NOT-PLAYER: '&8[&3Tr&bChat&8] &c你必须是一个玩家才能执行此操作.'
   NO-PLAYER:
     - ==: ACTION
       text: '&3&l请提供一名私聊的对象'
@@ -114,7 +114,7 @@ PRIVATE-MESSAGE:
       text: '&7&l请提供私聊内容'
     - ==: SOUND
       sound: 'ENTITY_ITEM_BREAK-1-0'
-  NOT-EXIST: '&8[&3L&bChat&8] &7目标玩家未在线或不存在.'
+  NOT-EXIST: '&8[&3Tr&bChat&8] &7目标玩家未在线或不存在.'
   RECEIVE:
     - ==: ACTION
       text: '&8[ &a! &8] &3你收到来自 &a{0} &3的一条私聊消息'
@@ -122,8 +122,8 @@ PRIVATE-MESSAGE:
       sound: 'BLOCK_NOTE_BLOCK_PLING-1-2'
 
 GLOBAL-MESSAGE:
-  NOT-PLAYER: '&8[&3L&bChat&8] &c你必须是一个玩家才能执行此操作.'
-  NOT-ENABLE: '&8[&3L&bChat&8] &7未启用 &eBungeeCord &7支持, 暂不支持喊话.'
+  NOT-PLAYER: '&8[&3Tr&bChat&8] &c你必须是一个玩家才能执行此操作.'
+  NOT-ENABLE: '&8[&3Tr&bChat&8] &7未启用 &eBungeeCord &7支持, 暂不支持喊话.'
   NO-MESSAGE:
     - ==: ACTION
       text: '&7&l你必须提供喊话内容'
@@ -131,7 +131,7 @@ GLOBAL-MESSAGE:
       sound: 'ENTITY_ITEM_BREAK-1-0'
 
 STAFF-CHANNEL:
-  NOT-PLAYER: '&8[&3L&bChat&8] &c你必须是一个玩家才能执行此操作.'
+  NOT-PLAYER: '&8[&3Tr&bChat&8] &c你必须是一个玩家才能执行此操作.'
   NO-MESSAGE:
     - ==: ACTION
       text: '&7&l你必须提供聊天内容'
@@ -141,13 +141,13 @@ STAFF-CHANNEL:
     - ==: ACTION
       text: '&a&l已加入到管理频道聊天'
     - ==: TEXT
-      text: '&8[&3L&bChat&8] &3你已经加入到管理频道, 再次输入相同命令即可退出.'
+      text: '&8[&3Tr&bChat&8] &3你已经加入到管理频道, 再次输入相同命令即可退出.'
     - ==: SOUND
       sound: 'BLOCK_NOTE_BLOCK_PLING-1-0'
   QUIT:
     - ==: ACTION
       text: '&3&l离开管理频道聊天'
     - ==: TEXT
-      text: '&8[&3L&bChat&8] &7你已离开管理频道, 但仍会收到管频的消息.'
+      text: '&8[&3Tr&bChat&8] &7你已离开管理频道, 但仍会收到管频的消息.'
     - ==: SOUND
       sound: 'BLOCK_ANVIL_LAND-1-0'

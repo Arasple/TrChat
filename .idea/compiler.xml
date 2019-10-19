@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="LiteChat" />
+        <module name="TrChat" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="LiteChat" target="1.8" />
+      <module name="TrChat" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,7 +1,15 @@
+Version 1.5:
+  Date: 2019.10.19
+  Updates:
+    - 改进部分代码
+    - 修复 "functions" 命名错误
+    - 修复了一些报错
+    - 正式改名为 TrChat, 更新介绍图
+
 Version 1.4:
   Date: 2019.10.12
   Updates:
-    - [!] 该版本重制配置文件内容较多, 请备份+删除 LiteChat文件夹 后更新
+    - [!] 该版本重制配置文件内容较多, 请备份+删除 TrChat文件夹 后更新
     - >>
     - 配置文件重写, 分为 settings.yml / formats.yml / filter.yml / functions.yml
     - 云端敏感词库上线, 自动更新敏感词、支持自定义白名单词 (正在持续增加中)
@@ -67,7 +75,7 @@ Version 1.3:
     - 新增多个配置节点决定是否启用颜色代码功能
     - 炫酷的载入文字画LOGO (可修改/关闭)
     - bStats 更换为 MetricsLite 并优化, 减小了插件体积
-    - 提供了牛逼的API (LiteChatAPI) 方便自定义拓展
+    - 提供了牛逼的API (TrChatAPI) 方便自定义拓展
     - LChatPrivateMessageEvent - API 私聊事件
     - LChatShoutEvent - API 私聊事件
     - 配置文件大改, 新增配置版号 (自动备份更新)

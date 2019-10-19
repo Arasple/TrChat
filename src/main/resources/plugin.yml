@@ -1,5 +1,5 @@
-name: LiteChat
-main: me.arasple.mc.litechat.LiteChat
+name: TrChat
+main: me.arasple.mc.trchat.TrChat
 
 api-version: 1.13
 version: ${project.version}

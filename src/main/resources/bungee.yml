@@ -1,5 +1,5 @@
-name: LiteChat
-main: me.arasple.mc.litechat.LiteChatBungee
+name: TrChat
+main: me.arasple.mc.trchat.TrChatBungee
 
 version: ${project.version}
 
