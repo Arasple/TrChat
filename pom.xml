@@ -6,7 +6,7 @@
 
     <groupId>me.arasple.mc</groupId>
     <artifactId>TrChat</artifactId>
-    <version>1.40</version>
+    <version>1.5</version>
     <packaging>jar</packaging>
 
     <name>TrChat</name>
