@@ -91,7 +91,7 @@ public class ChatFormats {
                     CloudExpansion cloudExpansion = PlaceholderAPIPlugin.getInstance().getExpansionCloud().getCloudExpansion(ex);
                     PlaceholderAPIPlugin.getInstance().getExpansionCloud().downloadExpansion(null, cloudExpansion);
                 });
-                PlaceholderAPIPlugin.getInstance().getExpansionManager().registerAllExpansions();
+                Bukkit.getScheduler().runTaskLater(TrChat.getPlugin(), () -> PlaceholderAPIPlugin.getInstance().getExpansionManager().registerAllExpansions(), 20);
             }
         }
     }

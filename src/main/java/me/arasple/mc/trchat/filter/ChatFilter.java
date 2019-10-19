@@ -68,11 +68,11 @@ public class ChatFilter {
                             collected.add(word);
                         }
                     });
-
                 } catch (Throwable e) {
                     for (CommandSender sender : notify) {
                         TLocale.sendTo(sender, "PLUGIN.FAILED-LOAD-FILTER-CLOUD");
                     }
+                    return;
                 }
 
                 for (CommandSender sender : notify) {
