@@ -6,6 +6,7 @@
     - 修复了配置文件控制颜色代码开关无效的问题
     - 新增了强制默认聊天颜色的权限节点 trchat.color.force-defaultcolor
     - 屏蔽了 bStats 的一个报错
+    - 优化了更新检测器
 
 #### Old logs
 	Version 1.5:

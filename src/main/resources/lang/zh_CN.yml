@@ -65,6 +65,13 @@ PLUGIN:
       - ==: SOUND
         sound: 'BLOCK_ANVIL_LAND-1-0'
 
+ERROR:
+  VERSION: '&8[&3Tr&bChat&8]&8[&4ERROR&8] &7检测版本号时发生异常... 关闭服务器!"'
+  JS:
+    - '&8[&3Tr&bChat&8]&8[&4ERROR&8] &c表达式计算时出错: &2{0}'
+    - '&6{1}'
+    - '&8{2}'
+
 GENERAL:
   TOO-LONG: '&8[&3Tr&bChat&8] &7你的聊天内容过长. &8[&6{0}&8/&2{1}&8]'
   NO-SWEAR: '&8[&3Tr&bChat&8] &6你的聊天内容中包含过多敏感词, 已被中止发送.'

@@ -30,20 +30,17 @@ import java.util.List;
 @TListener(register = "init")
 public class UpdateChecker implements Listener {
 
-    private String url;
+    private static String url = "https://api.github.com/repos/Arasple/TrChat/releases/latest";
     private double version;
     private LatestInfo latest;
 
     public void init() {
-        url = "https://api.github.com/repos/Arasple/" + TrChat.getPlugin().getDescription().getName() + "/releases/latest";
         version = NumberUtils.toDouble(TrChat.getPlugin().getDescription().getVersion().split("-")[0], -1);
         latest = new LatestInfo(false, -1, new String[]{});
-
         if (version == -1) {
-            TrChat.getTLogger().error("检测版本号时发生异常... 关闭服务器!");
+            TLocale.sendToConsole("ERROR.VERSION");
             Bukkit.shutdown();
         }
-
         startTask();
     }
 
@@ -88,6 +85,40 @@ public class UpdateChecker implements Listener {
                 }
             }
         }.runTaskTimerAsynchronously(TrChat.getPlugin(), 20 * 5, 20 * 60 * 30);
+    }
+
+    public static void check() {
+        double currentVersion = NumberUtils.toDouble(TrChat.getPlugin().getDescription().getVersion(), -1);
+        double latestVersion = catchLatestVersion();
+
+        if (latestVersion - currentVersion >= 0.03) {
+            int last = (int) (5 * ((latestVersion - currentVersion) / 0.01));
+            Bukkit.getConsoleSender().sendMessage("§8--------------------------------------------------");
+            Bukkit.getConsoleSender().sendMessage("§r");
+            Bukkit.getConsoleSender().sendMessage("§8# §4您所运行的 §cTrChat §4版本过旧, 可能潜在很多漏洞");
+            Bukkit.getConsoleSender().sendMessage("§8# §4请及时更新到最新版本以便获得更好的插件体验!");
+            Bukkit.getConsoleSender().sendMessage("§8# §r");
+            Bukkit.getConsoleSender().sendMessage("§8# §4Mcbbs: §chttps://www.mcbbs.net/thread-903335-1-1.html");
+            Bukkit.getConsoleSender().sendMessage("§8# §r");
+            Bukkit.getConsoleSender().sendMessage("§8# §r");
+            Bukkit.getConsoleSender().sendMessage("§8# §4服务器将在 §c§l" + last + " secs §4后继续启动...");
+            Bukkit.getConsoleSender().sendMessage("§r");
+            Bukkit.getConsoleSender().sendMessage("§8--------------------------------------------------");
+            try {
+                Thread.sleep(last * 1000);
+            } catch (InterruptedException ignored) {
+            }
+        }
+    }
+
+    private static double catchLatestVersion() {
+        try (InputStream inputStream = new URL(url).openStream(); BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
+            String read = TrChatPlugin.readFully(bufferedInputStream, StandardCharsets.UTF_8);
+            JsonObject json = (JsonObject) new JsonParser().parse(read);
+            return json.get("tag_name").getAsDouble();
+        } catch (Exception ignored) {
+        }
+        return -1;
     }
 
     private static class LatestInfo {
