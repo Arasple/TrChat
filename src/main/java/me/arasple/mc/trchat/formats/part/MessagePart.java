@@ -34,9 +34,11 @@ public class MessagePart extends JsonPart {
     }
 
     public TellrawJson toTellrawJson(Player player, String message, boolean... values) {
-        if (TrChatFiles.getSettings().getBoolean("COLOR-CODE.CHAT")) {
+        if (TrChatFiles.getSettings().getBoolean("CHAT-COLOR.CHAT")) {
             message = MessageColors.replaceWithPermission(player, message);
         }
+
+        ChatColor defaultMsgColor = MessageColors.catchDefaultMessageColor(player, defaultColor);
 
         boolean mentionEnable = DataHandler.getCooldownLeft(player.getUniqueId(), Cooldowns.CooldownType.MENTION) <= 0 && values.length > 0 && values[0];
         String mentionFormat = TrChatFiles.getFunctions().getStringColored("MENTION.FORMAT");
@@ -71,18 +73,18 @@ public class MessagePart extends JsonPart {
             if (itemShowEnable && var.startsWith("ITEM")) {
                 int slot = NumberUtils.toInt(var.split(":")[1], player.getInventory().getHeldItemSlot());
                 ItemStack item = player.getInventory().getItem(slot) != null ? player.getInventory().getItem(slot) : new ItemStack(Material.AIR);
-                format.append(DataHandler.getItemshowCache().computeIfAbsent(item, i -> TellrawJson.create().append(Strings.replaceWithOrder(itemFormat, Items.isNull(item) ? "空气" : Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defaultColor).hoverItem(item)));
+                format.append(DataHandler.getItemshowCache().computeIfAbsent(item, i -> TellrawJson.create().append(Strings.replaceWithOrder(itemFormat, Items.isNull(item) ? "空气" : Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defaultMsgColor).hoverItem(item)));
             } else if (mentionEnable && var.startsWith("AT:")) {
                 String atPlayer = var.substring(3);
                 if (Players.isPlayerOnline(atPlayer)) {
-                    format.append(Strings.replaceWithOrder(mentionFormat, atPlayer) + defaultColor);
+                    format.append(Strings.replaceWithOrder(mentionFormat, atPlayer) + defaultMsgColor);
                     if (TrChatFiles.getFunctions().getBoolean("MENTION.NOTIFY")) {
                         TLocale.sendTo(Bukkit.getPlayer(atPlayer), "MENTIONS.NOTIFY", player.getName());
                     }
                 }
                 DataHandler.updateCooldown(player.getUniqueId(), Cooldowns.CooldownType.MENTION, TrChatFiles.getFunctions().getLong("MENTION.COOLDOWNS"));
             } else {
-                format.append(applyJson(player, TellrawJson.create().append(defaultColor + Strings.replaceWithOrder("{0}" + variable.getText() + "{1}", variable.isVariable() ? "<" : "", variable.isVariable() ? ">" : ""))));
+                format.append(applyJson(player, TellrawJson.create().append(defaultMsgColor + Strings.replaceWithOrder("{0}" + variable.getText() + "{1}", variable.isVariable() ? "<" : "", variable.isVariable() ? ">" : ""))));
             }
         }
 

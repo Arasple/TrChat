@@ -3,6 +3,7 @@ package me.arasple.mc.trchat.formats.part;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.Strings;
+import me.arasple.mc.trchat.utils.Vars;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -87,7 +88,7 @@ public class JsonPart {
     }
 
     public String process(CommandSender sender, String str, String value) {
-        return TLocale.Translate.setPlaceholders(sender, str != null ? str
+        return Vars.setPlaceholders(sender, str != null ? str
                 .replace('&', ChatColor.COLOR_CHAR)
                 .replace("{PLAYER}", sender.getName())
                 .replace("{SENDER}", sender.getName())

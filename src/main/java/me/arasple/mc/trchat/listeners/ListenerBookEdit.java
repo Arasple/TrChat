@@ -20,7 +20,7 @@ public class ListenerBookEdit implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBookEdit(PlayerEditBookEvent e) {
         Player p = e.getPlayer();
-        if (TrChatFiles.getSettings().getBoolean("COLOR-CODE.BOOK", true)) {
+        if (TrChatFiles.getSettings().getBoolean("CHAT-COLOR.BOOK", true)) {
             BookMeta meta = e.getNewBookMeta();
             meta.setPages(MessageColors.replaceWithPermission(p, meta.getPages()));
             e.setNewBookMeta(meta);

@@ -24,7 +24,7 @@ public class ListenerSignChange implements Listener {
 
         for (int i = 0; i < e.getLines().length; i++) {
             String line = e.getLine(i);
-            if (TrChatFiles.getSettings().getBoolean("COLOR-CODE.SIGN")) {
+            if (TrChatFiles.getSettings().getBoolean("CHAT-COLOR.SIGN")) {
                 line = MessageColors.replaceWithPermission(p, line);
             }
             e.setLine(i, line != null ? TrChatAPI.filterString(p, line, ChatFilter.getEnable()[1]).getFiltered() : null);

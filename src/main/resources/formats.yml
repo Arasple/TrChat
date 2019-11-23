@@ -56,7 +56,10 @@ NORMAL:
         suggest: '/msg {PLAYER} '
       part-before-msg:
         text: '&7: '
+      # 消息控制模块
       message:
+        # 默认聊天颜色
+        # [!] 如果玩家有 trchat.color.force-defaultcolor.<CODE> 则强制使用该聊天代码颜色
         default-color: '7'
         hover: '&7发送时间: %server_time_h:mm:ss a%'
 

@@ -1,6 +1,7 @@
 package me.arasple.mc.trchat.utils;
 
 import com.google.common.collect.Lists;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -18,6 +19,7 @@ public class MessageColors {
     );
 
     private static final String COLOR_PERMISSION_NODE = "trchat.color";
+    private static final String FORCE_CHAT_COLOR_PERMISSION_NODE = "trchat.color.force-defaultcolor.";
 
     public static List<String> replaceWithPermission(Player player, List<String> strings) {
         List<String> result = Lists.newArrayList();
@@ -32,6 +34,15 @@ public class MessageColors {
             }
         }
         return string;
+    }
+
+    public static ChatColor catchDefaultMessageColor(Player player, ChatColor defaultColor) {
+        for (Character code : COLOR_CODES) {
+            if (player.hasPermission(FORCE_CHAT_COLOR_PERMISSION_NODE + "." + code)) {
+                return ChatColor.getByChar(code);
+            }
+        }
+        return defaultColor;
     }
 
 }
