@@ -37,6 +37,9 @@ public class MessageColors {
     }
 
     public static ChatColor catchDefaultMessageColor(Player player, ChatColor defaultColor) {
+        if (player.hasPermission(FORCE_CHAT_COLOR_PERMISSION_NODE + ".*")) {
+            return defaultColor;
+        }
         for (Character code : COLOR_CODES) {
             if (player.hasPermission(FORCE_CHAT_COLOR_PERMISSION_NODE + "." + code)) {
                 return ChatColor.getByChar(code);
