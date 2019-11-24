@@ -2,7 +2,7 @@ name: TrChat
 main: me.arasple.mc.trchat.TrChat
 
 api-version: 1.13
-version: ${project.version}
+version: ${version}
 
 softdepend:
   - PlaceholderAPI

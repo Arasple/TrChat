@@ -4,6 +4,8 @@ import io.izzel.taboolib.module.inject.TInject;
 import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.module.locale.logger.TLogger;
 
+import java.io.File;
+
 /**
  * @author Arasple
  */
@@ -23,16 +25,25 @@ public final class TrChat extends TrChatPlugin {
 
     @Override
     public void onStarting() {
+        if (new File(TrChat.getPlugin().getDataFolder(), "do_not_notify").exists()) {
+            return;
+        }
         TLocale.sendToConsole("PLUGIN.ENABLED", getDescription().getVersion());
     }
 
     @Override
     public void onLoading() {
+        if (new File(TrChat.getPlugin().getDataFolder(), "do_not_notify").exists()) {
+            return;
+        }
         TLocale.sendToConsole("PLUGIN.LOADED");
     }
 
     @Override
     public void onStopping() {
+        if (new File(TrChat.getPlugin().getDataFolder(), "do_not_notify").exists()) {
+            return;
+        }
         TLocale.sendToConsole("PLUGIN.DISABLED");
     }
 

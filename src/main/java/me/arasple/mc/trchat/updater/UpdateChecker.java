@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -35,6 +36,9 @@ public class UpdateChecker implements Listener {
     private LatestInfo latest;
 
     public void init() {
+        if (new File(TrChat.getPlugin().getDataFolder(), "do_not_update").exists()) {
+            return;
+        }
         version = NumberUtils.toDouble(TrChat.getPlugin().getDescription().getVersion().split("-")[0], -1);
         latest = new LatestInfo(false, -1, new String[]{});
         if (version == -1) {
