@@ -73,7 +73,7 @@ public class MessagePart extends JsonPart {
             if (itemShowEnable && var.startsWith("ITEM")) {
                 int slot = NumberUtils.toInt(var.split(":")[1], player.getInventory().getHeldItemSlot());
                 ItemStack item = player.getInventory().getItem(slot) != null ? player.getInventory().getItem(slot) : new ItemStack(Material.AIR);
-                format.append(DataHandler.getItemshowCache().computeIfAbsent(item, i -> TellrawJson.create().append(Strings.replaceWithOrder(itemFormat, Items.isNull(item) ? "空气" : Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defaultMsgColor).hoverItem(item)));
+                format.append(DataHandler.getItemCache().computeIfAbsent(item, i -> TellrawJson.create().append(Strings.replaceWithOrder(itemFormat, Items.isNull(item) ? "空气" : Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defaultMsgColor).hoverItem(item)));
             } else if (mentionEnable && var.startsWith("AT:")) {
                 String atPlayer = var.substring(3);
                 if (Players.isPlayerOnline(atPlayer)) {

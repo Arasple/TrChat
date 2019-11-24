@@ -12,17 +12,11 @@ import java.util.UUID;
  */
 public class DataHandler {
 
-    private static HashMap<ItemStack, TellrawJson> ITEMSHOW_CACHE = new HashMap<>();
-    private static HashMap<UUID, Cooldowns> COOLDOWNS = new HashMap<>();
+    private static HashMap<ItemStack, TellrawJson> itemCache = new HashMap<>();
+    private static HashMap<UUID, Cooldowns> cooldown = new HashMap<>();
 
     public static long getCooldownLeft(UUID uuid, Cooldowns.CooldownType type) {
-        COOLDOWNS.putIfAbsent(uuid, new Cooldowns());
-        for (Cooldowns.Cooldown COOLDOWN : COOLDOWNS.get(uuid).getCooldowns()) {
-            if (COOLDOWN.getId().equalsIgnoreCase(type.getName())) {
-                return COOLDOWN.getTime() - System.currentTimeMillis();
-            }
-        }
-        return -1;
+        return cooldown.computeIfAbsent(uuid, n -> new Cooldowns()).getCooldowns().stream().filter(COOLDOWN -> COOLDOWN.getId().equalsIgnoreCase(type.getName())).findFirst().map(COOLDOWN -> COOLDOWN.getTime() - System.currentTimeMillis()).orElse(-1L);
     }
 
     public static boolean isInCooldown(UUID uuid, Cooldowns.CooldownType type) {
@@ -30,17 +24,17 @@ public class DataHandler {
     }
 
     public static void updateCooldown(UUID uuid, Cooldowns.CooldownType type, long lasts) {
-        COOLDOWNS.putIfAbsent(uuid, new Cooldowns());
-        COOLDOWNS.get(uuid).getCooldowns().removeIf(c -> c.getId().equalsIgnoreCase(type.getName()));
-        COOLDOWNS.get(uuid).getCooldowns().add(new Cooldowns.Cooldown(type.getName(), System.currentTimeMillis() + lasts));
+        cooldown.putIfAbsent(uuid, new Cooldowns());
+        cooldown.get(uuid).getCooldowns().removeIf(c -> c.getId().equalsIgnoreCase(type.getName()));
+        cooldown.get(uuid).getCooldowns().add(new Cooldowns.Cooldown(type.getName(), System.currentTimeMillis() + lasts));
     }
 
     public static HashMap<UUID, Cooldowns> getCooldowns() {
-        return COOLDOWNS;
+        return cooldown;
     }
 
-    public static HashMap<ItemStack, TellrawJson> getItemshowCache() {
-        return ITEMSHOW_CACHE;
+    public static HashMap<ItemStack, TellrawJson> getItemCache() {
+        return itemCache;
     }
 
 }

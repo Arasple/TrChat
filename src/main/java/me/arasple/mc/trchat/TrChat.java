@@ -7,7 +7,7 @@ import io.izzel.taboolib.module.locale.logger.TLogger;
 /**
  * @author Arasple
  */
-@TrChatPlugin.Version(5.08)
+@TrChatPlugin.Version(5.11)
 public final class TrChat extends TrChatPlugin {
 
     @TInject("§3Tr§bChat")

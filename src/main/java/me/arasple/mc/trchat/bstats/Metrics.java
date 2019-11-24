@@ -13,15 +13,15 @@ public class Metrics {
 
     private static MetricsBukkit metrics;
     private static DecimalFormat doubleFormat = new DecimalFormat("#.#");
-    private static int[] coutns = new int[]{0, 0};
+    private static int[] counts = new int[]{0, 0};
 
     public static void increase(int index) {
         increase(index, 1);
     }
 
     public static void increase(int index, int value) {
-        if (coutns[index] < Integer.MAX_VALUE) {
-            coutns[index] += value;
+        if (counts[index] < Integer.MAX_VALUE) {
+            counts[index] += value;
         }
     }
 
@@ -31,14 +31,14 @@ public class Metrics {
 
         // 聊天次数统计
         metrics.addCustomChart(new MetricsBukkit.SingleLineChart("chat_counts", () -> {
-            int i = coutns[0];
-            coutns[0] = 0;
+            int i = counts[0];
+            counts[0] = 0;
             return i;
         }));
         // 敏感词过滤器启用统计
         metrics.addCustomChart(new MetricsBukkit.SingleLineChart("filter_counts", () -> {
-            int i = coutns[1];
-            coutns[1] = 0;
+            int i = counts[1];
+            counts[1] = 0;
             return i;
         }));
         // 自动检测更新
