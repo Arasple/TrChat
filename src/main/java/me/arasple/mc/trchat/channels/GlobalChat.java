@@ -18,8 +18,7 @@ public class GlobalChat {
         TellrawJson format = ChatFormats.getGlobal(from, message);
 
         GlobalShoutEvent event = new GlobalShoutEvent(from, message, format);
-
-        if (event.call()) {
+        if (event.call().nonCancelled()) {
             String raw = ComponentSerializer.toString(event.getFormat().getComponentsAll());
             Bungees.sendBungeeData(from, "TrChat", "BroadcastRaw", raw);
             Metrics.increase(0);
