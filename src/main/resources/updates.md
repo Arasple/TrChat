@@ -13,6 +13,7 @@
       - 优化、重写了大量代码
       - 配置文件结构革新
       - PlaceholderAPI 为必需前置，若未安装将自动下载重启
+      ![](https://i.loli.net/2019/11/30/M7QuCip2jZUNkGd.png)
       - 功能性：
         - 聊天日志，记录存储详尽的内容
         - 改进聊天控制系统
@@ -25,7 +26,7 @@
         - 监听多种数据包处理过滤
         - 每名玩家独立的开关配置
         - 可视化 GUI 控制过滤器开关
-        (!)[IMG.jpg]
+        ![](https://i.loli.net/2019/11/30/wxynG2okcFpLj4l.png)
       - 聊天格式：
         - 优先级筛选支持使用 JS 表达式
       - 聊天频道：
@@ -36,7 +37,10 @@
         - 新增 手机号/身份证 屏蔽隐藏为 JSON 模块
         - 新增 QQ号快速分享，缩短为一个超链接 JSON 模块
         - 不仅如此，你可以自定义编辑匹配，触发替换内容
-
+        ![](https://i.loli.net/2019/11/30/2WVEyrz4jYZwgmI.png)
+        ![](https://i.loli.net/2019/11/30/lWYbH7ztPJVfSje.png)
+        ![](https://i.loli.net/2019/11/30/onepTGQrh8yNamz.png)
+        
 #### VERSION 1.5
   - ##### 1.51
     - 修复了部分情况下 PlaceholderAPI 的报错

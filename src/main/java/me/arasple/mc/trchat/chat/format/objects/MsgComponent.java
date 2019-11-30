@@ -76,16 +76,18 @@ public class MsgComponent extends JsonComponent {
                     int slot = NumberUtils.toInt(args[1], ((Player) player).getInventory().getHeldItemSlot());
                     ItemStack item = ((Player) player).getInventory().getItem(slot) != null ? ((Player) player).getInventory().getItem(slot) : new ItemStack(Material.AIR);
                     tellraw.append(Users.getItemshowCache().computeIfAbsent(item, i -> TellrawJson.create().append(Strings.replaceWithOrder(itemFormat, Items.isNull(item) ? "空气" : Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defualtColor).hoverItem(item)));
+                    continue;
                 }
                 if (atEnabled && "AT".equalsIgnoreCase(args[0]) && !isPrivateChat) {
                     String atPlayer = args[1];
                     if (Players.isPlayerOnline(atPlayer)) {
                         tellraw.append(Strings.replaceWithOrder(atFormat, atPlayer) + defualtColor);
                         if (TrChatFiles.getFunction().getBoolean("GENERAL.MENTION.NOTIFY")) {
-                            TLocale.sendTo(Bukkit.getPlayer(atPlayer), "GENERAL.MENTIONS.NOTIFY", player.getName());
+                            TLocale.sendTo(Bukkit.getPlayer(atPlayer), "MENTIONS.NOTIFY", player.getName());
                         }
                     }
                     Users.updateCooldown(player.getUniqueId(), Cooldowns.CooldownType.MENTION, TrChatFiles.getFunction().getLong("GENERAL.MENTION.COOLDOWNS"));
+                    continue;
                 }
 
                 Function function = ChatFunctions.mathFunction(args[0]);

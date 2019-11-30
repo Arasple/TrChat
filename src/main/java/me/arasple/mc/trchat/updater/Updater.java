@@ -39,7 +39,7 @@ public class Updater implements Listener {
         version = TrChat.getTrVersion();
         latest = new UpdateInfo();
 
-        if (!String.valueOf(version).equalsIgnoreCase(plugin.getDescription().getVersion())) {
+        if (!String.valueOf(version).equalsIgnoreCase(plugin.getDescription().getVersion().split("-")[0])) {
             TLocale.sendToConsole("ERROR.VERSION");
             Bukkit.shutdown();
         }

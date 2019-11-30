@@ -48,6 +48,7 @@ CUSTOM:
     # 满足条件表达式才能使用这个功能
     requirement: '1!=0'
     # 匹配表达式
+    # 示例模块的表达式部分来自互联网
     pattern: 'QQ( )?[1-9]([0-9]{5,11})'
     # 变量 {0} 是按下方表达式提取后的内容, 可以不配置此项
     text-filter: '[1-9]([0-9]{5,11})'
@@ -64,6 +65,21 @@ CUSTOM:
         - '&8[&c!&8] &7请勿进行任何金钱交易'
         - '&8[&c!&8] &7交友需谨慎'
       url: 'https://wpa.qq.com/msgrd?v=3&uin={0}&site=qq&menu=yes'
+
+  # 示例 —— B站视频 分享
+  shareBilibili:
+    pattern: 'av( )?[1-9]([0-9]{0,9})'
+    text-filter: '[1-9]([0-9]{0,9})'
+    # 自定义显示 JSON 组件
+    display:
+      text: '&8[&f&lBilibili&8]'
+      hover:
+        - ''
+        - '&7这可能是一个 Bilibili 视频,'
+        - '&7点击即可访问'
+        - ''
+        - '&3Av号: &b{0}}'
+      url: 'https://www.bilibili.com/video/av{0}'
 
   # 示例 —— 防止玩家暴露、分享真实手机号
   hidePhoneNumber:

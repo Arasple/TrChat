@@ -46,7 +46,8 @@ public class ListenerChatEvent implements Listener {
             ChannelGlobal.execute(player, e.getMessage());
             return;
         }
-        if (checkLimits(player, e.getMessage())) {
+        if (!checkLimits(player, e.getMessage())) {
+            e.setCancelled(true);
             return;
         }
 
@@ -89,13 +90,14 @@ public class ListenerChatEvent implements Listener {
                 TLocale.sendTo(p, "GENERAL.COOLDOWNS.CHAT", String.valueOf(chatCooldown / 1000D));
                 return false;
             } else {
-                Users.updateCooldown(p.getUniqueId(), Cooldowns.CooldownType.CHAT, (long) (TrChatFiles.getSettings().getDouble("GENERAL.CHAT-CONTROL.COOLDOWN") * 1000));
+                Users.updateCooldown(p.getUniqueId(), Cooldowns.CooldownType.CHAT, (long) (TrChatFiles.getSettings().getDouble("CHAT-CONTROL.COOLDOWN") * 1000));
             }
         }
         if (!p.hasPermission("trchat.bypass.repeat")) {
             String lastSay = Users.getLastMessage(p.getUniqueId());
             if (Strings.similarDegree(lastSay, message) > TrChatFiles.getSettings().getDouble("CHAT-CONTROL.ANTI-REPEAT", 0.85)) {
                 TLocale.sendTo(p, "GENERAL.TOO-SIMILAR");
+                return false;
             } else {
                 Users.setLastMessage(p.getUniqueId(), message);
             }

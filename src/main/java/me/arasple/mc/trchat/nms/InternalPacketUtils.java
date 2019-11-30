@@ -23,7 +23,8 @@ public class InternalPacketUtils extends AbstractPacketUtils {
     public Object filterIChatComponent(Object component) {
         try {
             String raw = IChatBaseComponent.ChatSerializer.a((IChatBaseComponent) component);
-            return IChatBaseComponent.ChatSerializer.a(ChatFilter.filter(raw).getFiltered());
+            String filtered = ChatFilter.filter(raw).getFiltered();
+            return IChatBaseComponent.ChatSerializer.a(filtered);
         } catch (Throwable throwable) {
             return component;
         }
