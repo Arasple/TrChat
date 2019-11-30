@@ -64,7 +64,7 @@ public class ChannelPrivate {
 
         sender.send(from);
 
-        String spyFormat = "§8[§3监听§8] §6" + from.getName() + " &3-> §2" + to + "§f: §7" + message;
+        String spyFormat = "§8[§3监听§8] §6" + from.getName() + " §3-> §2" + to + "§f: §7" + message;
 
         spying.forEach(spy -> {
             Player spyPlayer = Bukkit.getPlayer(spy);

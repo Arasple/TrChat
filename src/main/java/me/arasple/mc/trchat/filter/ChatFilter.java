@@ -3,6 +3,7 @@ package me.arasple.mc.trchat.filter;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.izzel.taboolib.module.inject.TSchedule;
 import me.arasple.mc.trchat.TrChat;
 import me.arasple.mc.trchat.TrChatFiles;
 import me.arasple.mc.trchat.TrChatPlugin;
@@ -20,10 +21,16 @@ import java.util.List;
  */
 public class ChatFilter {
 
+    private static String CHATFILTER_CLOUD_LAST_UPDATE;
     private static final String[] CHATFILTER_CLOUD_URL = new String[]{
             "https://arasple.oss-cn-beijing.aliyuncs.com/plugins/TrChat/database.json",
             "https://raw.githubusercontent.com/Arasple/TrChat-Cloud/master/database.json",
     };
+
+    @TSchedule(delay = 20 * 60, period = 30 * 60 * 20)
+    static void asyncRefreshCloud() {
+        loadCloudFilter(0);
+    }
 
     /**
      * 加载聊天过滤器
@@ -64,6 +71,12 @@ public class ChatFilter {
                 }
 
                 lastUpdateDate = database.get("lastUpdateDate").getAsString();
+                if (CHATFILTER_CLOUD_LAST_UPDATE != null && !CHATFILTER_CLOUD_LAST_UPDATE.equals(lastUpdateDate)) {
+                    CHATFILTER_CLOUD_LAST_UPDATE = lastUpdateDate;
+                } else {
+                    return;
+                }
+
                 database.get("words").getAsJsonArray().iterator().forEachRemaining(i -> {
                     String word = i.getAsString();
                     if (whitelist.stream().noneMatch(w -> w.equalsIgnoreCase(word))) {
