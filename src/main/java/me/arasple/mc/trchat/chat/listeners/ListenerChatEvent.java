@@ -77,7 +77,7 @@ public class ListenerChatEvent implements Listener {
             long itemShowCooldown = Users.getCooldownLeft(p.getUniqueId(), Cooldowns.CooldownType.ITEM_SHOW);
             if (TrChatFiles.getFunction().getStringList("GENERAL.ITEM-SHOW.KEYS").stream().anyMatch(message::contains)) {
                 if (itemShowCooldown > 0) {
-                    TLocale.sendTo(p, "GENERAL.COOLDOWNS.ITEM-SHOW", String.valueOf(itemShowCooldown / 1000D));
+                    TLocale.sendTo(p, "COOLDOWNS.ITEM-SHOW", String.valueOf(itemShowCooldown / 1000D));
                     return false;
                 } else {
                     Users.updateCooldown(p.getUniqueId(), Cooldowns.CooldownType.ITEM_SHOW, (long) (TrChatFiles.getFunction().getDouble("GENERAL.ITEM-SHOW.COOLDOWNS") * 1000));
@@ -87,7 +87,7 @@ public class ListenerChatEvent implements Listener {
         if (!p.hasPermission("trchat.bypass.chatcd")) {
             long chatCooldown = Users.getCooldownLeft(p.getUniqueId(), Cooldowns.CooldownType.CHAT);
             if (chatCooldown > 0) {
-                TLocale.sendTo(p, "GENERAL.COOLDOWNS.CHAT", String.valueOf(chatCooldown / 1000D));
+                TLocale.sendTo(p, "COOLDOWNS.CHAT", String.valueOf(chatCooldown / 1000D));
                 return false;
             } else {
                 Users.updateCooldown(p.getUniqueId(), Cooldowns.CooldownType.CHAT, (long) (TrChatFiles.getSettings().getDouble("CHAT-CONTROL.COOLDOWN") * 1000));

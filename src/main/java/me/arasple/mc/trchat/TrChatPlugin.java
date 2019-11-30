@@ -30,8 +30,8 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipFile;
 
 /**
- * @Author 坏黑
- * @Since 2019-07-05 9:03
+ * @author 坏黑
+ * @since 2019-07-05 9:03
  */
 public abstract class TrChatPlugin extends JavaPlugin {
 
@@ -168,7 +168,7 @@ public abstract class TrChatPlugin extends JavaPlugin {
     public static byte[] readFully(InputStream inputStream) throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         byte[] buf = new byte[1024];
-        int len = 0;
+        int len;
         while ((len = inputStream.read(buf)) > 0) {
             stream.write(buf, 0, len);
         }
@@ -562,4 +562,5 @@ public abstract class TrChatPlugin extends JavaPlugin {
             return null;
         }
     }
+
 }

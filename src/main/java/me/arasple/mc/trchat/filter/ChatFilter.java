@@ -27,7 +27,7 @@ public class ChatFilter {
             "https://raw.githubusercontent.com/Arasple/TrChat-Cloud/master/database.json",
     };
 
-    @TSchedule(delay = 20 * 60, period = 30 * 60 * 20)
+    @TSchedule(delay = 20 * 120, period = 30 * 60 * 20)
     static void asyncRefreshCloud() {
         loadCloudFilter(0);
     }

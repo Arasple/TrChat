@@ -81,7 +81,7 @@ public class JsonComponent {
         StringBuilder hover = new StringBuilder();
         hovers.forEach(l -> hover.append(l).append("\n"));
         String result = hover.toString();
-        result = result.substring(0, result.length() - 2);
+        result = result.substring(0, result.length() - 1);
         return result;
     }
 
