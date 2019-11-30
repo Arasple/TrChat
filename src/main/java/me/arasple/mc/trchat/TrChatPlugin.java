@@ -113,6 +113,12 @@ public abstract class TrChatPlugin extends JavaPlugin {
         return null;
     }
 
+    public static void downloadFromURL(String in, File file) throws Throwable {
+        InputStream inputStream = new URL(in).openStream();
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        toFile(bufferedInputStream, file);
+    }
+
     private static boolean downloadFile(String in, File file) {
         try (InputStream inputStream = new URL(in).openStream(); BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
             toFile(bufferedInputStream, file);
@@ -159,7 +165,7 @@ public abstract class TrChatPlugin extends JavaPlugin {
         return new String(readFully(inputStream), charset);
     }
 
-    private static byte[] readFully(InputStream inputStream) throws IOException {
+    public static byte[] readFully(InputStream inputStream) throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         byte[] buf = new byte[1024];
         int len = 0;

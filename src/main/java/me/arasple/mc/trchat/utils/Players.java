@@ -31,10 +31,6 @@ public class Players {
     GETTERS & SETTERS
      */
 
-    public static void setPlayers(List<String> players) {
-        Players.players = players;
-    }
-
     public static boolean isPlayerOnline(String target) {
         Player player = Bukkit.getPlayerExact(target);
         return (player != null && player.isOnline()) || players.stream().anyMatch(p -> p.equalsIgnoreCase(target));
@@ -50,6 +46,10 @@ public class Players {
         Bukkit.getOnlinePlayers().forEach(x -> players.add(x.getName()));
         players.addAll(Players.players);
         return players;
+    }
+
+    public static void setPlayers(List<String> players) {
+        Players.players = players;
     }
 
 }

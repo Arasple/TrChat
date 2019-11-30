@@ -3,4 +3,6 @@ main: me.arasple.mc.trchat.TrChatBungee
 
 version: ${project.version}
 
+description: Advanced Minecraft Chat Control
+
 author: Arasple

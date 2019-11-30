@@ -2,7 +2,6 @@ package me.arasple.mc.trchat.bstats;
 
 import io.izzel.taboolib.module.inject.TSchedule;
 import me.arasple.mc.trchat.TrChat;
-import me.arasple.mc.trchat.TrChatFiles;
 
 import java.text.DecimalFormat;
 
@@ -41,10 +40,6 @@ public class Metrics {
             coutns[1] = 0;
             return i;
         }));
-        // 自动检测更新
-        metrics.addCustomChart(new MetricsBukkit.SimplePie("update_checker", () -> TrChatFiles.getSettings().getBoolean("GENERAL.CHECK-UPDATE", true) ? "Enabled" : "Disabled"));
-        // 调试模式
-        metrics.addCustomChart(new MetricsBukkit.SimplePie("debug_mode", () -> TrChatFiles.getSettings().getBoolean("GENERAL.DEBUG", false) ? "Enabled" : "Disabled"));
     }
 
     public static MetricsBukkit getMetrics() {

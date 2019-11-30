@@ -1,6 +1,5 @@
 package me.arasple.mc.trchat.utils;
 
-import io.izzel.taboolib.module.inject.TSchedule;
 import io.izzel.taboolib.module.locale.TLocale;
 import me.arasple.mc.trchat.TrChat;
 import org.bukkit.Bukkit;
@@ -21,7 +20,6 @@ public class Bungees implements PluginMessageListener {
 
     private static boolean ENABLE = false;
 
-    @TSchedule
     public static void init() {
         Plugin plugin = TrChat.getPlugin();
         if (!getMessenger().isOutgoingChannelRegistered(plugin, "BungeeCord")) {
