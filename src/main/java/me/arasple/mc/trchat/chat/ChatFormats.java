@@ -26,7 +26,7 @@ public class ChatFormats {
 
     public static void loadFormats(CommandSender... notify) {
         long start = System.currentTimeMillis();
-        formats.clear();
+        formats.entrySet().clear();
 
         for (ChatType chatType : ChatType.values()) {
             if (TrChatFiles.getFormats().contains(chatType.name())) {

@@ -43,8 +43,8 @@ NORMAL:
           &r
         # 该组件的点击执行命令
         command: '/tpa %player_name%'
-        # 此项为可选项, 如果设置则玩家必须有该权限才会显示这个组件  (不写或null则默认显示)
-        permission: null
+        # 此项为可选项, 如果设置则玩家必须满足此表达式才会显示该组件  (不写或null则默认显示)
+        requirement: null
       part-before-player:
         text: ' '
       player:

@@ -2,6 +2,7 @@ package me.arasple.mc.trchat.chat.format.objects;
 
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.Strings;
+import me.arasple.mc.trchat.utils.Js;
 import me.arasple.mc.trchat.utils.Vars;
 import org.bukkit.OfflinePlayer;
 
@@ -15,6 +16,7 @@ import java.util.List;
  */
 public class JsonComponent {
 
+    private String requirement;
     private String text;
     private String hover;
     private String suggest;
@@ -45,6 +47,9 @@ public class JsonComponent {
         if (partSection.containsKey("url")) {
             setUrl(String.valueOf(partSection.get("url")));
         }
+        if (partSection.containsKey("requirement")) {
+            setRequirement(String.valueOf(partSection.get("requirement")));
+        }
     }
 
     public static List<JsonComponent> loadList(Object parts) {
@@ -55,6 +60,9 @@ public class JsonComponent {
 
     public TellrawJson toTellrawJson(OfflinePlayer player, Object... vars) {
         TellrawJson tellraw = TellrawJson.create();
+        if (!Js.checkCondition(player, getRequirement())) {
+            return tellraw;
+        }
         tellraw.append(text != null ? Vars.replace(player, Strings.replaceWithOrder(text, vars)) : "§8[§fNull§8]");
         if (hover != null) {
             tellraw.hoverText(Vars.replace(player, Strings.replaceWithOrder(hover, vars)));
@@ -88,6 +96,13 @@ public class JsonComponent {
     /*
     GETTERS && SETTERS
      */
+    public String getRequirement() {
+        return requirement;
+    }
+
+    public void setRequirement(String requirement) {
+        this.requirement = requirement;
+    }
 
     public String getText() {
         return text;

@@ -1,7 +1,12 @@
 # TrChat Update Logs #
 
 #### VERSION 1.6
-  - ##### 1.6 :)
+  - ##### 1.62
+    - DATE： 2019.12.1
+    - OVERVIEW:
+      - 修复了 Bungee 版不工作
+      - 现在单个 JSON 组件也支持使用 "Requirement" 属性
+  - ##### 1.61
     - DATE： 2019.11.30
     - OVERVIEW:
       - 修正裁剪了敏感词库
