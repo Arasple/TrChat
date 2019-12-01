@@ -35,7 +35,6 @@ public class Js {
         bind.put("bukkitServer", Bukkit.getServer());
         requirement = Vars.replace(player, requirement);
         try {
-            System.out.println("RUN JS: " + requirement);
             return (boolean) Scripts.compile(requirement).eval(new SimpleBindings(bind));
         } catch (Throwable e) {
             TLocale.sendTo(player, "ERROR.JS", requirement, e.getMessage(), Arrays.toString(e.getStackTrace()));
