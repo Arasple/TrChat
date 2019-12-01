@@ -82,7 +82,7 @@ PRIVATE_SEND:
 PRIVATE_RECEIVE:
   - permission: null
     parts:
-      sender:
+      receive:
         text: '&8[&6%player_name% &7➥ &2你&8] '
     msg:
         default-color: 'f'

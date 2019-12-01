@@ -31,7 +31,7 @@ public class Format {
 
     public TellrawJson apply(OfflinePlayer player, String... message) {
         TellrawJson format = TellrawJson.create();
-        jsons.forEach(x -> format.append(x.toTellrawJson(player)));
+        jsons.forEach(x -> format.append(x.toTellrawJson(player, message)));
         format.append(msg.toTellrawJson(player, message[0]));
         return format;
     }

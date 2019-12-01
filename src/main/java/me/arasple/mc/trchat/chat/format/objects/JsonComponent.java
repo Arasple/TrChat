@@ -63,7 +63,7 @@ public class JsonComponent {
         if (!Js.checkCondition(player, getRequirement())) {
             return tellraw;
         }
-        tellraw.append(text != null ? Vars.replace(player, Strings.replaceWithOrder(text, vars)) : "§8[§fNull§8]");
+        tellraw.append(text != null ? Vars.replace(player, Strings.replaceWithOrder(player == null ? text.replace("%player_name%", String.valueOf(vars[1])) : text, vars)) : "§8[§fNull§8]");
         if (hover != null) {
             tellraw.hoverText(Vars.replace(player, Strings.replaceWithOrder(hover, vars)));
         }

@@ -68,7 +68,7 @@ public class Vars {
      */
     public static String replace(OfflinePlayer player, String string) {
         if (string == null || player == null) {
-            return null;
+            return string;
         }
         if (player instanceof Player) {
             return PlaceholderAPI.setPlaceholders((Player) player, string);
