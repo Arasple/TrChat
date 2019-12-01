@@ -55,8 +55,6 @@ public class ListenerChatEvent implements Listener {
 
         if (format != null) {
             e.setCancelled(true);
-
-
             TellrawJson tellraw = format.apply(player, e.getMessage());
             Bukkit.getOnlinePlayers().stream().filter(p -> !Users.getIgnoredList(p).contains(player.getName())).forEach(tellraw::send);
             tellraw.send(Bukkit.getConsoleSender());

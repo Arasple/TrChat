@@ -6,6 +6,7 @@ import me.arasple.mc.trchat.bstats.Metrics;
 import me.arasple.mc.trchat.chat.ChatFormats;
 import me.arasple.mc.trchat.chat.obj.ChatType;
 import me.arasple.mc.trchat.utils.Bungees;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
@@ -18,6 +19,7 @@ public class ChannelGlobal {
         TellrawJson format = ChatFormats.getFormat(ChatType.GLOBAL, from).apply(from, message);
         String raw = ComponentSerializer.toString(format.getComponentsAll());
         Bungees.sendBungeeData(from, "TrChat", "BroadcastRaw", raw);
+        format.send(Bukkit.getConsoleSender());
         Metrics.increase(0);
     }
 
