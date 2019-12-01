@@ -71,10 +71,12 @@ public class ChatFilter {
                 }
 
                 lastUpdateDate = database.get("lastUpdateDate").getAsString();
-                if (CHATFILTER_CLOUD_LAST_UPDATE != null && !CHATFILTER_CLOUD_LAST_UPDATE.equals(lastUpdateDate)) {
+                if (CHATFILTER_CLOUD_LAST_UPDATE == null) {
                     CHATFILTER_CLOUD_LAST_UPDATE = lastUpdateDate;
-                } else {
+                } else if (CHATFILTER_CLOUD_LAST_UPDATE.equals(lastUpdateDate)) {
                     return;
+                } else {
+                    CHATFILTER_CLOUD_LAST_UPDATE = lastUpdateDate;
                 }
 
                 database.get("words").getAsJsonArray().iterator().forEachRemaining(i -> {

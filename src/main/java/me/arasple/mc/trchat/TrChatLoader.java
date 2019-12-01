@@ -54,7 +54,7 @@ public class TrChatLoader {
 
 
     void load() {
-        TLocale.sendToConsole("PLUGIN.ENABLED", TrChat.getTrVersion());
+        TLocale.sendToConsole("PLUGIN.ENABLED", TrChat.getPlugin().getDescription().getVersion());
     }
 
     void unload() {

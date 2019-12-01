@@ -14,7 +14,7 @@ import java.util.List;
  * @author Arasple
  * @date 2019/8/4 21:19
  */
-@BaseCommand(name = "filter", aliases = {"filters"}, permission = "trchat.filter")
+@BaseCommand(name = "filter", aliases = {"filters", "chatfilter", "trfilter"}, permission = "trchat.filter")
 public class CommandFilter extends BaseMainCommand {
 
     @Override
