@@ -41,13 +41,13 @@ public class ListenerChatEvent implements Listener {
             ChannelStaff.execute(player, e.getMessage());
             return;
         }
+        if (!checkLimits(player, e.getMessage())) {
+            e.setCancelled(true);
+            return;
+        }
         if (TrChatFiles.getChannels().getBoolean("FORCE-GLOBAL")) {
             e.setCancelled(true);
             ChannelGlobal.execute(player, e.getMessage());
-            return;
-        }
-        if (!checkLimits(player, e.getMessage())) {
-            e.setCancelled(true);
             return;
         }
 

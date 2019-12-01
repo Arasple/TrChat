@@ -13,7 +13,6 @@ import me.arasple.mc.trchat.chat.obj.ChatType;
 import me.arasple.mc.trchat.logs.ChatLogs;
 import me.arasple.mc.trchat.utils.Bungees;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -49,11 +48,10 @@ public class ChannelPrivate {
     }
 
     public static void execute(Player from, String to, String message) {
-        OfflinePlayer toPlayer = Bukkit.getPlayerExact(to);
+        TellrawJson sender = ChatFormats.getFormat(ChatType.PRIVATE_SEND, from).apply(from, message, from.getName(), to);
+        TellrawJson receiver = ChatFormats.getFormat(ChatType.PRIVATE_RECEIVE, from).apply(from, message, from.getName(), to);
 
-        TellrawJson sender = ChatFormats.getFormat(ChatType.PRIVATE_SEND, from).apply(toPlayer, message, to);
-        TellrawJson receiver = ChatFormats.getFormat(ChatType.PRIVATE_RECEIVE, from).apply(from, message, to);
-
+        Player toPlayer = Bukkit.getPlayerExact(to);
         if (toPlayer == null || !toPlayer.isOnline()) {
             String raw = ComponentSerializer.toString(receiver.getComponentsAll());
             Bungees.sendBungeeData(from, "TrChat", "SendRaw", to, raw);
@@ -73,7 +71,7 @@ public class ChannelPrivate {
             }
         });
         Bukkit.getConsoleSender().sendMessage(spyFormat);
-        ChatLogs.logPrivate(from, toPlayer.getName(), message);
+        ChatLogs.logPrivate(from.getName(), to, message);
         Metrics.increase(0);
     }
 

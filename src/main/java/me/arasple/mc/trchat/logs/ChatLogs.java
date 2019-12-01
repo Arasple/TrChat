@@ -32,8 +32,11 @@ public class ChatLogs {
         wave = new ArrayList<>();
     }
 
-    @TSchedule(delay = 20 * 10, period = 20 * 60 * 5, async = true)
+    @TSchedule(delay = 20 * 15, period = 20 * 60 * 5, async = true)
     public static void write() {
+        if (logFile == null) {
+            return;
+        }
         try {
             Files.file(logFile);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(logFile), StandardCharsets.UTF_8));
@@ -42,9 +45,7 @@ public class ChatLogs {
             }
             bw.close();
             wave.clear();
-        } catch (Throwable e) {
-            System.out.println("Error when writing the logs.");
-            e.printStackTrace();
+        } catch (Throwable ignored) {
         }
     }
 
@@ -57,10 +58,10 @@ public class ChatLogs {
         wave.add(record);
     }
 
-    public static void logPrivate(Player player, String to, String originalMessage) {
+    public static void logPrivate(String from, String to, String originalMessage) {
         String record = Strings.replaceWithOrder(TrChatFiles.getSettings().getStringColored("GENERAL.LOG", "[{0}] {1} -> {2}: {3}"),
                 new SimpleDateFormat("yyyy-M-dd HH:mm:ss").format(new Date(System.currentTimeMillis())),
-                player.getName(),
+                from,
                 to,
                 originalMessage
         );

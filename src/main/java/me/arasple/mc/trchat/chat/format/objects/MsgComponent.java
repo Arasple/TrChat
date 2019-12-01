@@ -15,7 +15,6 @@ import me.arasple.mc.trchat.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -41,8 +40,8 @@ public class MsgComponent extends JsonComponent {
         setDefualtColor(ChatColor.getByChar(String.valueOf(partSection.get("default-color"))));
     }
 
-    public TellrawJson toTellrawJson(OfflinePlayer player, String message) {
-        message = MessageColors.replaceWithPermission((Player) player, message);
+    public TellrawJson toMsgTellraw(Player player, String message) {
+        message = MessageColors.replaceWithPermission(player, message);
 
         TellrawJson tellraw = TellrawJson.create();
         for (Function function : ChatFunctions.getFunctions().stream().filter(f -> Js.checkCondition(player, f.getRequirement())).collect(Collectors.toList())) {
@@ -52,8 +51,11 @@ public class MsgComponent extends JsonComponent {
         boolean atEnabled = Users.getCooldownLeft(player.getUniqueId(), Cooldowns.CooldownType.MENTION) <= 0;
         String atFormat = TrChatFiles.getFunction().getStringColored("GENERAL.MENTION.FORMAT");
         if (atEnabled) {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                message = message.replaceAll("(?i)(@)?" + p.getName(), "<at:" + p.getName() + ">");
+            for (String p : Players.getPlayers()) {
+                if (p.equalsIgnoreCase(player.getName())) {
+                    continue;
+                }
+                message = message.replaceAll("(?i)(@)?" + p, "<AT:" + p + ">");
             }
         }
         boolean itemDisplayEnabled = TrChatFiles.getFunction().getBoolean("GENERAL.ITEM-SHOW.ENABLE", true);
@@ -64,7 +66,7 @@ public class MsgComponent extends JsonComponent {
                 for (int i = 0; i < 9; i++) {
                     message = message.replace(key + "-" + i, "<ITEM:" + i + ">");
                 }
-                message = message.replace(key, "<ITEM:" + ((Player) player).getInventory().getHeldItemSlot() + ">");
+                message = message.replace(key, "<ITEM:" + player.getInventory().getHeldItemSlot() + ">");
             }
         }
 
@@ -73,26 +75,23 @@ public class MsgComponent extends JsonComponent {
             if (v.isVariable()) {
                 String[] args = v.getText().split(":", 2);
                 if (itemDisplayEnabled && "ITEM".equalsIgnoreCase(args[0])) {
-                    int slot = NumberUtils.toInt(args[1], ((Player) player).getInventory().getHeldItemSlot());
-                    ItemStack item = ((Player) player).getInventory().getItem(slot) != null ? ((Player) player).getInventory().getItem(slot) : new ItemStack(Material.AIR);
+                    int slot = NumberUtils.toInt(args[1], player.getInventory().getHeldItemSlot());
+                    ItemStack item = player.getInventory().getItem(slot) != null ? player.getInventory().getItem(slot) : new ItemStack(Material.AIR);
                     tellraw.append(Users.getItemshowCache().computeIfAbsent(item, i -> TellrawJson.create().append(Strings.replaceWithOrder(itemFormat, Items.isNull(item) ? "空气" : Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defualtColor).hoverItem(item)));
                     continue;
                 }
                 if (atEnabled && "AT".equalsIgnoreCase(args[0]) && !isPrivateChat) {
                     String atPlayer = args[1];
-                    if (Players.isPlayerOnline(atPlayer)) {
-                        tellraw.append(Strings.replaceWithOrder(atFormat, atPlayer) + defualtColor);
-                        if (TrChatFiles.getFunction().getBoolean("GENERAL.MENTION.NOTIFY")) {
-                            TLocale.sendTo(Bukkit.getPlayer(atPlayer), "MENTIONS.NOTIFY", player.getName());
-                        }
+                    tellraw.append(Strings.replaceWithOrder(atFormat, atPlayer) + defualtColor);
+                    if (TrChatFiles.getFunction().getBoolean("GENERAL.MENTION.NOTIFY") && Bukkit.getPlayerExact(atPlayer) != null && Bukkit.getPlayerExact(atPlayer).isOnline()) {
+                        TLocale.sendTo(Bukkit.getPlayer(atPlayer), "MENTIONS.NOTIFY", player.getName());
                     }
                     Users.updateCooldown(player.getUniqueId(), Cooldowns.CooldownType.MENTION, TrChatFiles.getFunction().getLong("GENERAL.MENTION.COOLDOWNS"));
                     continue;
                 }
-
                 Function function = ChatFunctions.mathFunction(args[0]);
                 if (function != null) {
-                    tellraw.append(function.getDisplayJson().toTellrawJson(player, args[1]));
+                    tellraw.append(function.getDisplayJson().toTellrawJson(player, true, args[1]));
                     continue;
                 }
             }
@@ -101,7 +100,7 @@ public class MsgComponent extends JsonComponent {
         return tellraw;
     }
 
-    public TellrawJson toTellrawPart(OfflinePlayer player, String text) {
+    public TellrawJson toTellrawPart(Player player, String text) {
         TellrawJson tellraw = TellrawJson.create();
         tellraw.append(text != null ? text : "§8[§fNull§8]");
         if (getHover() != null) {

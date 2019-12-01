@@ -25,6 +25,10 @@ public enum ChatType {
     /**
      * 管理交流
      */
-    STAFF
+    STAFF;
+
+    public boolean isPrivate() {
+        return this == PRIVATE_RECEIVE || this == PRIVATE_SEND;
+    }
 
 }

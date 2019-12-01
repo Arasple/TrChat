@@ -2,6 +2,7 @@ package me.arasple.mc.trchat.chat;
 
 import me.arasple.mc.trchat.TrChatFiles;
 import me.arasple.mc.trchat.chat.format.Format;
+import me.arasple.mc.trchat.chat.format.PriFormat;
 import me.arasple.mc.trchat.chat.obj.ChatType;
 import me.arasple.mc.trchat.utils.Js;
 import me.arasple.mc.trchat.utils.Notifys;
@@ -31,7 +32,7 @@ public class ChatFormats {
         for (ChatType chatType : ChatType.values()) {
             if (TrChatFiles.getFormats().contains(chatType.name())) {
                 List<Format> formats = new ArrayList<>();
-                TrChatFiles.getFormats().getMapList(chatType.name()).forEach(formatMap -> formats.add(new Format(formatMap)));
+                TrChatFiles.getFormats().getMapList(chatType.name()).forEach(formatMap -> formats.add(chatType.isPrivate() ? new PriFormat(formatMap) : new Format(formatMap)));
                 ChatFormats.formats.put(chatType, formats);
             }
         }

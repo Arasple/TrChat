@@ -4,7 +4,7 @@ import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.Strings;
 import me.arasple.mc.trchat.utils.Js;
 import me.arasple.mc.trchat.utils.Vars;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -58,12 +58,28 @@ public class JsonComponent {
         return jsonComponents;
     }
 
-    public TellrawJson toTellrawJson(OfflinePlayer player, Object... vars) {
+    public TellrawJson toTellrawJson(Player player, String... vars) {
+        return toTellrawJson(player, false, vars);
+    }
+
+    public TellrawJson toTellrawJson(Player player, boolean function, String... vars) {
         TellrawJson tellraw = TellrawJson.create();
         if (!Js.checkCondition(player, getRequirement())) {
             return tellraw;
         }
-        tellraw.append(text != null ? Vars.replace(player, Strings.replaceWithOrder(player == null ? text.replace("%player_name%", String.valueOf(vars[1])) : text, vars)) : "§8[§fNull§8]");
+
+        String text = getText();
+
+        if (vars.length == 1 && !function) {
+            text = String.valueOf(vars[0]);
+        }
+        if (vars.length > 0) {
+            if (Boolean.parseBoolean(vars[0])) {
+                text = text.replaceAll("%toplayer_name%", vars[2]);
+            }
+        }
+
+        tellraw.append(text != null ? Vars.replace(player, text) : "§8[§fNull§8]");
         if (hover != null) {
             tellraw.hoverText(Vars.replace(player, Strings.replaceWithOrder(hover, vars)));
         }
@@ -96,6 +112,7 @@ public class JsonComponent {
     /*
     GETTERS && SETTERS
      */
+
     public String getRequirement() {
         return requirement;
     }

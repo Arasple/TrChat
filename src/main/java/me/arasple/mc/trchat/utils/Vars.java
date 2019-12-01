@@ -7,7 +7,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import me.clip.placeholderapi.expansion.cloud.CloudExpansion;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class Vars {
      * @param strings 内容
      * @return 替换后内容
      */
-    public static List<String> replace(OfflinePlayer player, List<String> strings) {
+    public static List<String> replace(Player player, List<String> strings) {
         List<String> results = new ArrayList<>();
         strings.forEach(str -> results.add(replace(player, str)));
         return results;
@@ -66,12 +65,12 @@ public class Vars {
      * @param string 内容
      * @return 替换后内容
      */
-    public static String replace(OfflinePlayer player, String string) {
+    public static String replace(Player player, String string) {
         if (string == null || player == null) {
             return string;
         }
         if (player instanceof Player) {
-            return PlaceholderAPI.setPlaceholders((Player) player, string);
+            return PlaceholderAPI.setPlaceholders(player, string);
         }
         return string;
     }

@@ -3,7 +3,7 @@ package me.arasple.mc.trchat.chat.format;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import me.arasple.mc.trchat.chat.format.objects.JsonComponent;
 import me.arasple.mc.trchat.chat.format.objects.MsgComponent;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -29,10 +29,10 @@ public class Format {
         this.msg = msg;
     }
 
-    public TellrawJson apply(OfflinePlayer player, String... message) {
+    public TellrawJson apply(Player player, String... message) {
         TellrawJson format = TellrawJson.create();
-        jsons.forEach(x -> format.append(x.toTellrawJson(player, message)));
-        format.append(msg.toTellrawJson(player, message[0]));
+        jsons.forEach(x -> format.append(x.toTellrawJson(player)));
+        format.append(msg.toMsgTellraw(player, message[0]));
         return format;
     }
 

@@ -43,8 +43,12 @@ public class Players {
 
     public static List<String> getPlayers() {
         List<String> players = Lists.newArrayList();
-        Bukkit.getOnlinePlayers().forEach(x -> players.add(x.getName()));
         players.addAll(Players.players);
+        Bukkit.getOnlinePlayers().forEach(x -> {
+            if (!players.contains(x.getName())) {
+                players.add(x.getName());
+            }
+        });
         return players;
     }
 

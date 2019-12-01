@@ -2,7 +2,6 @@ package me.arasple.mc.trchat.data;
 
 import io.izzel.taboolib.module.db.local.LocalPlayer;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -49,19 +48,20 @@ public class Users {
         return itemshow_cache;
     }
 
-    public static boolean isFilterEnabled(OfflinePlayer user) {
+    public static boolean isFilterEnabled(Player user) {
         return LocalPlayer.get(user).getBoolean("TRCHAT.FILTER", true);
     }
 
-    public static void setFilter(OfflinePlayer user, boolean value) {
+    public static void setFilter(Player user, boolean value) {
         LocalPlayer.get(user).set("TRCHAT.FILTER", value);
     }
 
     public static List<String> getIgnoredList(Player user) {
-        if (!LocalPlayer.get(user).isSet("TRCHAT.IGNORED")) {
-            LocalPlayer.get(user).set("TRCHAT.IGNORED", new ArrayList<>());
-        }
-        return LocalPlayer.get(user).getStringList("TRCHAT.IGNORED");
+//        if (!LocalPlayer.get(user).isSet("TRCHAT.IGNORED")) {
+//            LocalPlayer.get(user).set("TRCHAT.IGNORED", new ArrayList<>());
+//        }
+//        return LocalPlayer.get(user).getStringList("TRCHAT.IGNORED");
+        return new ArrayList<>();
     }
 
     public static String getLastMessage(UUID uuid) {

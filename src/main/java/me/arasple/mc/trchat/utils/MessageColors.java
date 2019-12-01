@@ -28,6 +28,9 @@ public class MessageColors {
     }
 
     public static String replaceWithPermission(Player player, String string) {
+        if (player == null) {
+            return string;
+        }
         for (Character code : COLOR_CODES) {
             if (player.hasPermission(COLOR_PERMISSION_NODE + "." + code)) {
                 string = string.replace("&" + code, "§" + code);

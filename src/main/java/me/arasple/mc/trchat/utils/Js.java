@@ -4,7 +4,6 @@ import io.izzel.taboolib.module.locale.TLocale;
 import io.izzel.taboolib.util.Strings;
 import io.izzel.taboolib.util.lite.Scripts;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import javax.script.SimpleBindings;
@@ -18,15 +17,8 @@ import java.util.Map;
  */
 public class Js {
 
-    public static boolean checkCondition(OfflinePlayer ofPlayer, String requirement) {
+    public static boolean checkCondition(Player player, String requirement) {
         if (Strings.isEmpty(requirement) || "null".equalsIgnoreCase(requirement)) {
-            return true;
-        }
-        Player player;
-        try {
-            player = (Player) ofPlayer;
-        } catch (Throwable e) {
-            System.out.println("FUCKED: " + requirement);
             return true;
         }
 
