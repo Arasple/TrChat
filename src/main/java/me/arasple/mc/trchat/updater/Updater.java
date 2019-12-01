@@ -55,7 +55,7 @@ public class Updater implements Listener {
 
     private static void notifyOld() {
         if (latest.newVersion - version >= 0.03) {
-            int last = Math.min((int) (5 * ((latest.newVersion - version) / 0.01)), 30);
+            int last = Math.min((int) (4 * ((latest.newVersion - version) / 0.01)), 20);
             Bukkit.getConsoleSender().sendMessage("§8--------------------------------------------------");
             Bukkit.getConsoleSender().sendMessage("§r");
             Bukkit.getConsoleSender().sendMessage("§8# §4您所运行的 §cTrChat §4版本过旧, 可能潜在很多漏洞");

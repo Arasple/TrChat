@@ -78,7 +78,7 @@ CUSTOM:
         - '&7这可能是一个 Bilibili 视频,'
         - '&7点击即可访问'
         - ''
-        - '&3Av号: &b{0}}'
+        - '&3Av号: &b{0}'
       url: 'https://www.bilibili.com/video/av{0}'
 
   # 示例 —— 防止玩家暴露、分享真实手机号
