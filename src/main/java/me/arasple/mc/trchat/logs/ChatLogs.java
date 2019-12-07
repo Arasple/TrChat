@@ -7,10 +7,10 @@ import io.izzel.taboolib.util.Strings;
 import me.arasple.mc.trchat.TrChatFiles;
 import org.bukkit.entity.Player;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,21 +25,19 @@ import java.util.List;
 public class ChatLogs {
 
     private static List<String> wave;
-    private static File logFile;
 
     public static void init() {
-        logFile = new File("plugins/TrChat/logs/" + new SimpleDateFormat("yyyy-M-dd").format(new Date(System.currentTimeMillis())) + ".txt");
         wave = new ArrayList<>();
     }
 
     @TSchedule(delay = 20 * 15, period = 20 * 60 * 5, async = true)
     public static void write() {
+        File logFile = Files.file("plugins/TrChat/logs/" + new SimpleDateFormat("yyyy-M-dd").format(new Date(System.currentTimeMillis())) + ".txt");
         if (logFile == null) {
             return;
         }
         try {
-            Files.file(logFile);
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(logFile), StandardCharsets.UTF_8));
+            PrintWriter bw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(logFile), StandardCharsets.UTF_8));
             for (String l : wave) {
                 bw.write(l + "\r\n");
             }

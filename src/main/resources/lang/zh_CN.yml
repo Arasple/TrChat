@@ -96,6 +96,7 @@ MENTIONS:
       sound: 'BLOCK_NOTE_BLOCK_PLING-1-0'
 
 PRIVATE-MESSAGE:
+  SPY-FORMAT: '&8[&3监听&8] &6{0} &2-> &3{1}&f: &7{2}'
   SPY:
     'ON':
       - ==: ACTION
