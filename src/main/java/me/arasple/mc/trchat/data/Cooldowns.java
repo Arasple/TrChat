@@ -10,14 +10,14 @@ import java.util.List;
  */
 public class Cooldowns {
 
-    private List<Cooldown> COOLDOWNs = Lists.newArrayList();
+    private List<Cooldown> cooldown = Lists.newArrayList();
 
     public List<Cooldown> getCooldowns() {
-        return COOLDOWNs;
+        return cooldown;
     }
 
-    public void setCooldowns(List<Cooldown> COOLDOWNs) {
-        this.COOLDOWNs = COOLDOWNs;
+    public void setCooldowns(List<Cooldown> cooldown) {
+        this.cooldown = cooldown;
     }
 
     public enum CooldownType {

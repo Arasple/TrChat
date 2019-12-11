@@ -44,9 +44,9 @@ public class InternalPacketUtils extends AbstractPacketUtils {
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
             if (meta.hasLore() && meta.getLore() != null && meta.getLore().size() > 0) {
-                List<String> lores = new ArrayList<>();
-                meta.getLore().forEach(l -> lores.add(ChatFilter.filter(l).getFiltered()));
-                meta.setLore(lores);
+                List<String> lore = new ArrayList<>();
+                meta.getLore().forEach(l -> lore.add(ChatFilter.filter(l).getFiltered()));
+                meta.setLore(lore);
             }
             if (meta.hasDisplayName()) {
                 String tran = ChatFilter.filter(meta.getDisplayName()).getFiltered();

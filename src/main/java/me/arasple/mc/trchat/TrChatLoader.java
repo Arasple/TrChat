@@ -13,6 +13,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Arasple
@@ -20,45 +21,48 @@ import java.util.Arrays;
  */
 public class TrChatLoader {
 
+    private List<String> motd = Arrays.asList(
+            "",
+            "§3  ___________      _________ .__            __",
+            "§3  \\__    __________\\_   ___ \\|  |__ _____ _/  |_",
+            "§3  |    |  \\_  __ /    \\  \\/|  |  \\\\__  \\\\   __\\",
+            "§3  |    |   |  | \\\\     \\___|   Y  \\/ __ \\|  |",
+            "§3  |____|   |__|   \\______  |___|  (____  |__|",
+            "§3  \\/     \\/     \\/      ");
+
     void init() {
         if (isAbandoned()) {
             return;
         }
 
-        Arrays.asList(
-                "",
-                "§3  ___________      _________ .__            __",
-                "§3  \\__    __________\\_   ___ \\|  |__ _____ _/  |_",
-                "§3  |    |  \\_  __ /    \\  \\/|  |  \\\\__  \\\\   __\\",
-                "§3  |    |   |  | \\\\     \\___|   Y  \\/ __ \\|  |",
-                "§3  |____|   |__|   \\______  |___|  (____  |__|",
-                "§3  \\/     \\/     \\/      ").forEach(l -> Bukkit.getConsoleSender().sendMessage(l));
-        TLocale.sendToConsole("PLUGIN.LOADED");
+        if (!new File(TrChat.getPlugin().getDataFolder(), "do_not_notify").exists()) {
+            motd.forEach(l -> Bukkit.getConsoleSender().sendMessage(l));
+            TLocale.sendToConsole("PLUGIN.LOADED");
+        }
 
         if (hookPlaceholderAPI()) {
             return;
         }
 
-        Updater.init(TrChat.getPlugin());
-        TrChatFiles.init();
-        Bungees.init();
         // Chat Filter
         ChatFilter.loadFilter(true, Bukkit.getConsoleSender());
         // Chat Formats
         ChatFormats.loadFormats(Bukkit.getConsoleSender());
         // Chat Functions
         ChatFunctions.loadFunctions(Bukkit.getConsoleSender());
-        // Chat Logs
-        ChatLogs.init();
     }
 
 
     void load() {
-        TLocale.sendToConsole("PLUGIN.ENABLED", TrChat.getPlugin().getDescription().getVersion());
+        if (!new File(TrChat.getPlugin().getDataFolder(), "do_not_notify").exists()) {
+            TLocale.sendToConsole("PLUGIN.ENABLED", TrChat.getPlugin().getDescription().getVersion());
+        }
     }
 
     void unload() {
-        TLocale.sendToConsole("PLUGIN.DISABLED");
+        if (!new File(TrChat.getPlugin().getDataFolder(), "do_not_notify").exists()) {
+            TLocale.sendToConsole("PLUGIN.DISABLED");
+        }
     }
 
     /**

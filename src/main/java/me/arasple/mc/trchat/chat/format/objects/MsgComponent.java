@@ -77,7 +77,7 @@ public class MsgComponent extends JsonComponent {
                 if (itemDisplayEnabled && "ITEM".equalsIgnoreCase(args[0])) {
                     int slot = NumberUtils.toInt(args[1], player.getInventory().getHeldItemSlot());
                     ItemStack item = player.getInventory().getItem(slot) != null ? player.getInventory().getItem(slot) : new ItemStack(Material.AIR);
-                    tellraw.append(Users.getItemshowCache().computeIfAbsent(item, i -> TellrawJson.create().append(Strings.replaceWithOrder(itemFormat, Items.isNull(item) ? "空气" : Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defualtColor).hoverItem(item)));
+                    tellraw.append(Users.getItemCache().computeIfAbsent(item, i -> TellrawJson.create().append(Strings.replaceWithOrder(itemFormat, Items.isNull(item) ? "空气" : Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defualtColor).hoverItem(item)));
                     continue;
                 }
                 if (atEnabled && "AT".equalsIgnoreCase(args[0]) && !isPrivateChat) {

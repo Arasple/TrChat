@@ -16,7 +16,7 @@ import java.util.UUID;
  */
 public class Users {
 
-    private static HashMap<ItemStack, TellrawJson> itemshow_cache = new HashMap<>();
+    private static HashMap<ItemStack, TellrawJson> itemCache = new HashMap<>();
     private static HashMap<UUID, Cooldowns> cooldowns = new HashMap<>();
     private static HashMap<UUID, String> message = new HashMap<>();
 
@@ -44,8 +44,8 @@ public class Users {
         return cooldowns;
     }
 
-    public static HashMap<ItemStack, TellrawJson> getItemshowCache() {
-        return itemshow_cache;
+    public static HashMap<ItemStack, TellrawJson> getItemCache() {
+        return itemCache;
     }
 
     public static boolean isFilterEnabled(Player user) {

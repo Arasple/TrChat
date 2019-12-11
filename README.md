@@ -1,3 +1,2 @@
-# TrChat #
-
-#### Redefines the chat
+# TrChat
+Advanced chat control for Minecraft servers

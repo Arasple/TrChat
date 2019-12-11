@@ -2,6 +2,7 @@ package me.arasple.mc.trchat.updater;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.izzel.taboolib.module.inject.TFunction;
 import io.izzel.taboolib.module.inject.TSchedule;
 import io.izzel.taboolib.module.locale.TLocale;
 import me.arasple.mc.trchat.TrChat;
@@ -15,6 +16,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -32,19 +34,26 @@ public class Updater implements Listener {
     private static List<UUID> noticed = new ArrayList<>();
     private static String url;
     private static double version;
+    private static boolean closed;
     private static UpdateInfo latest;
 
-    public static void init(Plugin plugin) {
-        url = "https://api.github.com/repos/Arasple/" + plugin.getName() + "/releases/latest";
+    @TFunction.Init
+    public static void init() {
+        // 跳过检测
+        if (new File(TrChat.getPlugin().getDataFolder(), "do_not_update").exists()) {
+            closed = true;
+            return;
+        }
+        url = "https://api.github.com/repos/Arasple/" + TrChat.getPlugin().getName() + "/releases/latest";
         version = TrChat.getTrVersion();
         latest = new UpdateInfo();
 
-        if (!String.valueOf(version).equalsIgnoreCase(plugin.getDescription().getVersion().split("-")[0])) {
+        if (!String.valueOf(version).equalsIgnoreCase(TrChat.getPlugin().getDescription().getVersion().split("-")[0])) {
             TLocale.sendToConsole("ERROR.VERSION");
             Bukkit.shutdown();
         }
 
-        Bukkit.getPluginManager().registerEvents(new Updater(), plugin);
+        Bukkit.getPluginManager().registerEvents(new Updater(), TrChat.getPlugin());
         startTask();
     }
 
@@ -82,7 +91,8 @@ public class Updater implements Listener {
 
     @TSchedule(delay = 60, period = 60 * 30, async = true)
     private static void grabInfo() {
-        if (latest.hasLatest) {
+        // 跳过获取
+        if (closed || latest.hasLatest) {
             return;
         }
         String read;
@@ -102,8 +112,8 @@ public class Updater implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-
-        if (latest.hasLatest && !noticed.contains(p.getUniqueId()) && p.hasPermission("trchat.admin")) {
+        // 跳过通知
+        if (!closed && latest.hasLatest && !noticed.contains(p.getUniqueId()) && p.hasPermission("trchat.admin")) {
             noticed.add(p.getUniqueId());
             Bukkit.getScheduler().runTaskLaterAsynchronously(TrChat.getPlugin(), () -> latest.notifyUpdates(version, p), 1);
         }
