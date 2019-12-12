@@ -45,6 +45,7 @@ shadowJar {
 processResources {
     from(sourceSets.main.resources.srcDirs) {
         include 'plugin.yml'
+        include 'bungee.yml'
         expand 'version': project.version
     }
 }

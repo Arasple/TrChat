@@ -4,8 +4,9 @@ main: me.arasple.mc.trchat.TrChat
 api-version: 1.13
 version: ${version}
 
+description: Advanced Minecraft Chat Control
+
 softdepend:
   - PlaceholderAPI
 
-authors:
-  - Arasple
+author: Arasple
