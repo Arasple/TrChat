@@ -11,8 +11,6 @@ configurations {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
-    tasks.build.dependsOn tasks.shadowJar
-
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
     }
@@ -21,25 +19,20 @@ configurations {
 }
 
 repositories {
-     maven { url "http://ptms.ink:8081/repository/codemc-nms/" }
-     maven { url "http://ptms.ink:8081/repository/maven-releases/" }
-     mavenCentral()
+    maven { url "http://ptms.ink:8081/repository/codemc-nms/" }
+    maven { url "http://ptms.ink:8081/repository/maven-releases/" }
+    maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    mavenCentral()
 }
 
 dependencies {
-    compile 'org.spigotmc:spigot:1.14.4-R0.1-SNAPSHOT'
+    compile 'org.spigotmc:spigot:1.15-R0.1-SNAPSHOT'
     compile 'io.izzel.taboolib:TabooLib:5.13:all'
     compile 'io.izzel.taboolib.loader:TabooLibloader:1.2:all'
     compile "org.jetbrains.kotlin:kotlin-stdlib:1.2.41"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.41"
     shadow fileTree(dir: 'libs', includes: ['*.jar'])
-}
-
-shadowJar {
-    dependencies {
-        include dependency('io.izzel.taboolib.loader:.*')
-    }
-    relocate 'io.izzel.taboolib.loader', project.group
 }
 
 processResources {

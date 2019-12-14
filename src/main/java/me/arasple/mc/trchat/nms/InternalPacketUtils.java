@@ -1,11 +1,11 @@
 package me.arasple.mc.trchat.nms;
 
 import me.arasple.mc.trchat.filter.ChatFilter;
-import net.minecraft.server.v1_14_R1.IChatBaseComponent;
-import net.minecraft.server.v1_14_R1.NonNullList;
+import net.minecraft.server.v1_15_R1.IChatBaseComponent;
+import net.minecraft.server.v1_15_R1.NonNullList;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -24,10 +24,6 @@ public class InternalPacketUtils extends AbstractPacketUtils {
         try {
             String raw = IChatBaseComponent.ChatSerializer.a((IChatBaseComponent) component);
             String filtered = ChatFilter.filter(raw).getFiltered();
-
-//            System.out.println(ChatColor.GRAY + "RAW: " + raw);
-//            System.out.println(ChatColor.AQUA + "FILTERED: " + ChatColor.WHITE + filtered);
-
             return IChatBaseComponent.ChatSerializer.a(filtered);
         } catch (Throwable throwable) {
             return component;
@@ -36,7 +32,7 @@ public class InternalPacketUtils extends AbstractPacketUtils {
 
     @Override
     public void filterItem(Object item) {
-        ItemStack itemStack = CraftItemStack.asCraftMirror((net.minecraft.server.v1_14_R1.ItemStack) item);
+        ItemStack itemStack = CraftItemStack.asCraftMirror((net.minecraft.server.v1_15_R1.ItemStack) item);
         if (itemStack == null || itemStack.getType() == Material.AIR) {
             return;
 
