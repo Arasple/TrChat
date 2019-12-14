@@ -5,7 +5,7 @@ import io.izzel.taboolib.module.inject.TInject;
 /**
  * @author Arasple
  */
-@TrChatPlugin.Version(5.11)
+@TrChatPlugin.Version(5.13)
 public final class TrChat extends TrChatPlugin {
 
     @TInject(state = TInject.State.LOADING, init = "init", active = "load", cancel = "unload")

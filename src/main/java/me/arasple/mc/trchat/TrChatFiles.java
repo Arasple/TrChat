@@ -1,6 +1,7 @@
 package me.arasple.mc.trchat;
 
 import io.izzel.taboolib.module.config.TConfig;
+import io.izzel.taboolib.module.inject.TFunction;
 import io.izzel.taboolib.module.inject.TInject;
 import me.arasple.mc.trchat.chat.ChatFormats;
 import me.arasple.mc.trchat.filter.ChatFilter;
@@ -24,10 +25,11 @@ public class TrChatFiles {
     @TInject("channels.yml")
     private static TConfig channels;
 
+    @TFunction.Init
     public static void init() {
-        formats.listener(() -> ChatFormats.loadFormats(Bukkit.getConsoleSender()));
-        filter.listener(() -> ChatFilter.loadFilter(false, Bukkit.getConsoleSender()));
-        function.listener(() -> ChatFunctions.loadFunctions(Bukkit.getConsoleSender()));
+        filter.listener(() -> ChatFilter.loadFilter(false, Bukkit.getConsoleSender())).runListener();
+        formats.listener(() -> ChatFormats.loadFormats(Bukkit.getConsoleSender())).runListener();
+        function.listener(() -> ChatFunctions.loadFunctions(Bukkit.getConsoleSender())).runListener();
     }
 
     public static TConfig getSettings() {
