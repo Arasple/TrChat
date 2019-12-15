@@ -1,7 +1,7 @@
 
 # Default ignored files
 /workspace.xml
-.gradle
-.idea
+/.gradle
+/.idea
 /gradle
-libs
+/libs

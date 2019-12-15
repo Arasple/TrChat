@@ -6,7 +6,7 @@ plugins {
 
 configurations {
     group = 'me.arasple.mc.trchat'
-    version = '1.62-R6'
+    version = '1.62-R7'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
