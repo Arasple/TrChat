@@ -45,7 +45,7 @@ public class ChatFilter {
         Filter.setReplacement(TrChatFiles.getFilter().getString("REPLACEMENT").charAt(0));
 
         // 更新云端词库
-        if (updateCloud && TrChatFiles.getFilter().getBoolean("CLOUD-THESAURUS", true)) {
+        if (updateCloud && TrChatFiles.getFilter().getBoolean("CLOUD-THESAURUS.ENABLE", true)) {
             loadCloudFilter(0, notify);
         } else {
             Notifys.notify(notify, "PLUGIN.LOADED-FILTER-LOCAL", TrChatFiles.getFilter().getStringList("LOCAL").size());
@@ -60,7 +60,7 @@ public class ChatFilter {
      */
     private static void loadCloudFilter(int url, CommandSender... notify) {
         Bukkit.getScheduler().runTaskAsynchronously(TrChat.getPlugin(), () -> {
-            List<String> whitelist = TrChatFiles.getFilter().getStringList("WHITELIST");
+            List<String> whitelist = TrChatFiles.getFilter().getStringList("CLOUD-THESAURUS.WHITELIST");
             List<String> collected = Lists.newArrayList();
             String lastUpdateDate;
 

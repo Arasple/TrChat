@@ -2,6 +2,7 @@ package me.arasple.mc.trchat.chat.listeners;
 
 import io.izzel.taboolib.module.inject.TListener;
 import me.arasple.mc.trchat.TrChatFiles;
+import me.arasple.mc.trchat.api.TrChatAPI;
 import me.arasple.mc.trchat.utils.MessageColors;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -34,7 +35,7 @@ public class ListenerAnvilChange implements Listener {
         }
         String name = meta.getDisplayName();
         if (TrChatFiles.getSettings().getBoolean("CHAT-COLOR.ANVIL")) {
-            meta.setDisplayName(MessageColors.replaceWithPermission(p, name));
+            meta.setDisplayName(TrChatAPI.filterString(p, MessageColors.replaceWithPermission(p, name), true).getFiltered());
         }
         result.setItemMeta(meta);
         e.setResult(result);

@@ -5,9 +5,6 @@ import io.izzel.taboolib.util.Files;
 import me.arasple.mc.trchat.chat.ChatFormats;
 import me.arasple.mc.trchat.filter.ChatFilter;
 import me.arasple.mc.trchat.func.ChatFunctions;
-import me.arasple.mc.trchat.logs.ChatLogs;
-import me.arasple.mc.trchat.updater.Updater;
-import me.arasple.mc.trchat.utils.Bungees;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -100,7 +97,7 @@ public class TrChatLoader {
     private boolean hookPlaceholderAPI() {
         Plugin plugin = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
         File jarFile = new File("plugins/PlaceholderAPI.jar");
-        String url = "https://ci.extendedclip.com/job/PlaceholderAPI/lastSuccessfulBuild/artifact/target/PlaceholderAPI-2.10.4.jar";
+        String url = "https://api.spiget.org/v2/resources/6245/download";
 
         if (plugin == null) {
             jarFile.delete();

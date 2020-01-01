@@ -1,5 +1,6 @@
 package me.arasple.mc.trchat.nms;
 
+import io.izzel.taboolib.module.lite.SimpleReflection;
 import me.arasple.mc.trchat.filter.ChatFilter;
 import net.minecraft.server.v1_15_R1.IChatBaseComponent;
 import net.minecraft.server.v1_15_R1.NonNullList;
@@ -18,6 +19,10 @@ import java.util.List;
  * @date 2019/11/30 11:16
  */
 public class InternalPacketUtils extends AbstractPacketUtils {
+
+    static {
+        SimpleReflection.saveField(IChatBaseComponent.class);
+    }
 
     @Override
     public Object filterIChatComponent(Object component) {

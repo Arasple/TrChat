@@ -44,7 +44,7 @@ public class MenuFilterControl {
         if (Users.isFilterEnabled(player)) {
             item = new ItemBuilder(Materials.LIME_STAINED_GLASS_PANE.parseItem()).name("§3聊天过滤器 §a√").lore("", "§7你已经开启聊天过滤器,", "§7系统将会为您过滤掉聊天", "§7内容中的敏感内容, 祝您游戏愉快", "", "§6▶ §e点击关闭此功能");
         } else {
-            item = new ItemBuilder(Materials.RED_STAINED_GLASS_PANE.parseItem()).name("§8聊天过滤器 §c×").lore("", "§7你已经开启聊天过滤器,", "§7系统将会为您过滤掉聊天", "§7内容中的敏感内容, 祝您游戏愉快", "", "§2▶ §a点击开启此功能");
+            item = new ItemBuilder(Materials.RED_STAINED_GLASS_PANE.parseItem()).name("§8聊天过滤器 §c×").lore("", "§7你当前已关闭聊天过滤器,", "§7系统将不会为您过滤掉聊天", "§7内容中的敏感内容...", "", "§2▶ §a点击开启此功能");
         }
         return item.build();
     }

@@ -15,6 +15,9 @@ public class PacketListener {
     @TPacket(type = TPacket.Type.SEND)
     static boolean filterChat(Player player, Packet packet) {
         try {
+            if (packet == null || player == null || !player.isOnline()) {
+                return true;
+            }
             if (Users.isFilterEnabled(player)) {
                 if (packet.is("PacketPlayOutChat")) {
                     packet.write("a", PacketUtils.get().filterIChatComponent(packet.read("a")));

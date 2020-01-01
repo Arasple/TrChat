@@ -6,7 +6,7 @@ plugins {
 
 configurations {
     group = 'me.arasple.mc.trchat'
-    version = '1.62-R7'
+    version = '1.62-R8'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -15,7 +15,7 @@ configurations {
         options.encoding = 'UTF-8'
     }
 
-    defaultTasks 'clean', 'build'
+    defaultTasks 'clean', 'releaseJar'
 }
 
 repositories {
@@ -41,6 +41,12 @@ processResources {
         include 'bungee.yml'
         expand 'version': project.version
     }
+}
+
+task releaseJar(type: Copy, dependsOn: ['build']) {
+    from 'build/libs'
+    include '*.jar'
+    into 'C:\\Users\\Arasp\\Desktop'
 }
 
 compileKotlin {
