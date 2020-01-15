@@ -1,5 +1,16 @@
 # TrChat Update Logs #
 
+#### VERSION 1.7
+  - #### 1.70
+    - Since: 2020.1.15
+    - Updates:
+      - 新增 en_US 语言，默认
+      - 更新 TabooLib 至 5.14
+      - 相关配置文件的默认注释更改为英文
+      - 发布至 SpigotMC
+      - 修复了 v1.62 中的空指针报错
+      - 默认情况下关闭云端词库
+
 #### VERSION 1.6
   - ##### 1.62
     - DATE： 2019.12.1

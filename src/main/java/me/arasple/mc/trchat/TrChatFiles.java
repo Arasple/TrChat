@@ -1,12 +1,11 @@
 package me.arasple.mc.trchat;
 
 import io.izzel.taboolib.module.config.TConfig;
-import io.izzel.taboolib.module.inject.TFunction;
 import io.izzel.taboolib.module.inject.TInject;
+import io.izzel.taboolib.module.inject.TSchedule;
 import me.arasple.mc.trchat.chat.ChatFormats;
 import me.arasple.mc.trchat.filter.ChatFilter;
 import me.arasple.mc.trchat.func.ChatFunctions;
-import org.bukkit.Bukkit;
 
 /**
  * @author Arasple
@@ -14,7 +13,7 @@ import org.bukkit.Bukkit;
  */
 public class TrChatFiles {
 
-    @TInject("settings.yml")
+    @TInject(value = "settings.yml", locale = "LOCALE-PRIORITY")
     private static TConfig settings;
     @TInject("formats.yml")
     private static TConfig formats;
@@ -25,11 +24,11 @@ public class TrChatFiles {
     @TInject("channels.yml")
     private static TConfig channels;
 
-    @TFunction.Init
+    @TSchedule
     public static void init() {
-        filter.listener(() -> ChatFilter.loadFilter(false, Bukkit.getConsoleSender())).runListener();
-        formats.listener(() -> ChatFormats.loadFormats(Bukkit.getConsoleSender())).runListener();
-        function.listener(() -> ChatFunctions.loadFunctions(Bukkit.getConsoleSender())).runListener();
+        filter.listener(() -> ChatFilter.loadFilter(false)).runListener();
+        formats.listener(ChatFormats::loadFormats).runListener();
+        function.listener(ChatFunctions::loadFunctions).runListener();
     }
 
     public static TConfig getSettings() {

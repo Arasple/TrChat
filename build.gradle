@@ -6,7 +6,7 @@ plugins {
 
 configurations {
     group = 'me.arasple.mc.trchat'
-    version = '1.62-R8'
+    version = '1.7-R1'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -27,8 +27,8 @@ repositories {
 }
 
 dependencies {
-    compile 'org.spigotmc:spigot:1.15-R0.1-SNAPSHOT'
-    compile 'io.izzel.taboolib:TabooLib:5.13:all'
+    compile 'org.spigotmc:spigot:1.15.1-R0.1-SNAPSHOT'
+    compile 'io.izzel.taboolib:TabooLib:5.14:all'
     compile 'io.izzel.taboolib.loader:TabooLibloader:1.2:all'
     compile "org.jetbrains.kotlin:kotlin-stdlib:1.2.41"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.41"

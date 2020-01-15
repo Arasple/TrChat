@@ -5,45 +5,42 @@
 #  |    |  \_  __ /    \  \/|  |  \\__  \\   __\
 #  |    |   |  | \\     \___|   Y  \/ __ \|  |
 #  |____|   |__|   \______  |___|  (____  |__|
-#  \/     \/     \/  TrChat 1.6
+#  \/     \/     \/  TrChat 1.7
 #                                ------ by Arasple
 #
 ######################################################################
 
+# Locale Priority
+LOCALE-PRIORITY:
+  - en_US
+  - zh_CN
+
+# General options
 GENERAL:
-  # 是否启用调试模式
   DEBUG: false
-  # 禁用此插件功能的世界
   DISABLED-WORLDS: [PUT_YOUR_WORLD_NAME_HERE, ANOTHER_WORLD]
-  # 记录聊天到日志文件的格式
   LOG: '[{0}] {1}: {2}'
-  # 依赖的 PAPI 拓展（将自动下载）
-  # 设计此功能皆在方便新人服主快速上手
   DEPEND-EXPANSIONS:
     - 'player'
     - 'server'
     - 'vault'
     - 'multiverse'
 
-
-# 聊天颜色代码相关设置
-# 颜色代码权限节点: trchat.color.<CODE>
-# 例如玩家拥有 trchat.color.a, 则可使用 &a 颜色代码
+# Chat Color
+# Perm Node: trchat.color.<CODE>
+#
+# Enable options
 CHAT-COLOR:
-  # 是否在常规聊天中启用颜色代码
   CHAT: true
-  # 是否在木牌中启用颜色代码
   SIGN: true
-  # 是否在铁砧中启用颜色代码
   ANVIL: true
-  # 是否在编辑书时启用颜色代码
   BOOK: true
 
-# 聊天控制管理
+# Chat Control
 CHAT-CONTROL:
-  # 防复读相似比
+  # Anti similar text repeat (Maximum similarity 0-1)
   ANTI-REPEAT: 0.85
-  # 每两次聊天需要等待的间隔时间
+  # Chat cooldown
   COOLDOWN: 2.0
-  # 聊天内容的字符限制
+  # Chat text length limit
   LENGTH-LIMIT: 100

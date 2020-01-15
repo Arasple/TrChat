@@ -5,14 +5,14 @@ import io.izzel.taboolib.module.inject.TInject;
 /**
  * @author Arasple
  */
-@TrChatPlugin.Version(5.13)
+@TrChatPlugin.Version(5.14)
 public final class TrChat extends TrChatPlugin {
 
-    @TInject(state = TInject.State.LOADING, init = "init", active = "load", cancel = "unload")
+    @TInject(state = TInject.State.STARTING, init = "init", active = "load", cancel = "unload")
     private static TrChatLoader loader;
 
     public static double getTrVersion() {
-        return 1.62;
+        return 1.7;
     }
 
 }
