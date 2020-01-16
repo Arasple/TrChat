@@ -82,6 +82,9 @@ COOLDOWNS:
     - ==: SOUND
       sound: 'ENTITY_ITEM_BREAK-1-0'
 
+COMMAND-CONTROLLER:
+  DENY: '&c&lYou can not use this command.'
+
 MENTIONS:
   NOTIFY:
     - ==: ACTION

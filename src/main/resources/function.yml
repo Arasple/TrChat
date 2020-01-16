@@ -12,6 +12,26 @@
 
 # General (Plugin's internal functions)
 GENERAL:
+  # Command Controller
+  COMMAND-CONTROLLER:
+    ENABLE: true
+    # WHITELIST or BLACKLIST
+    TYPE: BLACKLIST
+    # Bypass permission
+    BYPASS: 'trchat.admin'
+    # The list of the command you want to control
+    # Support regex match, dont need '/'
+    #
+    # <exact> is a tag, by using it,
+    # the command includes the argument will have to complete match
+    #
+    # Example (blackList):
+    # - 'help'  player can not execute any commands' first label is "help"
+    # - 'help'  player can not execute "help", but can execute "help 1", "help 2"
+    LIST:
+      - 'ver(sion)?(s)?'
+      - 'help(s)?'
+      - 'arasple<exact>'
   # Display item in chat
   ITEM-SHOW:
     ENABLE: true
@@ -27,6 +47,7 @@ GENERAL:
   # Mention (@At) someone in chat
   MENTION:
     ENABLE: true
+    SELF-MENTION: false
     FORMAT: '&r &a@&2{0}&r '
     COOLDOWNS: 30
     NOTIFY: true

@@ -2,10 +2,12 @@ package me.arasple.mc.trchat.chat.format.objects;
 
 import io.izzel.taboolib.internal.apache.lang3.math.NumberUtils;
 import io.izzel.taboolib.module.locale.TLocale;
+import io.izzel.taboolib.module.locale.TLocaleLoader;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import io.izzel.taboolib.util.Strings;
 import io.izzel.taboolib.util.Variables;
 import io.izzel.taboolib.util.item.Items;
+import me.arasple.mc.trchat.TrChat;
 import me.arasple.mc.trchat.TrChatFiles;
 import me.arasple.mc.trchat.data.Cooldowns;
 import me.arasple.mc.trchat.data.Users;
@@ -52,7 +54,7 @@ public class MsgComponent extends JsonComponent {
         String atFormat = TrChatFiles.getFunction().getStringColored("GENERAL.MENTION.FORMAT");
         if (atEnabled) {
             for (String p : Players.getPlayers()) {
-                if (p.equalsIgnoreCase(player.getName())) {
+                if (!TrChatFiles.getFunction().getBoolean("GENERAL.MENTION.SELF-MENTION", false) && p.equalsIgnoreCase(player.getName())) {
                     continue;
                 }
                 message = message.replaceAll("(?i)(@)?" + p, "<AT:" + p + ">");
@@ -77,7 +79,7 @@ public class MsgComponent extends JsonComponent {
                 if (itemDisplayEnabled && "ITEM".equalsIgnoreCase(args[0])) {
                     int slot = NumberUtils.toInt(args[1], player.getInventory().getHeldItemSlot());
                     ItemStack item = player.getInventory().getItem(slot) != null ? player.getInventory().getItem(slot) : new ItemStack(Material.AIR);
-                    tellraw.append(Users.getItemCache().computeIfAbsent(item, i -> TellrawJson.create().append(Strings.replaceWithOrder(itemFormat, Items.isNull(item) ? "空气" : Items.getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defualtColor).hoverItem(item)));
+                    tellraw.append(Users.getItemCache().computeIfAbsent(item, i -> TellrawJson.create().append(Strings.replaceWithOrder(itemFormat, getName(item), item.getType() != Material.AIR ? item.getAmount() : 1) + defualtColor).hoverItem(item)));
                     continue;
                 }
                 if (atEnabled && "AT".equalsIgnoreCase(args[0]) && !isPrivateChat) {
@@ -116,6 +118,21 @@ public class MsgComponent extends JsonComponent {
             tellraw.clickOpenURL(Vars.replace(player, getUrl()));
         }
         return tellraw;
+    }
+
+    public String getName(ItemStack item) {
+        boolean isChinese = TLocaleLoader.getLocalePriority(TrChat.getPlugin()).get(0).toLowerCase().startsWith("zh");
+        if (isChinese) {
+            return Items.getName(item);
+        } else {
+            StringBuilder typeName = new StringBuilder();
+            for (String p : item.getType().name().toLowerCase().split("_")) {
+                char[] chars = p.toCharArray();
+                chars[0] -= 32;
+                typeName.append(new String(chars)).append(" ");
+            }
+            return item.hasItemMeta() && item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : typeName.toString().substring(0, typeName.toString().length() - 1);
+        }
     }
 
     public ChatColor getDefualtColor() {
