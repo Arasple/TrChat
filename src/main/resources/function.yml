@@ -27,7 +27,7 @@ GENERAL:
     #
     # Example (blackList):
     # - 'help'  player can not execute any commands' first label is "help"
-    # - 'help'  player can not execute "help", but can execute "help 1", "help 2"
+    # - 'help<exact>'  player can not execute "help", but can execute "help 1", "help 2"
     LIST:
       - 'ver(sion)?(s)?'
       - 'help(s)?'

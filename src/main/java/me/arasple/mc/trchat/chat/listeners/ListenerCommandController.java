@@ -24,7 +24,7 @@ public class ListenerCommandController implements Listener {
         Player player = e.getPlayer();
         String command = e.getMessage().substring(1);
 
-        if (TrChatFiles.getSettings().getBoolean("GENERAL.COMMAND-CONTROLLER.ENABLE", true) && Strings.nonEmpty(command) && !player.hasPermission(TrChatFiles.getSettings().getString("GENERAL.COMMAND-CONTROLLER.BYPASS", "trchat.admin"))) {
+        if (TrChatFiles.getFunction().getBoolean("GENERAL.COMMAND-CONTROLLER.ENABLE", true) && Strings.nonEmpty(command) && !player.hasPermission(TrChatFiles.getFunction().getString("GENERAL.COMMAND-CONTROLLER.BYPASS", "trchat.admin"))) {
             boolean whitelist = TrChatFiles.getFunction().getString("GENERAL.COMMAND-CONTROLLER.TYPE", "BLACKLIST").equalsIgnoreCase("WHITELIST");
             List<String> matches = TrChatFiles.getFunction().getStringList("GENERAL.COMMAND-CONTROLLER.LIST");
             boolean matched = matches.stream().anyMatch(m -> {
