@@ -12,3 +12,5 @@
         - Added Command Controller, white/black list for commands
         - ^ Support regex, arguments ignore, bypass permission and TLocale response
         - ^ (Please refer to the new version and manually update the settings)
+      - R3
+        - Command Controller will now check aliases of command
