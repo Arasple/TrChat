@@ -1,5 +1,6 @@
 package me.arasple.mc.trchat.chat.format;
 
+import io.izzel.taboolib.internal.apache.lang3.math.NumberUtils;
 import io.izzel.taboolib.module.tellraw.TellrawJson;
 import me.arasple.mc.trchat.chat.format.objects.JsonComponent;
 import me.arasple.mc.trchat.chat.format.objects.MsgComponent;
@@ -15,15 +16,17 @@ import java.util.Map;
  */
 public class Format {
 
+    private int priority;
     private String requirement;
     private List<JsonComponent> jsons;
     private MsgComponent msg;
 
     public Format(Map<?, ?> formatMap) {
-        this(formatMap.containsKey("requirement") ? String.valueOf(formatMap.get("requirement")) : null, JsonComponent.loadList(formatMap.get("parts")), new MsgComponent((LinkedHashMap) formatMap.get("msg")));
+        this(formatMap.containsKey("priority") ? NumberUtils.toInt(String.valueOf(formatMap.get("priority")), 0) : Integer.MIN_VALUE, formatMap.containsKey("requirement") ? String.valueOf(formatMap.get("requirement")) : null, JsonComponent.loadList(formatMap.get("parts")), new MsgComponent((LinkedHashMap) formatMap.get("msg")));
     }
 
-    public Format(String requirement, List<JsonComponent> jsons, MsgComponent msg) {
+    public Format(int priority, String requirement, List<JsonComponent> jsons, MsgComponent msg) {
+        this.priority = priority;
         this.requirement = requirement;
         this.jsons = jsons;
         this.msg = msg;

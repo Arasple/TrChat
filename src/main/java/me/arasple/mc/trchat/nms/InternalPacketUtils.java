@@ -2,8 +2,7 @@ package me.arasple.mc.trchat.nms;
 
 import io.izzel.taboolib.module.lite.SimpleReflection;
 import me.arasple.mc.trchat.filter.ChatFilter;
-import net.minecraft.server.v1_15_R1.IChatBaseComponent;
-import net.minecraft.server.v1_15_R1.NonNullList;
+import net.minecraft.server.v1_15_R1.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
@@ -22,6 +21,10 @@ public class InternalPacketUtils extends AbstractPacketUtils {
 
     static {
         SimpleReflection.saveField(IChatBaseComponent.class);
+        SimpleReflection.saveField(NonNullList.class);
+        SimpleReflection.saveField(PacketPlayOutChat.class);
+        SimpleReflection.saveField(PacketPlayOutWindowItems.class);
+        SimpleReflection.saveField(PacketPlayOutSetSlot.class);
     }
 
     @Override
