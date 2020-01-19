@@ -14,3 +14,4 @@
         - ^ (Please refer to the new version and manually update the settings)
       - R3
         - Command Controller will now check aliases of command
+        - Fixed a variable issue in function.yml

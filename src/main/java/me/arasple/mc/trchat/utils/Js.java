@@ -18,6 +18,8 @@ import java.util.Map;
 public class Js {
 
     public static boolean checkCondition(Player player, String requirement) {
+        requirement = Vars.replace(player, requirement);
+
         if (Strings.isEmpty(requirement) || "null".equalsIgnoreCase(requirement)) {
             return true;
         }
@@ -25,7 +27,6 @@ public class Js {
         Map<String, Object> bind = new HashMap<>();
         bind.put("player", player);
         bind.put("bukkitServer", Bukkit.getServer());
-        requirement = Vars.replace(player, requirement);
         try {
             return (boolean) Scripts.compile(requirement).eval(new SimpleBindings(bind));
         } catch (Throwable e) {
