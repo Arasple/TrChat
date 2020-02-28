@@ -4,9 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.izzel.taboolib.module.inject.TSchedule;
+import io.izzel.taboolib.util.Files;
 import me.arasple.mc.trchat.TrChat;
 import me.arasple.mc.trchat.TrChatFiles;
-import me.arasple.mc.trchat.TrChatPlugin;
 import me.arasple.mc.trchat.filter.processer.Filter;
 import me.arasple.mc.trchat.filter.processer.FilteredObject;
 import me.arasple.mc.trchat.utils.Notifys;
@@ -65,7 +65,7 @@ public class ChatFilter {
             String lastUpdateDate;
 
             try {
-                JsonObject database = (JsonObject) new JsonParser().parse(TrChatPlugin.readFromURL(CHATFILTER_CLOUD_URL[url]));
+                JsonObject database = (JsonObject) new JsonParser().parse(Files.readFromURL(CHATFILTER_CLOUD_URL[url]));
                 if (!database.has("lastUpdateDate") || !database.has("words")) {
                     throw new NullPointerException("Wrong database json object");
                 }

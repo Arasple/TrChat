@@ -97,25 +97,25 @@ public class MsgComponent extends JsonComponent {
                     continue;
                 }
             }
-            tellraw.append(toTellrawPart(player, defualtColor + v.getText()));
+            tellraw.append(toTellrawPart(player, defualtColor + v.getText(), message));
         }
         return tellraw;
     }
 
-    public TellrawJson toTellrawPart(Player player, String text) {
+    public TellrawJson toTellrawPart(Player player, String text, String message) {
         TellrawJson tellraw = TellrawJson.create();
-        tellraw.append(text != null ? text : "§8[§fNull§8]");
+        tellraw.append((text != null ? text : "§8[§fNull§8]").replace("$message", message));
         if (getHover() != null) {
-            tellraw.hoverText(Vars.replace(player, getHover()));
+            tellraw.hoverText(Vars.replace(player, getHover()).replace("$message", message));
         }
         if (getSuggest() != null) {
-            tellraw.clickSuggest(Vars.replace(player, getSuggest()));
+            tellraw.clickSuggest(Vars.replace(player, getSuggest()).replace("$message", message));
         }
         if (getCommand() != null) {
-            tellraw.clickCommand(Vars.replace(player, getCommand()));
+            tellraw.clickCommand(Vars.replace(player, getCommand()).replace("$message", message));
         }
         if (getUrl() != null) {
-            tellraw.clickOpenURL(Vars.replace(player, getUrl()));
+            tellraw.clickOpenURL(Vars.replace(player, getUrl()).replace("$message", message));
         }
         return tellraw;
     }

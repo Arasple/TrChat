@@ -18,7 +18,7 @@ public class PacketListener {
             if (packet == null || player == null || !player.isOnline()) {
                 return true;
             }
-            if (Users.isFilterEnabled(player)) {
+            if (PacketUtils.get().isAvailable() && Users.isFilterEnabled(player)) {
                 if (packet.is("PacketPlayOutChat")) {
                     packet.write("a", PacketUtils.get().filterIChatComponent(packet.read("a")));
                 } else if (packet.is("PacketPlayOutWindowItems")) {

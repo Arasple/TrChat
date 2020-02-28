@@ -6,6 +6,8 @@ version: ${version}
 
 description: Advanced Minecraft Chat Control
 
+built-time: ${built}
+
 softdepend:
   - PlaceholderAPI
 

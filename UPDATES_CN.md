@@ -1,5 +1,13 @@
 # TrChat Update Logs #
 
+#### VERSION 1.8
+  ```
+  - 这将会是 TrChat 的最后一个版本,
+  - 无新增内容, 主要是修复一些小问题和优化
+  
+  - 注意, 1.13+ 的命令补全绕过权限是: trchat.bypass.tabcomplete
+  ```
+
 #### VERSION 1.7
   - #### 1.70
     - Since: 2020.1.15

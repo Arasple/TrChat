@@ -14,6 +14,7 @@
 LOCALE-PRIORITY:
   - en_US
   - zh_CN
+  - zh_TW
 
 # General options
 GENERAL:

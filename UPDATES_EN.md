@@ -15,3 +15,7 @@
       - R3
         - Command Controller will now check aliases of command
         - Fixed a variable issue in function.yml
+      - R4
+        - Fixed small bugs
+        - Added anti-tab for 1.13+, bypass permission `trchat.bypass.tabcomplete`
+        

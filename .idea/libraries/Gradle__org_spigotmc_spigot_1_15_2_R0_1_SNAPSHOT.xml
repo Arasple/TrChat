@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.spigotmc:spigot:1.15.2-R0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../Gradle/caches/modules-2/files-2.1/org.spigotmc/spigot/1.15.2-R0.1-SNAPSHOT/982a7b52c4e275fc72f8008877e9c4151c825587/spigot-1.15.2-R0.1-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../Gradle/caches/modules-2/files-2.1/org.spigotmc/spigot/1.15.2-R0.1-SNAPSHOT/a9e81b508903e20e88657231be7c365ea038af1c/spigot-1.15.2-R0.1-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../Gradle/caches/modules-2/files-2.1/org.spigotmc/spigot/1.15.2-R0.1-SNAPSHOT/81221b3ff0d46cd79240c4e51140d290486a4b0f/spigot-1.15.2-R0.1-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

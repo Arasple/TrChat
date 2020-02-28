@@ -10,17 +10,27 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
  * @author Arasple
- * @date 2019/8/4 21:19
+ * @date 2020/1/26 16:31
  */
-@BaseCommand(name = "msg", aliases = {"message", "tell", "talk", "m"}, permission = "trchat.private")
-public class CommandPrivateMessage extends BaseMainCommand {
+
+@BaseCommand(name = "reply", aliases = {"r"}, permission = "trchat.private")
+public class CommandReply extends BaseMainCommand {
+
+    private static HashMap<UUID, String> lastMessageFrom = new HashMap<>();
+
+    public static HashMap<UUID, String> getLastMessageFrom() {
+        return lastMessageFrom;
+    }
 
     @Override
+
     public String getCommandTitle() {
         return TLocale.asString("PLUGIN.COMMAND-TITLE");
     }
@@ -31,19 +41,10 @@ public class CommandPrivateMessage extends BaseMainCommand {
             TLocale.sendTo(sender, "PRIVATE-MESSAGE.NOT-PLAYER");
             return true;
         }
-        if (args.length == 0) {
-            TLocale.sendTo(sender, "PRIVATE-MESSAGE.NO-PLAYER");
-            return true;
+        if (getLastMessageFrom().containsKey(((Player) sender).getUniqueId())) {
+            String privateMessage = ArrayUtil.arrayJoin(args, 0);
+            ChannelPrivate.execute((Player) sender, Players.getPlayerFullName(getLastMessageFrom().get(((Player) sender).getUniqueId())), privateMessage);
         }
-        if (!Players.isPlayerOnline(args[0])) {
-            TLocale.sendTo(sender, "PRIVATE-MESSAGE.NOT-EXIST");
-            return true;
-        } else if (args.length == 1) {
-            TLocale.sendTo(sender, "PRIVATE-MESSAGE.NO-MESSAGE");
-            return true;
-        }
-        String privateMessage = ArrayUtil.arrayJoin(args, 1);
-        ChannelPrivate.execute((Player) sender, Players.getPlayerFullName(args[0]), privateMessage);
         return true;
     }
 
@@ -56,6 +57,5 @@ public class CommandPrivateMessage extends BaseMainCommand {
         }
         return null;
     }
-
 
 }

@@ -4,10 +4,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.izzel.taboolib.module.inject.TSchedule;
 import io.izzel.taboolib.module.locale.TLocale;
+import io.izzel.taboolib.util.IO;
 import me.arasple.mc.trchat.TrChat;
-import me.arasple.mc.trchat.TrChatPlugin;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,7 +18,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,103 +27,86 @@ import java.util.UUID;
  */
 public class Updater implements Listener {
 
+    private static boolean autoUpdate;
     private static List<UUID> noticed = new ArrayList<>();
     private static String url;
     private static double version;
-    private static UpdateInfo latest;
+    private static boolean old;
+    private static double newVersion;
 
     public static void init(Plugin plugin) {
         url = "https://api.github.com/repos/Arasple/" + plugin.getName() + "/releases/latest";
         version = TrChat.getTrVersion();
-        latest = new UpdateInfo();
+        newVersion = version;
 
         if (!String.valueOf(version).equalsIgnoreCase(plugin.getDescription().getVersion().split("-")[0])) {
             TLocale.sendToConsole("ERROR.VERSION");
             Bukkit.shutdown();
         }
-
         Bukkit.getPluginManager().registerEvents(new Updater(), plugin);
-        startTask();
-    }
-
-    private static void startTask() {
-        grabInfo();
-        notifyOld();
     }
 
     private static void notifyOld() {
-        if (latest.newVersion - version >= 0.03) {
-            int last = Math.min((int) (3 * ((latest.newVersion - version) / 0.01)), 20);
-            TLocale.sendToConsole("PLUGIN.UPDATE-NOTIFY.TOO-OLD", last);
+        if (newVersion - version >= 0.2) {
+            int last = Math.min((int) (1 * ((newVersion - version) / 0.01)), 5);
+            TLocale.sendToConsole("PLUGIN.UPDATER.TOO-OLD", last);
             try {
                 Thread.sleep(last * 1000);
             } catch (InterruptedException ignored) {
             }
         } else {
-            if (latest.hasLatest) {
-                latest.notifyUpdates(version, Bukkit.getConsoleSender());
+            if (old) {
+                TLocale.sendToConsole("PLUGIN.UPDATER.OLD", newVersion);
             } else {
-                TLocale.sendToConsole("PLUGIN.UPDATE-NOTIFY." + (version > latest.newVersion ? "DEV" : "LATEST"));
+                TLocale.sendToConsole("PLUGIN.UPDATER." + (version > newVersion ? "DEV" : "LATEST"));
             }
         }
     }
 
-    @TSchedule(delay = 60 * 5, period = 60 * 30, async = true)
+    @TSchedule(delay = 20, period = 10 * 60 * 20, async = true)
     private static void grabInfo() {
-        if (latest.hasLatest) {
+        if (old) {
             return;
         }
         String read;
         try (InputStream inputStream = new URL(url).openStream(); BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream)) {
-            read = TrChatPlugin.readFully(bufferedInputStream, StandardCharsets.UTF_8);
+            read = IO.readFully(bufferedInputStream, StandardCharsets.UTF_8);
             JsonObject json = (JsonObject) new JsonParser().parse(read);
             double latestVersion = json.get("tag_name").getAsDouble();
             if (latestVersion > version) {
-                latest.hasLatest = true;
+                old = true;
+                notifyOld();
             }
-            latest.newVersion = latestVersion;
-            latest.updates = json.get("body").getAsString().replace("\r", "").split("\n");
+            newVersion = latestVersion;
         } catch (Exception ignored) {
         }
     }
+
+    public static boolean isAutoUpdate() {
+        return autoUpdate;
+    }
+
+    public static boolean isOld() {
+        return old;
+    }
+
+    public static double getNewVersion() {
+        return newVersion;
+    }
+
+    public static double getVersion() {
+        return version;
+    }
+
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
 
-        if (latest.hasLatest && !noticed.contains(p.getUniqueId()) && p.hasPermission("trchat.admin")) {
+        if (old && !noticed.contains(p.getUniqueId()) && p.hasPermission("trmenu.admin")) {
             noticed.add(p.getUniqueId());
-            Bukkit.getScheduler().runTaskLaterAsynchronously(TrChat.getPlugin(), () -> latest.notifyUpdates(version, p), 1);
+            Bukkit.getScheduler().runTaskLaterAsynchronously(TrChat.getPlugin(), () -> TLocale.sendTo(p, "PLUGIN.UPDATER.OLD", newVersion), 1);
         }
-    }
-
-    private static class UpdateInfo {
-
-        private List<String> info;
-        private boolean hasLatest;
-        private double newVersion;
-        private String[] updates;
-
-        public UpdateInfo() {
-            this(false, -1, new String[]{});
-        }
-
-        public UpdateInfo(boolean hasLatest, double newVersion, String[] updates) {
-            this.hasLatest = hasLatest;
-            this.newVersion = newVersion;
-            this.updates = updates;
-            this.info = new ArrayList<>();
-        }
-
-        public void notifyUpdates(double version, CommandSender sender) {
-            if (info.isEmpty()) {
-                info.addAll(TLocale.asStringList("PLUGIN.UPDATE-NOTIFY.HEADER", String.valueOf(version), String.valueOf(newVersion)));
-                info.addAll(Arrays.asList(updates));
-                info.addAll(TLocale.asStringList("PLUGIN.UPDATE-NOTIFY.FOOTER"));
-            }
-            info.forEach(sender::sendMessage);
-        }
-
     }
 
 }

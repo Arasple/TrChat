@@ -45,9 +45,9 @@ public class ListenerChatEvent implements Listener {
             e.setCancelled(true);
             return;
         }
-        if (TrChatFiles.getChannels().getBoolean("FORCE-GLOBAL") || e.getMessage().startsWith(TrChatFiles.getChannels().getString("FORCE-GLOBAL-PREFIX", "!all"))) {
+        if (TrChatFiles.getChannels().getBoolean("FORCE-GLOBAL", false) || e.getMessage().startsWith(TrChatFiles.getChannels().getString("FORCE-GLOBAL-PREFIX", "!all"))) {
             e.setCancelled(true);
-            ChannelGlobal.execute(player, e.getMessage().replace(TrChatFiles.getChannels().getString("FORCE-GLOBAL-PREFIX"), ""));
+            ChannelGlobal.execute(player, e.getMessage().replace(TrChatFiles.getChannels().getString("FORCE-GLOBAL-PREFIX", "!all"), ""));
             return;
         }
 

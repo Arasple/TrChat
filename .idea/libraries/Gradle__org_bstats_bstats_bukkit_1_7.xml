@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.bstats:bstats-bukkit:1.7">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../Gradle/caches/modules-2/files-2.1/org.bstats/bstats-bukkit/1.7/fd5a62d1ae6431ac26cf7a0349a07c9825b6427d/bstats-bukkit-1.7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../Gradle/caches/modules-2/files-2.1/org.bstats/bstats-bukkit/1.7/81d0f193cc53a79fa51a4a9cee3414a64e44b6ce/bstats-bukkit-1.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -18,4 +18,6 @@ public abstract class AbstractPacketUtils {
 
     public abstract void filterItemList(Object b);
 
+    public abstract boolean isAvailable();
+
 }

@@ -10,6 +10,7 @@ import me.arasple.mc.trchat.TrChat;
 import me.arasple.mc.trchat.bstats.Metrics;
 import me.arasple.mc.trchat.chat.ChatFormats;
 import me.arasple.mc.trchat.chat.obj.ChatType;
+import me.arasple.mc.trchat.cmds.CommandReply;
 import me.arasple.mc.trchat.logs.ChatLogs;
 import me.arasple.mc.trchat.utils.Bungees;
 import org.bukkit.Bukkit;
@@ -72,6 +73,7 @@ public class ChannelPrivate {
         });
         Bukkit.getConsoleSender().sendMessage(spyFormat);
         ChatLogs.logPrivate(from.getName(), to, message);
+        CommandReply.getLastMessageFrom().put(from.getUniqueId(), to);
         Metrics.increase(0);
     }
 

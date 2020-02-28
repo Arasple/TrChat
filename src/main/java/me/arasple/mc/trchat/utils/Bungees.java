@@ -51,8 +51,8 @@ public class Bungees implements PluginMessageListener {
     GETTERS & SETTERS
      */
 
-    public static void setEnable(boolean ENABLE) {
-        Bungees.ENABLE = ENABLE;
+    public static void setEnable(boolean enable) {
+        Bungees.ENABLE = enable;
     }
 
     @Override

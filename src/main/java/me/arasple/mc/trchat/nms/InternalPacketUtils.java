@@ -20,11 +20,11 @@ import java.util.List;
 public class InternalPacketUtils extends AbstractPacketUtils {
 
     static {
-        SimpleReflection.saveField(IChatBaseComponent.class);
-        SimpleReflection.saveField(NonNullList.class);
-        SimpleReflection.saveField(PacketPlayOutChat.class);
-        SimpleReflection.saveField(PacketPlayOutWindowItems.class);
-        SimpleReflection.saveField(PacketPlayOutSetSlot.class);
+        SimpleReflection.checkAndSave(IChatBaseComponent.class);
+        SimpleReflection.checkAndSave(NonNullList.class);
+        SimpleReflection.checkAndSave(PacketPlayOutChat.class);
+        SimpleReflection.checkAndSave(PacketPlayOutWindowItems.class);
+        SimpleReflection.checkAndSave(PacketPlayOutSetSlot.class);
     }
 
     @Override
@@ -71,6 +71,11 @@ public class InternalPacketUtils extends AbstractPacketUtils {
                 Arrays.asList((ItemStack[]) items).forEach(this::filterItem);
             }
         }
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return !SimpleReflection.getFields(PacketPlayOutChat.class).isEmpty() && SimpleReflection.getFields(PacketPlayOutChat.class).containsKey("a");
     }
 
 }
