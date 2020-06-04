@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8">
       <module name="me.arasple.mc.trchat.TrChat.main" target="1.8" />
       <module name="me.arasple.mc.trchat.TrChat.test" target="1.8" />
-      <module name="TrChat.main" target="1.8" />
-      <module name="TrChat.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

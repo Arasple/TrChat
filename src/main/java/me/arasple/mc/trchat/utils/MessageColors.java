@@ -1,11 +1,12 @@
 package me.arasple.mc.trchat.utils;
 
-import com.google.common.collect.Lists;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Arasple
@@ -13,41 +14,41 @@ import java.util.List;
  */
 public class MessageColors {
 
-    private static final List<Character> COLOR_CODES = Arrays.asList(
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',
-            'e', 'f', 'k', 'l', 'm', 'n', 'o', 'r'
-    );
+    public static final List<Character> COLOR_CODES = Arrays.stream(ChatColor.values()).map(ChatColor::getChar).collect(Collectors.toList());
 
-    private static final String COLOR_PERMISSION_NODE = "trchat.color";
+    private static final String COLOR_CHAR = String.valueOf(ChatColor.COLOR_CHAR);
+    private static final String COLOR_PERMISSION_NODE = "trchat.color.";
     private static final String FORCE_CHAT_COLOR_PERMISSION_NODE = "trchat.color.force-defaultcolor.";
 
     public static List<String> replaceWithPermission(Player player, List<String> strings) {
-        List<String> result = Lists.newArrayList();
-        strings.forEach(s -> result.add(replaceWithPermission(player, s)));
-        return result;
+        return player == null ? strings : strings.stream().map(string -> replaceWithPermission(player, string)).collect(Collectors.toList());
     }
 
     public static String replaceWithPermission(Player player, String string) {
         if (player == null) {
             return string;
         }
+
         for (Character code : COLOR_CODES) {
-            if (player.hasPermission(COLOR_PERMISSION_NODE + "." + code)) {
-                string = string.replace("&" + code, "§" + code);
+            if (player.hasPermission(COLOR_PERMISSION_NODE + code)) {
+                string = StringUtils.replace(string, "&" + code, COLOR_CHAR + code);
             }
         }
+
         return string;
     }
 
     public static ChatColor catchDefaultMessageColor(Player player, ChatColor defaultColor) {
-        if (player.hasPermission(FORCE_CHAT_COLOR_PERMISSION_NODE + ".*")) {
+        if (player.hasPermission(FORCE_CHAT_COLOR_PERMISSION_NODE + "*")) {
             return defaultColor;
         }
+
         for (Character code : COLOR_CODES) {
-            if (player.hasPermission(FORCE_CHAT_COLOR_PERMISSION_NODE + "." + code)) {
+            if (player.hasPermission(FORCE_CHAT_COLOR_PERMISSION_NODE + code)) {
                 return ChatColor.getByChar(code);
             }
         }
+
         return defaultColor;
     }
 
