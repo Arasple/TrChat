@@ -2,6 +2,7 @@
   <library name="Gradle: io.izzel.taboolib:TabooLib:all:5.17">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../../Gradle/caches/modules-2/files-2.1/io.izzel.taboolib/TabooLib/5.17/696aee4191f8d8b9db79a4cbd7cf2de246af2656/TabooLib-5.17-all.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.izzel.taboolib/TabooLib/5.17/696aee4191f8d8b9db79a4cbd7cf2de246af2656/TabooLib-5.17-all.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -2,6 +2,7 @@
   <library name="Gradle: me.clip:placeholderapi:2.10.4">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../../Gradle/caches/modules-2/files-2.1/me.clip/placeholderapi/2.10.4/4d27326c321be563d02e458834296b1e455c26f2/placeholderapi-2.10.4.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/me.clip/placeholderapi/2.10.4/4d27326c321be563d02e458834296b1e455c26f2/placeholderapi-2.10.4.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
